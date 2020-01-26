@@ -12,7 +12,7 @@ class Place {
     @ServerTimestamp
     var timestamp: Date? = null
 
-    constructor() {}
+    constructor()
 
     constructor(name: String, placeId: String) {
         this.name = name

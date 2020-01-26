@@ -3,11 +3,7 @@ package com.example.pinatlas
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
-    internal var TAG = MainActivity::class.java.simpleName
+    private var TAG = MainActivity::class.java.simpleName
 
     private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
@@ -34,7 +30,7 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
 
         try {
             context = this;
-            recyclerView = findViewById<RecyclerView>(R.id.itineraryRecyclerView) as RecyclerView
+            recyclerView = findViewById(R.id.itineraryRecyclerView)
             recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
             adapter = PlaceAdapter(mQuery, this)
@@ -53,40 +49,11 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
 
     override fun onStart() {
         super.onStart()
-
-        if (adapter != null) {
-            adapter!!.startListening()
-        }
+        adapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-
-        if (adapter != null) {
-            adapter!!.stopListening()
-        }
+        adapter.stopListening()
     }
-
-    interface OnItemClickListener {
-        fun onItemClicked(position: Int, view: View)
-    }
-
-    fun RecyclerView.addOnItemClickListener(onClickListener: OnItemClickListener) {
-        this.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
-            override fun onChildViewDetachedFromWindow(view: View) {
-                view.setOnClickListener(null)
-            }
-
-            override fun onChildViewAttachedToWindow(view: View) {
-                view.setOnClickListener {
-                    val holder = getChildViewHolder(view)
-                    onClickListener.onItemClicked(holder.adapterPosition, view)
-                }
-            }
-        })
-    }
-}
-
-class DataModel(var title: String, var date: String){
-
 }
