@@ -1,0 +1,5 @@
+- Finalized and practiced pitch for D1 (1.5 hours)
+- Fixed mockup for Calendar View to improve usability (1 hour)
+- Installed and played around with Android Studio (1.5 hours)
+- Learned how to create view components in Android Studio (1 hour)
+- Created part of the Calendar View (1.5 hour)
