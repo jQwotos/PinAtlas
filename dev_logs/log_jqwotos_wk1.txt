@@ -1,0 +1,5 @@
+- 1 hr  | Setup Android Studio
+- 1 hr  | Assisted in creating tasks for the task board
+- 2 hrs | Reading tutorials on Kotlin and Android
+- 1 hr  | Assisted on designs on Figma
+- 3 hrs | Worked on adding firebase app
