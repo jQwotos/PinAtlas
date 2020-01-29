@@ -1,0 +1,5 @@
+- 1 hr | Setup Android Studio
+- 2 hr | Get familiar with Android and Kotlin
+- 2 hr | Create a basic list view
+- 1 hr | Prepare for presentation
+- 2 hr | Attempt to setup Firebase
