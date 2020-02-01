@@ -10,10 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".cool"
-            android:label="@string/title_activity_cool"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
