@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
     override fun onStart() {
         super.onStart()
 
-        if (adapter != null) {
+        if (::adapter.isInitialized) {
             adapter.startListening()
         }
     }
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
     override fun onStop() {
         super.onStop()
 
-        if (adapter != null) {
+        if (::adapter.isInitialized) {
             adapter.stopListening()
         }
     }
