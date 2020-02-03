@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_travel_dash">TravelDash</string>
     <string name="mapbox_access_token">pk.eyJ1Ijoic2h1YmhhbXNoYXJhbiIsImEiOiJjam8wNXZkdzYydTFlM3Jtb3Y4YnR2Y21yIn0.a5q8Yt1UJd_QuRmeCD50xw</string>
+    <string name="user_location_permission_not_granted" />
+    <string name="user_location_permission_explanation" />
 </resources>
