@@ -49,11 +49,17 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
 
     override fun onStart() {
         super.onStart()
-        adapter.startListening()
+
+        if (::adapter.isInitialized) {
+            adapter.startListening()
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        adapter.stopListening()
+
+        if (::adapter.isInitialized) {
+            adapter.stopListening()
+        }
     }
 }
