@@ -1,0 +1,4 @@
+- 1 hr  | Connected firebase auth ui
+- 1 hr  | Impelemnted firebase auth ui with Monica-Vu's design
+- 2 hrs | Created base firestore models
+- .5 hr | Fixed template firestore initialization check
