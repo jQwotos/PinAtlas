@@ -10,26 +10,41 @@
         android:id="@+id/imageView2"
         android:layout_width="335dp"
         android:layout_height="288dp"
-        app:srcCompat="@mipmap/pin_atlas_logo"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="153dp" />
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="153dp"
+        android:layout_marginEnd="33dp"
+        android:contentDescription="@string/logo_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/pin_atlas_logo" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pin Atlas"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="131dp"
+        android:layout_marginEnd="131dp"
+        android:orientation="vertical"
+        android:text="@string/app_name"
         android:textColor="#EA3F60"
         android:textSize="36sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="441dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Placeholder for Google Sign In"
-        tools:layout_editor_absoluteX="75dp"
-        tools:layout_editor_absoluteY="529dp" />
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="162dp"
+        android:onClick="createSignInIntent"
+        android:text="@string/sign_in_btn_txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
