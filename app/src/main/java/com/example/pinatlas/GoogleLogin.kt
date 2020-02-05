@@ -21,8 +21,6 @@ class GoogleLogin : AppCompatActivity() {
         setContentView(R.layout.activity_google_login)
         context = this;
     }
-
-    // Invoked
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
