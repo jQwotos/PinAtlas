@@ -9,8 +9,6 @@ import android.view.View
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 
 class GoogleLogin : AppCompatActivity() {
@@ -24,6 +22,7 @@ class GoogleLogin : AppCompatActivity() {
         context = this;
     }
 
+    // Invoked
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
