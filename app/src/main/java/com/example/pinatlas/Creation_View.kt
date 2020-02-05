@@ -13,7 +13,6 @@ import java.time.Month
 class Creation_View : AppCompatActivity() {
     private lateinit var context: Context
     private lateinit var picker: DatePickerDialog
-    private lateinit var eText : EditText
     private lateinit var startDateButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
