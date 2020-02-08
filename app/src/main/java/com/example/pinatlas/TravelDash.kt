@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
@@ -16,6 +17,7 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
 class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener {
 
@@ -23,16 +25,32 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     private lateinit var mapboxMap: MapboxMap
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
 
+    private val TILES = Array(1000) { index -> "Item $index" }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Mapbox.getInstance(applicationContext, getString(R.string.mapbox_access_token))
-        setContentView(R.layout.activity_travel_dash)
+        setContentView(R.layout.traveldash)
 
+        //For the Mapbox Implementation
         mapView = findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
+        //Local the tiles for past/upcoming trips
+        val pastAdapter = PastAdapter(TILES)
+        val pastRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.PTview)
+        val pastManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        pastRecyclerView.layoutManager = pastManager
+        pastRecyclerView.adapter = pastAdapter
+
+//        val upcomAdapter = UpcomingAdapter(COMPLEX_TITLES)
+//        val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.sixth_recycler_view)
+//        val upcomManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        upcomRecyclerView.layoutManager = upcomManager
+//        upcomRecyclerView.adapter = upcomAdapter
         }
 
     override fun onMapReady(mapboxMap: MapboxMap) {

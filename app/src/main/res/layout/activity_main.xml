@@ -16,4 +16,10 @@
 
     <include layout="@layout/content_main" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_traveldash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

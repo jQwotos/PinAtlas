@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="140dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/mapView"
+        >
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            >
+            <ImageView
+                android:id="@+id/imageP"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/mapbox_compass_icon" />
+            <TextView
+                android:id="@+id/locationP"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:text="New York"></TextView>
+            <TextView
+                android:id="@+id/buddiesP"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:text="with Jenny"></TextView>
+        </TableLayout>
+
+
+    </androidx.cardview.widget.CardView>
