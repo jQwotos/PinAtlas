@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TravelBoard">
+    <!-- TODO: DELETE ME ONCE ACTUAL TRAVELBOARD IS IN PLACE -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/travel_board"

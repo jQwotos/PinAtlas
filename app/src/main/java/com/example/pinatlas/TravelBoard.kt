@@ -20,12 +20,11 @@ import com.google.firebase.firestore.Query
 
 /*
 
+    TODO: DELETE ME ONCE ACTUAL TRAVELBOARD IS IN PLACE
     ExampleActivity purely used to demo how to use the TripAdapter to fetch the users's trips
 
  */
 class TravelBoard : AppCompatActivity(), TripAdapter.OnTripSelectedListener {
-    private var TAG = MainActivity::class.java.simpleName
-
     private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val tripCollection: CollectionReference by lazy { mFirestore.collection("trips") }
 
