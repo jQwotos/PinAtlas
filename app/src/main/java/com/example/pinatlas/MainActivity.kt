@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.PlaceAdapter
 import com.example.pinatlas.model.Place
+import com.firebase.ui.auth.AuthUI
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -36,6 +37,9 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
             adapter = PlaceAdapter(mQuery, this)
 
             recyclerView.adapter = adapter
+
+            // DEBUG CODE TO SIGN OUT RIGHT AFTER!
+            AuthUI.getInstance().signOut(this)
 
         } catch (e: Exception) {
             Log.e(TAG, e.message)
