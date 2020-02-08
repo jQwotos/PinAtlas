@@ -3,14 +3,11 @@ package com.example.pinatlas
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pinatlas.adapter.PlaceAdapter
 import com.example.pinatlas.adapter.TripAdapter
 import com.example.pinatlas.model.Trip
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +16,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.model.Document
 
 
 /*
