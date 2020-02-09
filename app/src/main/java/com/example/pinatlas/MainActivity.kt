@@ -16,7 +16,6 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.model.Place as GPlace
 
-
 class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
     private var TAG = MainActivity::class.java.simpleName
 
