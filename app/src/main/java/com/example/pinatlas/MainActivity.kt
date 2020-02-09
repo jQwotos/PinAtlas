@@ -12,6 +12,9 @@ import com.example.pinatlas.model.Place
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.model.Place as GPlace
 
 class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
     private var TAG = MainActivity::class.java.simpleName
@@ -27,6 +30,17 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Places.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
+        val placesClient = Places.createClient(this)
+
+        val placeFields = listOf(GPlace.Field.NAME, GPlace.Field.ADDRESS, GPlace.Field.ADDRESS_COMPONENTS)
+        val CARLETON_ID = "ChIJw-x_09gFzkwR3Ny4IXiNXb8"
+        val placeRequest = FetchPlaceRequest.newInstance(CARLETON_ID, placeFields)
+        val placeResponse = placesClient.fetchPlace(placeRequest)
+        placeResponse.addOnSuccessListener { res ->
+            val place = res.place
+            Log.d(TAG, "PLACE: $place")
+        }
 
         try {
             context = this;
