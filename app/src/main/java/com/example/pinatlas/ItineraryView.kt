@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.Past_TravelDash_Adapter
+import com.example.pinatlas.adapter.Submitted_List_Adapter
 import com.example.pinatlas.adapter.Upcom_TravelDash_Adapter
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
@@ -21,7 +22,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
-class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener {
+class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListener {
 
     private lateinit var mapView : MapView
     private lateinit var mapboxMap: MapboxMap
@@ -34,7 +35,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Mapbox.getInstance(applicationContext, getString(R.string.mapbox_access_token))
-        setContentView(R.layout.traveldash)
+        setContentView(R.layout.itinerary_view)
 
         //For the Mapbox Implementation
         mapView = findViewById(R.id.mapView)
@@ -42,18 +43,13 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         mapView.getMapAsync(this)
 
         //Local the tiles for past/upcoming trips
-        val pastAdapter = Past_TravelDash_Adapter(TILES)
-        val pastRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.PTview)
-        val pastManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        pastRecyclerView.layoutManager = pastManager
-        pastRecyclerView.adapter = pastAdapter
+        val adapter = Submitted_List_Adapter(TILES)
+        val submitListView = findViewById<MultiSnapRecyclerView>(R.id.sublist_recycler_view)
+        val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        submitListView.layoutManager = manager
+        submitListView.adapter = adapter
 
-        val upcomAdapter = Upcom_TravelDash_Adapter(TILES)
-        val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
-        val upcomManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        upcomRecyclerView.layoutManager = upcomManager
-        upcomRecyclerView.adapter = upcomAdapter
-        }
+    }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
@@ -77,19 +73,19 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
                 .locationComponentOptions(customLocationComponentOptions)
                 .build()
 
-        // Get an instance of the LocationComponent and then adjust its settings
+            // Get an instance of the LocationComponent and then adjust its settings
             mapboxMap.locationComponent.apply {
 
                 // Activate the LocationComponent with options
                 activateLocationComponent(locationComponentActivationOptions)
 
-        // Enable to make the LocationComponent visible
+                // Enable to make the LocationComponent visible
                 isLocationComponentEnabled = true
 
-        // Set the LocationComponent's camera mode
+                // Set the LocationComponent's camera mode
                 cameraMode = CameraMode.TRACKING
 
-        // Set the LocationComponent's render mode
+                // Set the LocationComponent's render mode
                 renderMode = RenderMode.COMPASS
             }
         } else {

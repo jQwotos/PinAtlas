@@ -32,6 +32,6 @@ class Past_TravelDash_Adapter(
 
   class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
       itemView) {
-    val title: TextView = itemView.findViewById(R.id.locationP) as TextView
+    val title: TextView = itemView.findViewById(R.id.location) as TextView
   }
 }

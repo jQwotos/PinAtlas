@@ -55,6 +55,7 @@
         ></TextView>
 
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+        android:id="@+id/UTView"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         andriod:layout_below="@+id/UTtitle"

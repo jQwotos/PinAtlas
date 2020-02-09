@@ -22,7 +22,7 @@
         >
 
         <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-            andriod:id="@+id/PTview"
+            andriod:id="@+id/tiles"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_gravity="bottom"
@@ -38,8 +38,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/mapView"
         android:clipToPadding="false"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         app:msrv_gravity="start"
         app:msrv_interval="1"
         />

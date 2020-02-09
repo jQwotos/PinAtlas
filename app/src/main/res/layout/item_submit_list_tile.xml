@@ -6,7 +6,10 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
     app:cardBackgroundColor="#EA3F60"
+
     >
 
     <GridLayout
@@ -15,6 +18,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+
         >
 
         <ImageView
@@ -28,6 +32,7 @@
             ></ImageView>
 
         <TextView
+            android:id="@+id/location"
             android:layout_width="169dp"
             android:layout_height="wrap_content"
             android:layout_column="2"
@@ -41,6 +46,7 @@
             android:text="New York"></TextView>
 
         <TextView
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="3"

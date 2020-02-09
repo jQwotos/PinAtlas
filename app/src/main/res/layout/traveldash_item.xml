@@ -5,7 +5,9 @@
         android:layout_width="140dp"
         android:layout_height="200dp"
         android:layout_below="@id/mapView"
-        >
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -15,22 +17,25 @@
             <ImageView
                 android:id="@+id/imageP"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="140dp"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
-                android:src="@drawable/mapbox_compass_icon" />
+                android:src="@drawable/mapbox_compass_icon"
+                />
             <TextView
-                android:id="@+id/locationP"
+                android:id="@+id/location"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="30dp"
+                android:padding="4dp"
                 android:gravity="center"
                 android:text="New York"></TextView>
             <TextView
-                android:id="@+id/buddiesP"
+                android:id="@+id/dates"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="30dp"
+                android:padding="4dp"
                 android:gravity="center"
-                android:text="with Jenny"></TextView>
+                android:text="Aug 13, 19 - Aug 18, 19"></TextView>
         </TableLayout>
 
 
