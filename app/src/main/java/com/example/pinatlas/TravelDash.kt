@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pinatlas.adapter.Past_TravelDash_Adapter
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
@@ -40,13 +41,13 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         mapView.getMapAsync(this)
 
         //Local the tiles for past/upcoming trips
-        val pastAdapter = PastAdapter(TILES)
+        val pastAdapter = Past_TravelDash_Adapter(TILES)
         val pastRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.PTview)
         val pastManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         pastRecyclerView.layoutManager = pastManager
         pastRecyclerView.adapter = pastAdapter
 
-//        val upcomAdapter = UpcomingAdapter(COMPLEX_TITLES)
+//        val upcomAdapter = Upcoming_TravelDash_Adapter(COMPLEX_TITLES)
 //        val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.sixth_recycler_view)
 //        val upcomManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 //        upcomRecyclerView.layoutManager = upcomManager
@@ -75,19 +76,19 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
                 .locationComponentOptions(customLocationComponentOptions)
                 .build()
 
-// Get an instance of the LocationComponent and then adjust its settings
+        // Get an instance of the LocationComponent and then adjust its settings
             mapboxMap.locationComponent.apply {
 
                 // Activate the LocationComponent with options
                 activateLocationComponent(locationComponentActivationOptions)
 
-// Enable to make the LocationComponent visible
+        // Enable to make the LocationComponent visible
                 isLocationComponentEnabled = true
 
-// Set the LocationComponent's camera mode
+        // Set the LocationComponent's camera mode
                 cameraMode = CameraMode.TRACKING
 
-// Set the LocationComponent's render mode
+        // Set the LocationComponent's render mode
                 renderMode = RenderMode.COMPASS
             }
         } else {

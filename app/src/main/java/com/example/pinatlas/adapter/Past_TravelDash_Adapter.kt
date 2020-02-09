@@ -1,14 +1,15 @@
-package com.example.pinatlas
+package com.example.pinatlas.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.pinatlas.R
 
 
-class PastAdapter(
+class Past_TravelDash_Adapter(
     private val titles: Array<String>
-) : androidx.recyclerview.widget.RecyclerView.Adapter<PastAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<Past_TravelDash_Adapter.ViewHolder>() {
 
   override fun onCreateViewHolder(
       viewGroup: ViewGroup,
