@@ -1,3 +1,0 @@
-StudentUsername is the student's user account in the repo
-X is the week's ID Ex. wk1
-- Dev logs contains a list of each team members weekly duties/achievements and time they allocate to these duties during the week.

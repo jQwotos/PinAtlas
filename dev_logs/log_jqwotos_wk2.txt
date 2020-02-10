@@ -1,0 +1,4 @@
+- 1 hr  | Added firebase auth ui
+- 1 hr  | Tied firebase auth ui with Monica-Vu's design
+- .5 hr | Fixed firestore initialization
+- 2 hrs | Created base firestore models
