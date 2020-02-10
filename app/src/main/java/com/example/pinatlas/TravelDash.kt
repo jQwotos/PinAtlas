@@ -1,13 +1,22 @@
 package com.example.pinatlas
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.Past_TravelDash_Adapter
+import com.example.pinatlas.adapter.TripAdapter
 import com.example.pinatlas.adapter.Upcom_TravelDash_Adapter
+import com.example.pinatlas.model.Trip
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
@@ -21,20 +30,38 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
-class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener {
+class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener, TripAdapter.OnTripSelectedListener {
 
     private lateinit var mapView : MapView
     private lateinit var mapboxMap: MapboxMap
+    private lateinit var context: Context
+
+    private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    private val tripsCollection: CollectionReference by lazy { mFirestore.collection("trips") }
+
+    private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
+
+    private lateinit var pastTripsQuery: Query
+    private lateinit var currentTripsQuery: Query
+
+    private lateinit var pastTripsAdapter: TripAdapter
+
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
 
     private val TILES = Array(1000) { index -> "Item $index" }
 
 
+    override fun onTripSelected(trip: DocumentSnapshot) {
+        var snapshot = trip.toObject(Trip::class.java)
+        Toast.makeText(context, "Clicked on " + snapshot!!.name, Toast.LENGTH_LONG).show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Mapbox.getInstance(applicationContext, getString(R.string.mapbox_access_token))
         setContentView(R.layout.traveldash)
+
+        context = this;
 
         //For the Mapbox Implementation
         mapView = findViewById(R.id.mapView)
@@ -42,11 +69,12 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         mapView.getMapAsync(this)
 
         //Local the tiles for past/upcoming trips
-        val pastAdapter = Past_TravelDash_Adapter(TILES)
+        pastTripsQuery = tripsCollection.whereEqualTo("user_id", currentUser!!.uid)
+        pastTripsAdapter = TripAdapter(pastTripsQuery, this)
         val pastRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.PTview)
         val pastManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         pastRecyclerView.layoutManager = pastManager
-        pastRecyclerView.adapter = pastAdapter
+        pastRecyclerView.adapter = pastTripsAdapter
 
         val upcomAdapter = Upcom_TravelDash_Adapter(TILES)
         val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
@@ -117,6 +145,11 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
 
     override fun onStart() {
         super.onStart()
+
+        if (::pastTripsAdapter.isInitialized) {
+            pastTripsAdapter.startListening()
+        }
+
         mapView.onStart()
     }
 
@@ -132,6 +165,10 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
 
     override fun onStop() {
         super.onStop()
+
+        if (::pastTripsAdapter.isInitialized) {
+            pastTripsAdapter.stopListening()
+        }
         mapView.onStop()
     }
 

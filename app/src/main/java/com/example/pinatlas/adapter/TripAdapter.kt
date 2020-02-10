@@ -18,7 +18,7 @@ class TripAdapter (query: Query, private val mListener: OnTripSelectedListener):
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ViewHolder(inflater.inflate(R.layout.adapter_recyclerview, parent, false))
+        return ViewHolder(inflater.inflate(R.layout.traveldash_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -27,7 +27,7 @@ class TripAdapter (query: Query, private val mListener: OnTripSelectedListener):
 
     // Binds to the RecyclerView and converts the object into something useful
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var title: TextView = itemView.findViewById(R.id.txt_title)
+        var title: TextView = itemView.findViewById(R.id.location)
 
         fun bind(snapshot: DocumentSnapshot, listener: OnTripSelectedListener) {
             val trip: Trip? = snapshot.toObject(Trip::class.java)

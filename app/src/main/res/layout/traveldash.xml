@@ -33,17 +33,16 @@
 
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
         andriod:id="@+id/PTview"
-        andriod:layout_below="@+id/PTtitle"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
+        andriod:layout_below="@+id/PTtitle"
         android:layout_gravity="center_vertical"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
         app:msrv_gravity="end"
         app:msrv_interval="10"
-        app:msrv_speed_ms_per_inch="100"
-        />
+        app:msrv_speed_ms_per_inch="100" />
     <TextView
         android:id="@+id/UTtitle"
         android:layout_width="match_parent"
@@ -57,16 +56,15 @@
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
         android:id="@+id/UTView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         andriod:layout_below="@+id/UTtitle"
-        android:orientation="horizontal"
         android:layout_gravity="center_vertical"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
         app:msrv_gravity="end"
         app:msrv_interval="10"
-        app:msrv_speed_ms_per_inch="100"
-        />
+        app:msrv_speed_ms_per_inch="100" />
 
 
 </RelativeLayout>
