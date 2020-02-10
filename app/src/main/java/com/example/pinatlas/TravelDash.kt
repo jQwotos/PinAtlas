@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pinatlas.adapter.Past_TravelDash_Adapter
 import com.example.pinatlas.adapter.TripAdapter
-import com.example.pinatlas.adapter.Upcom_TravelDash_Adapter
 import com.example.pinatlas.model.Trip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -42,14 +40,12 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
 
     private lateinit var pastTripsQuery: Query
-    private lateinit var currentTripsQuery: Query
+    private lateinit var upcommingTripsQuery: Query
 
     private lateinit var pastTripsAdapter: TripAdapter
+    private lateinit var upcommingTripsAdapter: TripAdapter
 
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
-
-    private val TILES = Array(1000) { index -> "Item $index" }
-
 
     override fun onTripSelected(trip: DocumentSnapshot) {
         var snapshot = trip.toObject(Trip::class.java)
@@ -69,6 +65,8 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         mapView.getMapAsync(this)
 
         //Local the tiles for past/upcoming trips
+
+        // TODO: Change pastTripsQuery to find past trips instead of all trips
         pastTripsQuery = tripsCollection.whereEqualTo("user_id", currentUser!!.uid)
         pastTripsAdapter = TripAdapter(pastTripsQuery, this)
         val pastRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.PTview)
@@ -76,11 +74,13 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         pastRecyclerView.layoutManager = pastManager
         pastRecyclerView.adapter = pastTripsAdapter
 
-        val upcomAdapter = Upcom_TravelDash_Adapter(TILES)
+        // TODO: Change upcommingTripsQuery to find past trips instead of all trips
+        upcommingTripsQuery = tripsCollection.whereEqualTo("user_id", currentUser!!.uid)
+        upcommingTripsAdapter = TripAdapter(upcommingTripsQuery, this)
         val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
         val upcomManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         upcomRecyclerView.layoutManager = upcomManager
-        upcomRecyclerView.adapter = upcomAdapter
+        upcomRecyclerView.adapter = upcommingTripsAdapter
         }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
