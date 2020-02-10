@@ -38,7 +38,7 @@ class GoogleLogin : AppCompatActivity() {
     }
 
     fun redirectToMainActivity() {
-        val intent = Intent(this, TravelBoard::class.java)
+        val intent = Intent(this, TravelDash::class.java)
         startActivity(intent)
     }
 

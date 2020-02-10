@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pinatlas.adapter.Past_TravelDash_Adapter
 import com.example.pinatlas.adapter.Submitted_List_Adapter
-import com.example.pinatlas.adapter.Upcom_TravelDash_Adapter
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
