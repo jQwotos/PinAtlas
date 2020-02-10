@@ -9,12 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.PlaceAdapter
 import com.example.pinatlas.model.Place
+import com.firebase.ui.auth.AuthUI
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
-import com.google.android.libraries.places.api.model.Place as GPlace
 
 class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
     private var TAG = MainActivity::class.java.simpleName
@@ -30,17 +28,6 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Places.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
-        val placesClient = Places.createClient(this)
-
-        val placeFields = listOf(GPlace.Field.NAME, GPlace.Field.ADDRESS, GPlace.Field.ADDRESS_COMPONENTS)
-        val CARLETON_ID = "ChIJw-x_09gFzkwR3Ny4IXiNXb8"
-        val placeRequest = FetchPlaceRequest.newInstance(CARLETON_ID, placeFields)
-        val placeResponse = placesClient.fetchPlace(placeRequest)
-        placeResponse.addOnSuccessListener { res ->
-            val place = res.place
-            Log.d(TAG, "PLACE: $place")
-        }
 
         try {
             context = this;
@@ -50,6 +37,9 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
             adapter = PlaceAdapter(mQuery, this)
 
             recyclerView.adapter = adapter
+
+            // DEBUG CODE TO SIGN OUT RIGHT AFTER!
+            AuthUI.getInstance().signOut(this)
 
         } catch (e: Exception) {
             Log.e(TAG, e.message)
@@ -63,11 +53,17 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
 
     override fun onStart() {
         super.onStart()
-        adapter.startListening()
+
+        if (::adapter.isInitialized) {
+            adapter.startListening()
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        adapter.stopListening()
+
+        if (::adapter.isInitialized) {
+            adapter.stopListening()
+        }
     }
 }
