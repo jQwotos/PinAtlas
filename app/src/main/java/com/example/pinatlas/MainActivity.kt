@@ -51,10 +51,6 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
             adapter = PlaceAdapter(mQuery, this)
 
             recyclerView.adapter = adapter
-
-            // DEBUG CODE TO SIGN OUT RIGHT AFTER!
-            AuthUI.getInstance().signOut(this)
-
         } catch (e: Exception) {
             Log.e(TAG, e.message)
         }
