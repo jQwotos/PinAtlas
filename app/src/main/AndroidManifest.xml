@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pinatlas">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +12,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Creation_View" />
         <activity android:name=".TravelBoard" />
-        <activity android:name=".GoogleLogin">
+        <activity android:name=".GoogleLogin" />
+        <activity android:name=".TravelDash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
