@@ -19,5 +19,4 @@
         android:layout_marginTop="5dp"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp" />
-  
 </RelativeLayout>

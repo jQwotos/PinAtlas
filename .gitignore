@@ -189,4 +189,3 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/java,linux,macos,android,windows
 
 google-services.json
-apikey.properties

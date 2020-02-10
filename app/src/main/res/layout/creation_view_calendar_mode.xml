@@ -53,15 +53,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="390dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/navyBlue"
+        android:ems="10"
+        android:inputType="text"
+        android:text="New Trip"
+        android:textColor="@color/white"/>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="286dp"
+        android:layout_height="297dp"
+        android:alpha="255"
+        android:cropToPadding="false"
+        app:srcCompat="@mipmap/pin_atlas_logo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add some items"
+        android:textColor="@color/grey" />
+
+</LinearLayout>
