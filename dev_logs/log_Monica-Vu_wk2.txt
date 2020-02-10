@@ -1,5 +1,0 @@
-- 1 hr | Created a document to identify and list tasks
-- 2 hr | Cleaned up document above (finalized details) and assigned tasks to people for D2; Worked on ERD Diagram with team
-- 0.5 hr | Transferred tasks to Github, closed old issues and code reviews
-- 1 hr | Application was constantly crashing; worked on a solution with jqwotos
-- 2 hr | Restarted on creating UI components (not necessarily functioning)
