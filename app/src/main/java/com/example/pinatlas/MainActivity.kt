@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity(), PlaceAdapter.OnPlaceSelectedListener {
             adapter = PlaceAdapter(mQuery, this)
 
             recyclerView.adapter = adapter
+
         } catch (e: Exception) {
             Log.e(TAG, e.message)
         }
