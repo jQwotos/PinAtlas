@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/uploadDocsBtn"
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
@@ -41,7 +41,7 @@
             app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/setTimeBtn"
             android:layout_width="180dp"
             android:layout_height="50dp"
             android:layout_marginTop="28dp"

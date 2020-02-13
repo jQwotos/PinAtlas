@@ -4,4 +4,11 @@
     <string name="title_activity_google__log__in">Google_Log_In</string>
     <string name="sign_in_btn_txt">Sign In</string>
     <string name="logo_desc">PinAtlas Logo</string>
+    <string name="default_trip_name">New Trip</string>
+    <string name="autofill_trip_name_hint">Trip Name</string>
+    <string name="blank_creation_step">Add some items</string>
+    <string name="start_date_btn">Start Date</string>
+    <string name="end_date_btn">End Date</string>
+    <string name="upload_docs">Upload Documents</string>
+    <string name="set_time">Set Time</string>
 </resources>

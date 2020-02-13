@@ -6,33 +6,97 @@
     android:layout_height="match_parent"
     tools:context=".Creation_View">
 
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="@id/tripName"
+        app:layout_constraintTop_toBottomOf="@+id/editStartDate" />
+
+    <EditText
+        android:id="@+id/tripName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:height="500dp"
+        android:autofillHints="@string/autofill_trip_name_hint"
+        android:background="@color/navyBlue"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/autofill_trip_name_hint"
+        android:text="@string/default_trip_name"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="235dp"
+        android:contentDescription="@string/logo_desc"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="96dp"
+        android:alpha=".30"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:srcCompat="@mipmap/pin_atlas_logo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:gravity="center_horizontal"
+        android:text="@string/blank_creation_step"
+        android:textColor="#B5B5B5"
+
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
     <Button
         android:id="@+id/editStartDate"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="120dp"
         android:layout_height="43dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginTop="@dimen/margin"
         android:background="#FFFFFF"
         android:drawableEnd="@drawable/ic_arrow_drop_down_navy_blue_24dp"
-        android:onClick="createDatePicker"
-        android:text="Start Date"
-        app:layout_constraintEnd_toStartOf="@+id/editStartDate2"
+        android:onClick="createStartDatePicker"
+        android:text="@string/start_date_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tripName" />
 
     <Button
-        android:id="@+id/editStartDate2"
+        android:id="@+id/endDateButton"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="120dp"
         android:layout_height="43dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
         android:background="#FFFFFF"
         android:drawableEnd="@drawable/ic_arrow_drop_down_navy_blue_24dp"
-        android:onClick="createDatePicker"
-        android:text="End Date"
+        android:onClick="createEndDatePicker"
+        android:text="@string/end_date_btn"
         app:layout_constraintStart_toEndOf="@+id/editStartDate"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/editStartDate" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activityList"
+        android:layout_width="78dp"
+        android:layout_height="337dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="317dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/searchView"
+        app:layout_constraintStart_toStartOf="@+id/searchView"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
