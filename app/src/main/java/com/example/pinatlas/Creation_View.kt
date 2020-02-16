@@ -13,11 +13,12 @@ import android.widget.DatePicker
 import android.widget.EditText
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import java.time.LocalDateTime
+import java.util.*
 
 class Creation_View : AppCompatActivity() {
     private lateinit var context: Context
@@ -73,13 +74,13 @@ class Creation_View : AppCompatActivity() {
         override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
             // Now use the stored button instead
             this.datePicker.button.setText( day.toString() + "/" + (month + 1).toString() + "/" + year.toString());
-            this.datePicker.setDate(LocalDateTime.of(year, month, day, 0, 0))
+            this.datePicker.setDate(Timestamp(Date(year, month, day)))
         }
     }
 
     inner class startDatePicker: datePicker {
         override var button: Button = startDateButton
-        override fun setDate(date: LocalDateTime) {
+        override fun setDate(date: Timestamp) {
             trip.start_date = date
             updateData()
         }
@@ -89,7 +90,7 @@ class Creation_View : AppCompatActivity() {
 
     inner class endDatePicker: datePicker {
         override var button: Button = endDateButton
-        override fun setDate(date: LocalDateTime) {
+        override fun setDate(date: Timestamp) {
             trip.end_date = date
             updateData()
         }
@@ -99,7 +100,7 @@ class Creation_View : AppCompatActivity() {
 
     abstract class datePicker {
         abstract var button: Button
-        abstract fun setDate(date: LocalDateTime)
+        abstract fun setDate(date: Timestamp)
     }
 
     // Switch createDatePicker to accept a button
