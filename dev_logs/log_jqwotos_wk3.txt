@@ -1,0 +1,2 @@
+- 2 hrs | Created firestore connector for Trips
+- 1 hr  | Created base template for adding trips and connecting to firestore connector
