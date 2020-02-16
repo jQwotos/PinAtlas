@@ -16,7 +16,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mapViewContainer"
         andriod:layout_width="match_parent"
-        andriod:layout_height="match_parent">
+        andriod:layout_height="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/addTripBtn"
@@ -87,6 +88,15 @@
         app:msrv_interval="10"
         app:msrv_speed_ms_per_inch="100" >
 
+        <ScrollView
+            andriod:layout_width="match_parent"
+            andriod:layout_height="match_parent">
+
+            <LinearLayout
+                andriod:layout_width="match_parent"
+                andriod:layout_height="wrap_content"
+                andriod:orientation="vertical" />
+        </ScrollView>
     </com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView>
 
 
