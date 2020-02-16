@@ -19,6 +19,11 @@ class GoogleLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_login)
+
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            redirectToMainActivity()
+        }
+
         context = this;
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

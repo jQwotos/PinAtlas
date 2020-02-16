@@ -1,21 +1,24 @@
 package com.example.pinatlas.model
 
 import com.example.pinatlas.constants.TransportationMethods
-import java.time.LocalDateTime
-import java.util.*
+import com.google.firebase.Timestamp
 import kotlin.collections.ArrayList
 
 class Trip {
     var user_id: String = ""
     var trip_id: String? = ""                                // Auto-generated ID by Firestore
     var name: String? = null                                // Name of the trip
-    var start_date: LocalDateTime? = null                   // Start date of the trip
-    var end_date: LocalDateTime? = null
+    var start_date: Timestamp? = null                   // Start date of the trip
+    var end_date: Timestamp? = null
     var place_ranking: ArrayList<String> = arrayListOf()
     var places: ArrayList<String> =
         arrayListOf()           // Array of places (not sorted in any way)
 
     var transportation_methods: ArrayList<TransportationMethods> = arrayListOf()
+
+    override fun toString(): String {
+        return "User: $user_id | Trip: $trip_id | Name: $name | start_date: ${start_date.toString()} | end_date: ${end_date.toString()}"
+    }
 
     constructor()
 
@@ -23,8 +26,8 @@ class Trip {
         user_id: String,
         trip_id: String? = "",
         name: String? = "",
-        start_date: LocalDateTime? = null,
-        end_date: LocalDateTime? = null,
+        start_date: Timestamp? = null,
+        end_date: Timestamp? = null,
         place_ranking: ArrayList<String> = arrayListOf(),
         places: ArrayList<String> = arrayListOf(),
         transportation_methods: ArrayList<TransportationMethods> = arrayListOf()
