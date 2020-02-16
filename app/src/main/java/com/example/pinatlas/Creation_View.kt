@@ -13,6 +13,8 @@ import android.widget.DatePicker
 import android.widget.EditText
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalDateTime
@@ -26,7 +28,8 @@ class Creation_View : AppCompatActivity() {
 
     private lateinit var tripID: String
     private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
-    private var trip: Trip = Trip()
+    private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
+    private var trip: Trip = Trip(user_id = currentUser!!.uid)
 
     private lateinit var tripDocument: DocumentReference
 
