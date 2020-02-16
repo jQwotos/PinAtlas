@@ -2,12 +2,17 @@ package com.example.pinatlas
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.TripAdapter
+import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -33,6 +38,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     private lateinit var mapView : MapView
     private lateinit var mapboxMap: MapboxMap
     private lateinit var context: Context
+    private lateinit var addTripBtn: Button
 
     private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val tripsCollection: CollectionReference by lazy { mFirestore.collection("trips") }
@@ -63,6 +69,8 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         mapView = findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        addTripBtn = findViewById(R.id.addTripBtn)
 
         //Local the tiles for past/upcoming trips
 
@@ -151,6 +159,20 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         }
 
         mapView.onStart()
+    }
+
+    fun createNewTrip(view: View) {
+        var intent: Intent = Intent(this, Creation_View::class.java)
+
+        tripsCollection.add(Trip(user_id = currentUser!!.uid)).addOnSuccessListener {
+            documentReference ->
+                intent.putExtra(Constants.TRIP_ID.type, documentReference.id)
+                Log.w("TRAVELDASH", "Adding trip " + documentReference.id)
+                startActivity(intent)
+        }.addOnFailureListener { e ->
+            Log.e("TRAVELDASH", "Failed to create trip with error " + e)
+            Toast.makeText(context, "Failed to make trip", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onResume() {

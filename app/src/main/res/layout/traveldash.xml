@@ -11,25 +11,46 @@
         android:id="@+id/MAINtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Travel Dashboard"></TextView>
-    <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@id/MAINtitle"
-        tools:layout_editor_absoluteX="-3dp"
-        />
+        android:text="Travel Dashboard" ></TextView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mapViewContainer"
+        andriod:layout_width="match_parent"
+        andriod:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/addTripBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="end"
+            android:onClick="createNewTrip"
+            android:padding="@dimen/margin"
+            android:text="Add New Trip"
+            app:layout_constraintBottom_toBottomOf="@+id/mapView"
+            app:layout_constraintEnd_toEndOf="@+id/mapView" />
+
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </com.mapbox.mapboxsdk.maps.MapView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView
         android:id="@+id/PTtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Past Trips"
-        android:layout_below="@id/mapView"
+        android:layout_below="@id/mapViewContainer"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        ></TextView>
+        android:text="Past Trips"></TextView>
 
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
         andriod:id="@+id/PTview"
@@ -64,7 +85,9 @@
         android:orientation="horizontal"
         app:msrv_gravity="end"
         app:msrv_interval="10"
-        app:msrv_speed_ms_per_inch="100" />
+        app:msrv_speed_ms_per_inch="100" >
+
+    </com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView>
 
 
 </RelativeLayout>

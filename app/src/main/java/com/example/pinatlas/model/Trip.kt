@@ -17,6 +17,10 @@ class Trip {
 
     var transportation_methods: ArrayList<TransportationMethods> = arrayListOf()
 
+    override fun toString(): String {
+        return "User: $user_id | Trip: $trip_id | Name: $name | start_date: ${start_date.toString()} | end_date: ${end_date.toString()}"
+    }
+
     constructor()
 
     constructor(
