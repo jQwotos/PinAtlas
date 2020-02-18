@@ -23,8 +23,10 @@ import android.util.Log
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.ActivityListAdapter
+import com.example.pinatlas.helpers.DistanceMatrixHelper
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
+import com.google.maps.model.DistanceMatrix
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
 
@@ -164,5 +166,10 @@ class CreationView : AppCompatActivity() {
 
     fun updateData() {
         tripDocument.set(trip)
+    }
+
+    fun submit(view: View) {
+        // TODO: Use the new get trip Places function
+        var distanceMatrix: DistanceMatrix = DistanceMatrixHelper.getDistanceMatrix(trip.transportation_methods.toArray())
     }
 }

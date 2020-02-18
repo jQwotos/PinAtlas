@@ -99,4 +99,15 @@
         app:msrv_interval="10"
         app:msrv_speed_ms_per_inch="100" />
 
+    <Button
+        android:id="@+id/submitBtn"
+        android:onClick="submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1AA703"
+        android:textColor="@color/white"
+        android:text="SUBMIT"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
