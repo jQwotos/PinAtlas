@@ -162,7 +162,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     }
 
     fun createNewTrip(view: View) {
-        var intent: Intent = Intent(this, Creation_View::class.java)
+        var intent: Intent = Intent(this, CreationView::class.java)
 
         tripsCollection.add(Trip(user_id = currentUser!!.uid)).addOnSuccessListener {
             documentReference ->

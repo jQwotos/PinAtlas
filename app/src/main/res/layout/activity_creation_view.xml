@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Creation_View">
+    tools:context=".CreationView">
 
     <fragment
         android:id="@+id/searchBar"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tripName"
-        app:layout_constraintVertical_bias="0.153"
-        tools:layout_editor_absoluteX="8dp" />
+        android:layout_marginTop="@dimen/margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editStartDate" />
 
     <EditText
         android:id="@+id/tripName"
@@ -37,10 +36,10 @@
         android:id="@+id/imageView"
         android:layout_width="250dp"
         android:layout_height="235dp"
-        android:contentDescription="@string/logo_desc"
         android:layout_marginStart="80dp"
         android:layout_marginTop="96dp"
         android:alpha=".30"
+        android:contentDescription="@string/logo_desc"
         android:gravity="center_horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
@@ -91,13 +90,13 @@
         android:id="@+id/activityList"
         android:layout_width="match_parent"
         android:layout_height="382dp"
+        android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_gravity="bottom"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar"
         app:msrv_gravity="end"
         app:msrv_interval="10"
-        app:msrv_speed_ms_per_inch="100"
-        />
+        app:msrv_speed_ms_per_inch="100" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

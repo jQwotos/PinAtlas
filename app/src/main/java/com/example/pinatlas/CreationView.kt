@@ -20,21 +20,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
-import com.google.firebase.firestore.Query
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-import kotlin.collections.ArrayList
 
 
-class Creation_View : AppCompatActivity() {
-    private var TAG = Creation_View::class.java.simpleName
+class CreationView : AppCompatActivity() {
+    private var TAG = CreationView::class.java.simpleName
     private lateinit var context: Context
     private lateinit var picker: DatePickerDialog
     private lateinit var startDateButton : Button
@@ -51,7 +46,7 @@ class Creation_View : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_creation__view)
+        setContentView(R.layout.activity_creation_view)
 
         tripID = intent.getStringExtra(Constants.TRIP_ID.type)
         trip.trip_id = tripID
@@ -96,6 +91,7 @@ class Creation_View : AppCompatActivity() {
 
             override fun onPlaceSelected(place: Place) {
                 trip.places.add(place)
+                updateData()
             }
 
         })
