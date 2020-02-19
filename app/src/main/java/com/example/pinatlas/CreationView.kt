@@ -23,10 +23,10 @@ import android.util.Log
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.ActivityListAdapter
-import com.example.pinatlas.helpers.DistanceMatrixHelper
+import com.example.pinatlas.model.matrix.DistanceMatrixModel
+import com.example.pinatlas.utils.DistanceMatrixProvider
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
-import com.google.maps.model.DistanceMatrix
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
 
@@ -168,11 +168,18 @@ class CreationView : AppCompatActivity() {
         tripDocument.set(trip)
     }
 
+    fun finishFetchingDistanceMatrix(distanceMatrixModel: DistanceMatrixModel) {
+        Log.d(TAG, distanceMatrixModel.rows!!.size.toString())
+        Log.d(TAG, distanceMatrixModel.status)
+    }
+
     fun submit(view: View) {
         // TODO: Use the new get trip Places function
-        var HARD_CODED_PLACES_REMOVE: Array<String> = arrayOf("Parliament Hill", "3 Brothers Rideau", "Carleton University", "The Caf Carleton", "1375 Prince of Wales")
-        var distanceMatrix: DistanceMatrix = DistanceMatrixHelper.getDistanceMatrix(HARD_CODED_PLACES_REMOVE)
-
+        var HARD_CODED_PLACES_REMOVE: ArrayList<String> = arrayListOf("Parliament Hill", "3 Brothers Rideau", "Carleton University", "The Caf Carleton", "1375 Prince of Wales")
+        DistanceMatrixProvider.fetchDistanceMatrix(HARD_CODED_PLACES_REMOVE) {
+            result: DistanceMatrixModel ->
+                finishFetchingDistanceMatrix(result) // After we fetched invoke function
+        }
         // TODO: SHUBHAM LOOK HERE
     }
 }
