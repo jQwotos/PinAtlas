@@ -170,6 +170,9 @@ class CreationView : AppCompatActivity() {
 
     fun submit(view: View) {
         // TODO: Use the new get trip Places function
-        var distanceMatrix: DistanceMatrix = DistanceMatrixHelper.getDistanceMatrix(trip.transportation_methods.toArray())
+        var HARD_CODED_PLACES_REMOVE: Array<String> = arrayOf("Parliament Hill", "3 Brothers Rideau", "Carleton University", "The Caf Carleton", "1375 Prince of Wales")
+        var distanceMatrix: DistanceMatrix = DistanceMatrixHelper.getDistanceMatrix(HARD_CODED_PLACES_REMOVE)
+
+        // TODO: SHUBHAM LOOK HERE
     }
 }
