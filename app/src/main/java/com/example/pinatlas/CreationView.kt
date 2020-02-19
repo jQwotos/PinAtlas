@@ -4,13 +4,13 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
-import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -21,13 +21,23 @@ import java.util.*
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import android.util.Log
 import android.widget.*
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.ActivityListAdapter
+import com.example.pinatlas.model.Place
+import com.example.pinatlas.viewmodel.FirestoreViewModel
 import com.example.pinatlas.model.matrix.DistanceMatrixModel
 import com.example.pinatlas.utils.DistanceMatrixProvider
 import com.google.android.gms.common.api.Status
-import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.Places as GPlaces
+import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+import java.lang.Error
+import kotlin.collections.ArrayList
 
 
 class CreationView : AppCompatActivity() {
@@ -37,22 +47,26 @@ class CreationView : AppCompatActivity() {
     private lateinit var startDateButton : Button
     private lateinit var endDateButton : Button
     private lateinit var tripName: EditText
+    private lateinit var firestoreViewModel: FirestoreViewModel
 
-    private lateinit var tripID: String
+    private lateinit var tripId: String
     private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
-    private var trip: Trip = Trip(user_id = currentUser!!.uid)
+    private var trip: Trip = Trip(userId = currentUser!!.uid)
+    private var places: ArrayList<Place> = arrayListOf()
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
-    private lateinit var tripDocument: DocumentReference
+    private lateinit var tripDocument: LiveData<Trip>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_creation_view)
+        firestoreViewModel = ViewModelProviders.of(this)
+            .get(FirestoreViewModel::class.java)
 
-        tripID = intent.getStringExtra(Constants.TRIP_ID.type)
-        trip.trip_id = tripID
-        tripDocument = mFirestore.collection("trips").document(tripID)
+        tripId = currentUser!!.uid
+        val newTrip = Trip(tripId)
+        firestoreViewModel.saveTrip(newTrip)
 
         context = this
 
@@ -61,49 +75,54 @@ class CreationView : AppCompatActivity() {
         // Set the endDateButton to the component
         endDateButton = findViewById(R.id.endDateButton)
         tripName = findViewById(R.id.tripName)
-        tripName.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                trip.name = s.toString()
-                updateData()
+        tripName.setText(firestoreViewModel.newTrip.value?.name)
+
+        GPlaces.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
+
+        val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
+        val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val adapter = ActivityListAdapter(places)
+
+        activityList.adapter = adapter
+        activityList.layoutManager = manager
+
+        firestoreViewModel.fetchPlacesInTrip(tripId).observe(this, Observer { update ->
+            Log.d(TAG, update.toString())
+            if (update != null) {
+                places.removeAll(places)
+                places.addAll(update)
+                activityList.adapter?.notifyDataSetChanged()
             }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-
-        Places.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
 
         autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(
             listOf(
-                Place.Field.ID,
-                Place.Field.NAME,
-                Place.Field.ADDRESS,
-                Place.Field.PHONE_NUMBER,
-                Place.Field.RATING,
-                Place.Field.TYPES,
-                Place.Field.OPENING_HOURS,
-                Place.Field.LAT_LNG)
+                GPlace.Field.ID,
+                GPlace.Field.NAME,
+                GPlace.Field.ADDRESS,
+                GPlace.Field.PHONE_NUMBER,
+                GPlace.Field.RATING,
+                GPlace.Field.TYPES,
+                GPlace.Field.OPENING_HOURS,
+                GPlace.Field.LAT_LNG)
         )
+
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onError(status: Status) {
                 Log.e(TAG, "An error occurred: $status")
             }
 
-            override fun onPlaceSelected(place: Place) {
-                trip.places.add(place)
-                updateData()
+            override fun onPlaceSelected(place: GPlace) {
+                if (place.id != null) {
+                    trip.places.add(place.id)
+                    Log.d(TAG, place.id)
+                    firestoreViewModel.saveTrip(trip)
+                    adapter.notifyItemChanged(trip.places.size)
+                }
             }
 
         })
-
-        val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
-        val placeAdapter = ActivityListAdapter(trip.places)
-        val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        activityList.adapter = placeAdapter
-        activityList.layoutManager = manager
 
     }
 
@@ -126,7 +145,7 @@ class CreationView : AppCompatActivity() {
     inner class startDatePicker: datePicker {
         override var button: Button = startDateButton
         override fun setDate(date: Timestamp) {
-            trip.start_date = date
+            trip.startDate = date
             updateData()
         }
 
@@ -136,7 +155,7 @@ class CreationView : AppCompatActivity() {
     inner class endDatePicker: datePicker {
         override var button: Button = endDateButton
         override fun setDate(date: Timestamp) {
-            trip.end_date = date
+            trip.startDate = date
             updateData()
         }
 
@@ -165,7 +184,7 @@ class CreationView : AppCompatActivity() {
     }
 
     fun updateData() {
-        tripDocument.set(trip)
+        firestoreViewModel.saveTrip(trip)
     }
 
     fun finishFetchingDistanceMatrix(distanceMatrixModel: DistanceMatrixModel) {
