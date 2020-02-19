@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.TripAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
+import com.example.pinatlas.model.matrix.DistanceMatrixModel
+import com.example.pinatlas.utils.DistanceMatrixProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
@@ -34,6 +36,7 @@ import com.mapbox.mapboxsdk.maps.Style
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
 class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener, TripAdapter.OnTripSelectedListener {
+    private var TAG = TravelDash::class.java.simpleName
 
     private lateinit var mapView : MapView
     private lateinit var mapboxMap: MapboxMap
@@ -208,6 +211,21 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
+    }
+
+    fun finishFetchingDistanceMatrix(distanceMatrixModel: DistanceMatrixModel) {
+        Log.d(TAG, distanceMatrixModel.rows!!.size.toString())
+        Log.d(TAG, distanceMatrixModel.status)
+    }
+
+    fun createMatrix(view: View) {
+        // TODO: Use the new get trip Places function
+        var HARD_CODED_PLACES_REMOVE: ArrayList<String> = arrayListOf("Parliament Hill", "3 Brothers Rideau", "Carleton University", "The Caf Carleton", "1375 Prince of Wales")
+        DistanceMatrixProvider.fetchDistanceMatrix(HARD_CODED_PLACES_REMOVE) {
+                result: DistanceMatrixModel ->
+            finishFetchingDistanceMatrix(result) // After we fetched invoke function
+        }
+        // TODO: SHUBHAM LOOK HERE
     }
 
 }
