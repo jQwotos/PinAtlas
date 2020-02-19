@@ -75,7 +75,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         //Local the tiles for past/upcoming trips
 
         // TODO: Change pastTripsQuery to find past trips instead of all trips
-        pastTripsQuery = tripsCollection.whereEqualTo("user_id", currentUser!!.uid)
+        pastTripsQuery = tripsCollection.whereEqualTo("userId", currentUser!!.uid)
         pastTripsAdapter = TripAdapter(pastTripsQuery, this)
         val pastRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.PTview)
         val pastManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -83,13 +83,13 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         pastRecyclerView.adapter = pastTripsAdapter
 
         // TODO: Change upcommingTripsQuery to find past trips instead of all trips
-        upcommingTripsQuery = tripsCollection.whereEqualTo("user_id", currentUser!!.uid)
+        upcommingTripsQuery = tripsCollection.whereEqualTo("userId", currentUser!!.uid)
         upcommingTripsAdapter = TripAdapter(upcommingTripsQuery, this)
         val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
         val upcomManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         upcomRecyclerView.layoutManager = upcomManager
         upcomRecyclerView.adapter = upcommingTripsAdapter
-        }
+    }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
@@ -163,16 +163,17 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
 
     fun createNewTrip(view: View) {
         var intent: Intent = Intent(this, CreationView::class.java)
-
-        tripsCollection.add(Trip(user_id = currentUser!!.uid)).addOnSuccessListener {
-            documentReference ->
-                intent.putExtra(Constants.TRIP_ID.type, documentReference.id)
-                Log.w("TRAVELDASH", "Adding trip " + documentReference.id)
-                startActivity(intent)
-        }.addOnFailureListener { e ->
-            Log.e("TRAVELDASH", "Failed to create trip with error " + e)
-            Toast.makeText(context, "Failed to make trip", Toast.LENGTH_LONG).show()
-        }
+        startActivity(intent)
+//
+//        tripsCollection.add(Trip(userId = currentUser!!.uid)).addOnSuccessListener {
+//            documentReference ->
+//                intent.putExtra(Constants.TRIP_ID.type, documentReference.id)
+//                Log.w("TRAVELDASH", "Adding trip " + documentReference.id)
+//                startActivity(intent)
+//        }.addOnFailureListener { e ->
+//            Log.e("TRAVELDASH", "Failed to create trip with error " + e)
+//            Toast.makeText(context, "Failed to make trip", Toast.LENGTH_LONG).show()
+//        }
     }
 
     override fun onResume() {

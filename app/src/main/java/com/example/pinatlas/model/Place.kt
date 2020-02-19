@@ -4,21 +4,20 @@ import android.location.Location
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.collections.ArrayList
 
 @IgnoreExtraProperties
 class Place {
-    var place_id: String = ""                       // Auto populate ID
+    var placeId: String = ""                       // Auto populate ID
     // Properties of a place for firestore
     var name: String? = null                        // Name of the location
     var address: String? = null                     // Address of location
-    var busy_times: ArrayList<String>? = null       // Array of busy times
-    var phone_number: String? = null                // Phone number as string
+    var busyTimes: ArrayList<String>? = null       // Array of busy times
+    var phoneNumber: String? = null                // Phone number as string
     var rating: Float? = null                       // Google Maps rating
     var types: ArrayList<String>? = null            // Type (museum, hotel, etc...)
-    var opening_hours: ArrayList<String>? = null    // Google Maps array of hours of operation
-    var permanently_closed: Boolean? = null         // True if location is permanently closed
+    var openingHours: ArrayList<String>? = null    // Google Maps array of hours of operation
+    var permanentlyClosed: Boolean? = null         // True if location is permanently closed
     var photos: ArrayList<String>? = null           // URL of photos from google maps
     var coordinates: Location? = null               // Coordinates of location
 
@@ -40,15 +39,15 @@ class Place {
         photos: ArrayList<String>?,
         coordinates: Location?
     ) {
-        this.place_id = place_id
+        this.placeId = place_id
         this.name = name
         this.address = address
-        this.busy_times = busy_times
-        this.phone_number = phone_number
+        this.busyTimes = busy_times
+        this.phoneNumber = phone_number
         this.rating = rating
         this.types = types
-        this.opening_hours = opening_hours
-        this.permanently_closed = permanently_closed
+        this.openingHours = opening_hours
+        this.permanentlyClosed = permanently_closed
         this.photos = photos
         this.coordinates = coordinates
     }

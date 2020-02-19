@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.R
 import com.google.android.libraries.places.api.model.Place
 
-class ActivityListAdapter ( private val places: ArrayList<Place>
+class ActivityListAdapter ( private val places: ArrayList<com.example.pinatlas.model.Place>
 ) : RecyclerView.Adapter<ActivityListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

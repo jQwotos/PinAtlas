@@ -31,7 +31,7 @@ class TripAdapter (query: Query, private val mListener: OnTripSelectedListener):
 
         fun bind(snapshot: DocumentSnapshot, listener: OnTripSelectedListener) {
             val trip: Trip? = snapshot.toObject(Trip::class.java)
-            trip!!.trip_id = snapshot.id
+            trip!!.tripId = snapshot.id
             title.setText(trip!!.name)
 
             itemView.setOnClickListener(object: View.OnClickListener {

@@ -35,7 +35,7 @@ class PlaceAdapter(query: Query, private val mListener: OnPlaceSelectedListener)
             val place = snapshot.toObject(Place::class.java)
             Log.w("PlaceAdapter", "Adding item" + place!!.name )
             txtTitle.setText(place.name)
-            txtDate.setText(place.place_id)
+            txtDate.setText(place.placeId)
 
             itemView.setOnClickListener(object: View.OnClickListener {
                 override fun onClick(view: View) {
