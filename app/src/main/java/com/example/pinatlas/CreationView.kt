@@ -5,66 +5,64 @@ import android.content.Context
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
 import com.google.android.libraries.places.api.Places as GPlaces
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.*
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.model.Place
-import com.example.pinatlas.viewmodel.FirestoreViewModel
+import com.example.pinatlas.viewmodel.ActivityCreationViewModel
+import com.example.pinatlas.viewmodel.ActivityCreationViewModelFactory
+import com.example.pinatlas.viewmodel.ActivityCreationViewModelBinding
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-import java.lang.Error
 import kotlin.collections.ArrayList
 
 
 class CreationView : AppCompatActivity() {
     private var TAG = CreationView::class.java.simpleName
     private lateinit var context: Context
+    private lateinit var viewModel: ActivityCreationViewModel
+
     private lateinit var picker: DatePickerDialog
     private lateinit var startDateButton : Button
     private lateinit var endDateButton : Button
     private lateinit var tripName: EditText
-    private lateinit var firestoreViewModel: FirestoreViewModel
+    private lateinit var autocompleteFragment: AutocompleteSupportFragment
 
     private lateinit var tripId: String
-    private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
     private var trip: Trip = Trip(userId = currentUser!!.uid)
     private var places: ArrayList<Place> = arrayListOf()
-    private lateinit var autocompleteFragment: AutocompleteSupportFragment
-    private lateinit var tripDocument: LiveData<Trip>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_creation_view)
-        firestoreViewModel = ViewModelProviders.of(this)
-            .get(FirestoreViewModel::class.java)
 
-        tripId = currentUser!!.uid
-        val newTrip = Trip(tripId)
-        firestoreViewModel.saveTrip(newTrip)
+        val binding = ActivityCreationViewBinding.inflate(layoutInflater)
+
+        val viewModelFactory = ActivityCreationViewModelFactory(tripId)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(ActivityCreationViewModel::class.java)
+
+        viewModel.saveTrip()
+        viewModel.tripName.observe(this, Observer { update ->
+            tripName.setText(update)
+        })
 
         context = this
 
@@ -113,9 +111,10 @@ class CreationView : AppCompatActivity() {
 
             override fun onPlaceSelected(place: GPlace) {
                 if (place.id != null) {
-                    trip.places.add(place.id)
+                    trip.places.add(place)
                     Log.d(TAG, place.id)
-                    firestoreViewModel.saveTrip(trip)
+                    viewModel.saveTrip()
+                    viewModel.addPlace()
                     adapter.notifyItemChanged(trip.places.size)
                 }
             }
