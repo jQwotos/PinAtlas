@@ -5,68 +5,61 @@ import android.content.Context
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.*
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.model.Place
-import com.example.pinatlas.viewmodel.FirestoreViewModel
-import com.example.pinatlas.model.matrix.DistanceMatrixModel
-import com.example.pinatlas.utils.DistanceMatrixProvider
+import com.example.pinatlas.viewmodel.ActivityCreationViewModel
+import com.example.pinatlas.viewmodel.ActivityCreationViewModelFactory
 import com.google.android.gms.common.api.Status
-import com.google.android.libraries.places.api.Places as GPlaces
 import com.google.android.libraries.places.api.model.Place as GPlace
+import com.google.android.libraries.places.api.Places as GPlaces
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-import java.lang.Error
 import kotlin.collections.ArrayList
 
 
 class CreationView : AppCompatActivity() {
     private var TAG = CreationView::class.java.simpleName
     private lateinit var context: Context
+    private lateinit var viewModel: ActivityCreationViewModel
+
     private lateinit var picker: DatePickerDialog
     private lateinit var startDateButton : Button
     private lateinit var endDateButton : Button
     private lateinit var tripName: EditText
-    private lateinit var firestoreViewModel: FirestoreViewModel
+    private lateinit var autocompleteFragment: AutocompleteSupportFragment
 
     private lateinit var tripId: String
-    private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
     private var trip: Trip = Trip(userId = currentUser!!.uid)
     private var places: ArrayList<Place> = arrayListOf()
-    private lateinit var autocompleteFragment: AutocompleteSupportFragment
-    private lateinit var tripDocument: LiveData<Trip>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_creation_view)
-        firestoreViewModel = ViewModelProviders.of(this)
-            .get(FirestoreViewModel::class.java)
 
-        tripId = currentUser!!.uid
-        val newTrip = Trip(tripId)
-        firestoreViewModel.saveTrip(newTrip)
+        val viewModelFactory = ActivityCreationViewModelFactory(tripId)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(ActivityCreationViewModel::class.java)
+
+        viewModel.saveTrip()
+        viewModel.tripName.observe(this, Observer { update ->
+            tripName.setText(update)
+        })
 
         context = this
 
@@ -75,7 +68,7 @@ class CreationView : AppCompatActivity() {
         // Set the endDateButton to the component
         endDateButton = findViewById(R.id.endDateButton)
         tripName = findViewById(R.id.tripName)
-        tripName.setText(firestoreViewModel.newTrip.value?.name)
+//        tripName.setText(firestoreViewModel.newTrip.value?.name)
 
         GPlaces.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
 
@@ -86,14 +79,14 @@ class CreationView : AppCompatActivity() {
         activityList.adapter = adapter
         activityList.layoutManager = manager
 
-        firestoreViewModel.fetchPlacesInTrip(tripId).observe(this, Observer { update ->
-            Log.d(TAG, update.toString())
-            if (update != null) {
-                places.removeAll(places)
-                places.addAll(update)
-                activityList.adapter?.notifyDataSetChanged()
-            }
-        })
+//        firestoreViewModel.fetchPlacesInTrip(tripId).observe(this, Observer { update ->
+//            Log.d(TAG, update.toString())
+//            if (update != null) {
+//                places.removeAll(places)
+//                places.addAll(update)
+//                activityList.adapter?.notifyDataSetChanged()
+//            }
+//        })
 
         autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(
@@ -115,9 +108,10 @@ class CreationView : AppCompatActivity() {
 
             override fun onPlaceSelected(place: GPlace) {
                 if (place.id != null) {
-                    trip.places.add(place.id)
+                    trip.places.add(place)
                     Log.d(TAG, place.id)
-                    firestoreViewModel.saveTrip(trip)
+                    viewModel.saveTrip()
+                    viewModel.addPlace()
                     adapter.notifyItemChanged(trip.places.size)
                 }
             }
@@ -146,7 +140,6 @@ class CreationView : AppCompatActivity() {
         override var button: Button = startDateButton
         override fun setDate(date: Timestamp) {
             trip.startDate = date
-            updateData()
         }
 
         constructor()
@@ -156,7 +149,6 @@ class CreationView : AppCompatActivity() {
         override var button: Button = endDateButton
         override fun setDate(date: Timestamp) {
             trip.startDate = date
-            updateData()
         }
 
         constructor()
@@ -181,24 +173,5 @@ class CreationView : AppCompatActivity() {
 
     fun createEndDatePicker(view : View) {
         createDatePicker(endDatePicker())
-    }
-
-    fun updateData() {
-        firestoreViewModel.saveTrip(trip)
-    }
-
-    fun finishFetchingDistanceMatrix(distanceMatrixModel: DistanceMatrixModel) {
-        Log.d(TAG, distanceMatrixModel.rows!!.size.toString())
-        Log.d(TAG, distanceMatrixModel.status)
-    }
-
-    fun submit(view: View) {
-        // TODO: Use the new get trip Places function
-        var HARD_CODED_PLACES_REMOVE: ArrayList<String> = arrayListOf("Parliament Hill", "3 Brothers Rideau", "Carleton University", "The Caf Carleton", "1375 Prince of Wales")
-        DistanceMatrixProvider.fetchDistanceMatrix(HARD_CODED_PLACES_REMOVE) {
-            result: DistanceMatrixModel ->
-                finishFetchingDistanceMatrix(result) // After we fetched invoke function
-        }
-        // TODO: SHUBHAM LOOK HERE
     }
 }

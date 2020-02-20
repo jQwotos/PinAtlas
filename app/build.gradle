@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.google.gms.google-services'
 
+apply plugin: 'kotlin-kapt'
+
 def apikeyPropertiesFile = rootProject.file("apikey.properties")
 def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
@@ -30,9 +32,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -66,6 +67,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'com.github.kittinunf.fuel:fuel:2.2.1'
     implementation 'com.github.kittinunf.fuel:fuel-android:2.2.1'
     implementation 'com.github.kittinunf.fuel:fuel-gson:2.2.1'
