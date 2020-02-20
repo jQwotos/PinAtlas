@@ -10,10 +10,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.TripAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
+import com.example.pinatlas.viewmodel.ActivityCreationViewModelFactory
+import com.example.pinatlas.viewmodel.TripsViewModel
+import com.example.pinatlas.viewmodel.TripsViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
@@ -39,23 +45,17 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     private lateinit var mapboxMap: MapboxMap
     private lateinit var context: Context
     private lateinit var addTripBtn: Button
-
-    private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
-    private val tripsCollection: CollectionReference by lazy { mFirestore.collection("trips") }
-
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
 
-    private lateinit var pastTripsQuery: Query
-    private lateinit var upcommingTripsQuery: Query
+    private lateinit var viewModel: TripsViewModel
 
     private lateinit var pastTripsAdapter: TripAdapter
     private lateinit var upcommingTripsAdapter: TripAdapter
 
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
 
-    override fun onTripSelected(trip: DocumentSnapshot) {
-        var snapshot = trip.toObject(Trip::class.java)
-        Toast.makeText(context, "Clicked on " + snapshot!!.name, Toast.LENGTH_LONG).show()
+    override fun onTripSelected(trip: Trip) {
+        Toast.makeText(context, "Clicked on " + trip.name, Toast.LENGTH_LONG).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +63,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         Mapbox.getInstance(applicationContext, getString(R.string.mapbox_access_token))
         setContentView(R.layout.traveldash)
 
-        context = this;
+        context = this
 
         //For the Mapbox Implementation
         mapView = findViewById(R.id.mapView)
@@ -74,21 +74,27 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
 
         //Local the tiles for past/upcoming trips
 
+        viewModel = ViewModelProviders.of(
+            this,
+            TripsViewModelFactory(userId = this.currentUser!!.uid))
+            .get(TripsViewModel::class.java)
+
+        pastTripsAdapter = TripAdapter(this)
+        viewModel.previousTrips.observe(this, Observer {
+            pastTripsAdapter.setPastTrips(it)
+        })
+
         // TODO: Change pastTripsQuery to find past trips instead of all trips
-        pastTripsQuery = tripsCollection.whereEqualTo("userId", currentUser!!.uid)
-        pastTripsAdapter = TripAdapter(pastTripsQuery, this)
         val pastRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.PTview)
         val pastManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         pastRecyclerView.layoutManager = pastManager
         pastRecyclerView.adapter = pastTripsAdapter
 
         // TODO: Change upcommingTripsQuery to find past trips instead of all trips
-        upcommingTripsQuery = tripsCollection.whereEqualTo("userId", currentUser!!.uid)
-        upcommingTripsAdapter = TripAdapter(upcommingTripsQuery, this)
-        val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
-        val upcomManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        upcomRecyclerView.layoutManager = upcomManager
-        upcomRecyclerView.adapter = upcommingTripsAdapter
+//        val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
+//        val upcomManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        upcomRecyclerView.layoutManager = upcomManager
+//        upcomRecyclerView.adapter = upcommingTripsAdapter
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
@@ -154,15 +160,11 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     override fun onStart() {
         super.onStart()
 
-        if (::pastTripsAdapter.isInitialized) {
-            pastTripsAdapter.startListening()
-        }
-
         mapView.onStart()
     }
 
     fun createNewTrip(view: View) {
-        var intent: Intent = Intent(this, CreationView::class.java)
+        val intent = Intent(this, CreationView::class.java)
         startActivity(intent)
 //
 //        tripsCollection.add(Trip(userId = currentUser!!.uid)).addOnSuccessListener {
@@ -188,10 +190,6 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
 
     override fun onStop() {
         super.onStop()
-
-        if (::pastTripsAdapter.isInitialized) {
-            pastTripsAdapter.stopListening()
-        }
         mapView.onStop()
     }
 
