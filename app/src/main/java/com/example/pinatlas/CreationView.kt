@@ -23,8 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Place
-import com.example.pinatlas.viewmodel.ActivityCreationViewModel
-import com.example.pinatlas.viewmodel.ActivityCreationViewModelFactory
+import com.example.pinatlas.viewmodel.CreationViewModel
+import com.example.pinatlas.viewmodel.CreationViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
@@ -34,7 +34,7 @@ class CreationView : AppCompatActivity() {
     private var TAG = CreationView::class.java.simpleName
 
     private lateinit var context: Context
-    private lateinit var viewModel: ActivityCreationViewModel
+    private lateinit var viewModel: CreationViewModel
 
     private lateinit var picker: DatePickerDialog
     private lateinit var startDateButton : Button
@@ -47,14 +47,14 @@ class CreationView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_creation_view)
+        setContentView(R.layout.creation_view)
         context = this
         tripId = intent.getStringExtra(Constants.TRIP_ID.type)!!
 
         Log.d(TAG, "tripId: $tripId, uid: ${currentUser!!.uid}")
-        val factory = ActivityCreationViewModelFactory(tripId, currentUser!!.uid)
+        val factory = CreationViewModelFactory(tripId, currentUser!!.uid)
         viewModel = ViewModelProviders.of(this, factory)
-            .get(ActivityCreationViewModel::class.java)
+            .get(CreationViewModel::class.java)
 
         startDateButton = findViewById(R.id.editStartDate)
         endDateButton = findViewById(R.id.endDateButton)

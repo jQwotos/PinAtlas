@@ -12,8 +12,8 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 
-class ActivityCreationViewModel(tripId: String, userId: String) : ViewModel() {
-    val TAG = ActivityCreationViewModel::class.java.simpleName
+class CreationViewModel(tripId: String, userId: String) : ViewModel() {
+    val TAG = CreationViewModel::class.java.simpleName
 
     private val tripsRepository = TripsRepository()
     private val placesRepository = PlacesRepository()
