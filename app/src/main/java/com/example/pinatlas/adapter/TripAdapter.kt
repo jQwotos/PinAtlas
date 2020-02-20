@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.R
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.utils.DateUtils
 
-class TripAdapter (onTripSelectedListener: OnTripSelectedListener): RecyclerView.Adapter<TripAdapter.ViewHolder>() {
-    private var trips: List<Trip> = arrayListOf()
+class TripAdapter (private val pastTrips: LiveData<List<Trip>>, onTripSelectedListener: OnTripSelectedListener): RecyclerView.Adapter<TripAdapter.ViewHolder>() {
     private var listener: OnTripSelectedListener = onTripSelectedListener
 
     interface OnTripSelectedListener {
@@ -22,16 +22,11 @@ class TripAdapter (onTripSelectedListener: OnTripSelectedListener): RecyclerView
         return ViewHolder(inflater.inflate(R.layout.traveldash_item, parent, false))
     }
 
-    override fun getItemCount(): Int = trips.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(trips[position], listener)
+        holder.bind(pastTrips.value!![position], listener)
     }
 
-    fun setPastTrips(trips: List<Trip>) {
-        this.trips = trips
-        notifyDataSetChanged()
-    }
+    override fun getItemCount(): Int = pastTrips.value?.size ?: 0
 
     // Binds to the RecyclerView and converts the object into something useful
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
