@@ -25,7 +25,6 @@ import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.viewmodel.ActivityCreationViewModel
 import com.example.pinatlas.viewmodel.ActivityCreationViewModelFactory
-import com.example.pinatlas.viewmodel.ActivityCreationViewModelBinding
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
@@ -53,7 +52,6 @@ class CreationView : AppCompatActivity() {
 
         setContentView(R.layout.activity_creation_view)
 
-        val binding = ActivityCreationViewBinding.inflate(layoutInflater)
 
         val viewModelFactory = ActivityCreationViewModelFactory(tripId)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
@@ -71,7 +69,7 @@ class CreationView : AppCompatActivity() {
         // Set the endDateButton to the component
         endDateButton = findViewById(R.id.endDateButton)
         tripName = findViewById(R.id.tripName)
-        tripName.setText(firestoreViewModel.newTrip.value?.name)
+        tripName.setText(viewModel.tripName.toString())
 
         GPlaces.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
 
@@ -82,14 +80,14 @@ class CreationView : AppCompatActivity() {
         activityList.adapter = adapter
         activityList.layoutManager = manager
 
-        firestoreViewModel.fetchPlacesInTrip(tripId).observe(this, Observer { update ->
-            Log.d(TAG, update.toString())
-            if (update != null) {
-                places.removeAll(places)
-                places.addAll(update)
-                activityList.adapter?.notifyDataSetChanged()
-            }
-        })
+//        firestoreViewModel.fetchPlacesInTrip(tripId).observe(this, Observer { update ->
+//            Log.d(TAG, update.toString())
+//            if (update != null) {
+//                places.removeAll(places)
+//                places.addAll(update)
+//                activityList.adapter?.notifyDataSetChanged()
+//            }
+//        })
 
         autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(
@@ -111,10 +109,10 @@ class CreationView : AppCompatActivity() {
 
             override fun onPlaceSelected(place: GPlace) {
                 if (place.id != null) {
-                    trip.places.add(place)
+                    trip.places.add(place.id)
                     Log.d(TAG, place.id)
                     viewModel.saveTrip()
-                    viewModel.addPlace()
+                    viewModel.addPlace(place as Place)
                     adapter.notifyItemChanged(trip.places.size)
                 }
             }
@@ -181,6 +179,6 @@ class CreationView : AppCompatActivity() {
     }
 
     fun updateData() {
-        firestoreViewModel.saveTrip(trip)
+        viewModel.saveTrip()
     }
 }

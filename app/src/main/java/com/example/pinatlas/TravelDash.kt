@@ -74,12 +74,16 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
 
         //Local the tiles for past/upcoming trips
 
+        // Factory Pattern: We can create different ViewModels based on the interface
         viewModel = ViewModelProviders.of(
             this,
             TripsViewModelFactory(userId = this.currentUser!!.uid))
             .get(TripsViewModel::class.java)
 
         pastTripsAdapter = TripAdapter(this)
+
+        // Factory Pattern: we modify the ViewModel to do what we need
+        // Observer Pattern: we watch when the trips change
         viewModel.previousTrips.observe(this, Observer {
             pastTripsAdapter.setPastTrips(it)
         })
