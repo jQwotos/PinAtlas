@@ -9,10 +9,10 @@ class Trip(var userId:String, var tripId:String?, var name:String, var startDate
            var endDate:Timestamp, var placeRanking:ArrayList<String>, var places:ArrayList<String?>,
            var transportationMethods:ArrayList<TransportationMethods>) {
 
-    constructor():this("","","",Timestamp(Date()), Timestamp(Date()),
+    constructor():this("",null,"",Timestamp(Date()), Timestamp(Date()),
         ArrayList<String>(), ArrayList<String?>(), ArrayList<TransportationMethods>())
 
-    constructor(userId:String):this(userId,"","",Timestamp(Date()), Timestamp(Date()),
+    constructor(userId:String):this(userId,null,"",Timestamp(Date()), Timestamp(Date()),
         ArrayList<String>(), ArrayList<String?>(), ArrayList<TransportationMethods>())
 
     override fun toString(): String {

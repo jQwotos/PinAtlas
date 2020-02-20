@@ -10,21 +10,16 @@ class PlacesRepository {
     val TAG = PlacesRepository::class.java.simpleName
     var firestoreDB = FirebaseFirestore.getInstance()
 
-
-    fun savePlace(place: Place): Task<DocumentReference> {
-        return firestoreDB.collection(Constants.PLACES_COLLECTION.type).add(place)
+    fun savePlace(place: Place): Task<Void> {
+        return firestoreDB.collection(Constants.PLACES_COLLECTION.type).document(place.placeId).set(place)
     }
 
     fun fetchPlace(placeId: String): DocumentReference {
-
         return firestoreDB.collection(Constants.PLACES_COLLECTION.type)
             .document(placeId)
     }
 
-    fun fetchPlacesInTrip(tripId: String): Query {
-
-        return firestoreDB.collection(Constants.PLACES_COLLECTION.type)
-            .whereArrayContains("tripId", tripId)
+    fun fetchPlaces(placeIds: ArrayList<String?>) : Query {
+        return firestoreDB.collection(Constants.PLACES_COLLECTION.type).whereIn("placeId", placeIds)
     }
-
 }
