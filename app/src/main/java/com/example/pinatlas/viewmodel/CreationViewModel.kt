@@ -32,10 +32,8 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.postValue(trip)
 
             if (trip!!.places.size > 0) {
-                placesRepository.fetchPlaces(trip!!.places).get().addOnSuccessListener { placesSnapshot ->
-                    val t = trip
-                    val p = placesSnapshot!!.toObjects(Place::class.java)
-                    _places.postValue(placesSnapshot!!.toObjects(Place::class.java))
+                placesRepository.fetchPlaces(trip.places).get().addOnSuccessListener { placesSnapshot ->
+                    _places.postValue(placesSnapshot.toObjects(Place::class.java))
                 }
             }
         }
@@ -43,16 +41,17 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
 
     fun setName(name: String) {
         _trip.value?.name = name
+        _trip.postValue(_trip.value)
     }
 
     fun setStartDate(date: Timestamp) {
         _trip.value?.startDate = date
+        _trip.postValue(_trip.value)
     }
 
     fun setEndDate(date: Timestamp) {
-        val trip = _trip.value
-        trip?.endDate = date
-        _trip.postValue(trip)
+        _trip.value?.endDate = date
+        _trip.postValue(_trip.value)
     }
 
     fun saveTrip(): Task<DocumentReference>? {

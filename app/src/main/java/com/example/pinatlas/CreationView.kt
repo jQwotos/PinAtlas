@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import com.google.android.libraries.places.api.Places as GPlaces
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.firebase.Timestamp
@@ -48,10 +47,11 @@ class CreationView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.creation_view)
+        GPlaces.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
+
         context = this
         tripId = intent.getStringExtra(Constants.TRIP_ID.type)!!
 
-        Log.d(TAG, "tripId: $tripId, uid: ${currentUser!!.uid}")
         val factory = CreationViewModelFactory(tripId, currentUser!!.uid)
         viewModel = ViewModelProviders.of(this, factory)
             .get(CreationViewModel::class.java)
@@ -63,22 +63,13 @@ class CreationView : AppCompatActivity() {
         tripName.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(update: Editable?) {
                 viewModel.setName(update.toString())
-                updateData()
+                viewModel.saveTrip()
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
         val adapter = ActivityListAdapter(viewModel.tripPlaces)
-
-        viewModel.tripPlaces.observe(this, Observer { update ->
-            if (update != null) {
-               adapter.notifyDataSetChanged()
-            }
-        })
-
-        GPlaces.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
-
         val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -97,56 +88,30 @@ class CreationView : AppCompatActivity() {
                 GPlace.Field.OPENING_HOURS,
                 GPlace.Field.LAT_LNG)
         )
-
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onError(status: Status) {
                 Log.e(TAG, "An error occurred: $status")
             }
 
-            override fun onPlaceSelected(place: GPlace) {
-                if (place.id != null) {
-                    val newPlace = Place(place.id!!, place.name!!,
-                        place.address!!, null, place.phoneNumber, place.rating, null,
+            override fun onPlaceSelected(gPlace: GPlace) {
+                if (gPlace.id != null) {
+                    val place = Place(gPlace.id!!, gPlace.name!!,
+                        gPlace.address!!, null, gPlace.phoneNumber, gPlace.rating, null,
                         null, null, null, null)
-                    viewModel.addPlace(newPlace).addOnSuccessListener {
-                        updateData()
+
+                    viewModel.addPlace(place).addOnSuccessListener {
+                        viewModel.saveTrip()
                     }
                 }
             }
         })
 
-    }
-
-    inner class OnCreateDateSetListener: DatePickerDialog.OnDateSetListener {
-        // Create new variable in the OnCreateDateSetListener to hold the button
-        private var datePicker: DatePicker
-
-        // Create a constructor that takes the button and sets the classes button
-        constructor(datePicker: DatePicker) {
-            this.datePicker = datePicker
-        }
-
-        override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
-            // Now use the stored button instead
-            this.datePicker.button.setText(day.toString() + "/" + (month + 1).toString() + "/" + year.toString());
-            this.datePicker.setDate(Timestamp(Date(year, month, day)))
-        }
-    }
-
-    inner class StartDatePicker : DatePicker() {
-        override var button: Button = startDateButton
-        override fun setDate(date: Timestamp) {
-             viewModel.setStartDate(date)
-            updateData()
-        }
-    }
-
-    inner class EndDatePicker : DatePicker() {
-        override var button: Button = endDateButton
-        override fun setDate(date: Timestamp) {
-            viewModel.setEndDate(date)
-            updateData()
-        }
+        // update view when tripPlaces changes
+        viewModel.tripPlaces.observe(this, Observer { update ->
+            if (update != null) {
+                adapter.notifyDataSetChanged()
+            }
+        })
     }
 
     abstract class DatePicker {
@@ -154,23 +119,45 @@ class CreationView : AppCompatActivity() {
         abstract fun setDate(date: Timestamp)
     }
 
+    inner class StartDatePicker : DatePicker() {
+        override var button: Button = startDateButton
+        override fun setDate(date: Timestamp) {
+             viewModel.setStartDate(date)
+            viewModel.saveTrip()
+        }
+    }
+
+    inner class EndDatePicker : DatePicker() {
+        override var button: Button = endDateButton
+        override fun setDate(date: Timestamp) {
+            viewModel.setEndDate(date)
+            viewModel.saveTrip()
+        }
+    }
+
+    inner class OnCreateDateSetListener (
+        private val datePicker: DatePicker
+    ) : DatePickerDialog.OnDateSetListener {
+        override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
+            val date = Date(year, month, day)
+            this.datePicker.button.text = date.toString()
+            this.datePicker.setDate(Timestamp(date))
+        }
+    }
+
     // Switch createDatePicker to accept a button
-    fun createDatePicker(datePickerParam: DatePicker) {
+    private fun createDatePicker(datePickerParam: DatePicker) {
         val c = Calendar.getInstance()
         picker = DatePickerDialog(context, OnCreateDateSetListener(datePickerParam), c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
         picker.show()
     }
 
     // Change the components onClick to createStartDatePicker or EndDatePicker
-    fun createStartDatePicker(view : View) {
+    fun createStartDatePicker() {
         createDatePicker(StartDatePicker())
     }
 
-    fun createEndDatePicker(view : View) {
+    fun createEndDatePicker() {
         createDatePicker(EndDatePicker())
-    }
-
-    fun updateData() {
-        viewModel.saveTrip()
     }
 }
