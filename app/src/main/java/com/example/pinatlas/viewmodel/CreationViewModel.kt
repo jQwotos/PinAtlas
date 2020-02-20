@@ -61,8 +61,8 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         }
     }
 
-    fun addPlace(place: Place) {
-        placesRepository.savePlace(place).addOnSuccessListener {
+    fun addPlace(place: Place): Task<Void> {
+        return placesRepository.savePlace(place).addOnSuccessListener {
             _trip.value?.places?.add(place.placeId)
             _trip.postValue(_trip.value)
         }

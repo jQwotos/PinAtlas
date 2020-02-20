@@ -108,8 +108,9 @@ class CreationView : AppCompatActivity() {
                     val newPlace = Place(place.id!!, place.name!!,
                         place.address!!, null, place.phoneNumber, place.rating, null,
                         null, null, null, null)
-                    viewModel.addPlace(newPlace)
-                    updateData()
+                    viewModel.addPlace(newPlace).addOnSuccessListener {
+                        updateData()
+                    }
                 }
             }
         })
