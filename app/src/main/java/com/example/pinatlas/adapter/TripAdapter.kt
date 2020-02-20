@@ -1,7 +1,6 @@
 package com.example.pinatlas.adapter
 
 import android.view.LayoutInflater
-import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -9,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.R
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.utils.DateUtils
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Query
 
 class TripAdapter (onTripSelectedListener: OnTripSelectedListener): RecyclerView.Adapter<TripAdapter.ViewHolder>() {
     private var trips: List<Trip> = arrayListOf()

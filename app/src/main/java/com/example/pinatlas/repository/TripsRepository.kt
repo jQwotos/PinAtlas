@@ -10,11 +10,16 @@ class TripsRepository {
     val TAG = TripsRepository::class.java.simpleName
     var tripsCollection = FirebaseFirestore.getInstance().collection(Constants.TRIPS_COLLECTION.type)
 
-
     fun saveTrip(trip: Trip?): Task<DocumentReference>? {
-        if (trip == null)
-            return null
-        return tripsCollection.add(trip)
+        if (trip != null && trip.tripId == null) {
+            // create trip
+            return tripsCollection.add(trip)
+        } else if (trip != null){
+            // update trip
+            val tripDocument = fetchTrip(trip.tripId!!)
+            tripDocument.set(trip)
+        }
+        return null
     }
 
     fun fetchTrip(tripId: String): DocumentReference {
