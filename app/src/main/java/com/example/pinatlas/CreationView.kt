@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser
 import java.util.*
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,6 @@ import com.example.pinatlas.viewmodel.CreationViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-
 
 class CreationView : AppCompatActivity() {
     private var TAG = CreationView::class.java.simpleName
@@ -116,15 +116,18 @@ class CreationView : AppCompatActivity() {
         })
     }
 
-    abstract class DatePicker {
-        abstract var button: Button
-        abstract fun setDate(date: Timestamp)
+    inner class OnCreateDateSetListener (private var datePicker: DatePicker)
+        : DatePickerDialog.OnDateSetListener {
+        override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
+            this.datePicker.button.text = "$day/${(month + 1)}/$year"
+            this.datePicker.setDate(Timestamp(Date(year, month, day)))
+        }
     }
 
     inner class StartDatePicker : DatePicker() {
         override var button: Button = startDateButton
         override fun setDate(date: Timestamp) {
-             viewModel.setStartDate(date)
+            viewModel.setStartDate(date)
             viewModel.saveTrip()
         }
     }
@@ -137,14 +140,9 @@ class CreationView : AppCompatActivity() {
         }
     }
 
-    inner class OnCreateDateSetListener (
-        private val datePicker: DatePicker
-    ) : DatePickerDialog.OnDateSetListener {
-        override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
-            val date = Date(year, month, day)
-            this.datePicker.button.text = date.toString()
-            this.datePicker.setDate(Timestamp(date))
-        }
+    abstract class DatePicker {
+        abstract var button: Button
+        abstract fun setDate(date: Timestamp)
     }
 
     // Switch createDatePicker to accept a button
@@ -155,11 +153,11 @@ class CreationView : AppCompatActivity() {
     }
 
     // Change the components onClick to createStartDatePicker or EndDatePicker
-    fun createStartDatePicker() {
+    fun createStartDatePicker(view : View) {
         createDatePicker(StartDatePicker())
     }
 
-    fun createEndDatePicker() {
+    fun createEndDatePicker(view : View) {
         createDatePicker(EndDatePicker())
     }
 }
