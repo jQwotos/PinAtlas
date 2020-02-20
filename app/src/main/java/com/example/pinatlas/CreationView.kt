@@ -119,8 +119,10 @@ class CreationView : AppCompatActivity() {
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
         : DatePickerDialog.OnDateSetListener {
         override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
+            var calendar = Calendar.getInstance()
+            calendar.set(year, month, day)
             this.datePicker.button.text = "$day/${(month + 1)}/$year"
-            this.datePicker.setDate(Timestamp(Date(year, month, day)))
+            this.datePicker.setDate(Timestamp(calendar.time))
         }
     }
 
