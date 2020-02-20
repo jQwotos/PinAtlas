@@ -8,39 +8,50 @@ import com.example.pinatlas.repository.TripsRepository
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.repository.PlacesRepository
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.android.gms.tasks.Task
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 
-class ActivityCreationViewModel(tripId: String) : ViewModel() {
+class ActivityCreationViewModel(tripId: String, userId: String) : ViewModel() {
     val TAG = ActivityCreationViewModel::class.java.simpleName
 
     private val tripsRepository = TripsRepository()
     private val placesRepository = PlacesRepository()
 
     private val _trip = MutableLiveData<Trip>()
-    private val _tripName = MutableLiveData<String>()
+    private val _name = MutableLiveData<String>()
     private val _places = MutableLiveData<List<Place>>()
-
-    init {
-        tripsRepository.fetchTrip(tripId).addSnapshotListener { value, _ ->
-            val trip = value!!.toObject(Trip::class.java)
-            _trip.postValue(trip)
-            _tripName.postValue(trip!!.name)
-        }
-        placesRepository.fetchPlacesInTrip(_trip.value!!.tripId).addSnapshotListener { value, _ ->
-            _places.postValue(value!!.toObjects(Place::class.java))
-        }
-    }
-
-    val tripName : LiveData<String>
-        get() = _tripName
 
     val tripPlaces : LiveData<List<Place>>
         get() = _places
 
-    fun saveTrip() {
-        tripsRepository.saveTrip(_trip.value)?.addOnFailureListener {
+    init {
+        tripsRepository.fetchTrip(tripId).addSnapshotListener { tripSnapshot, _ ->
+            val trip = tripSnapshot!!.toObject(Trip::class.java)
+            trip?.userId = userId
+            trip?.tripId = tripSnapshot.id
+            _trip.postValue(trip)
+            _name.postValue(trip?.name)
+            placesRepository.fetchPlacesInTrip(tripId).addSnapshotListener { placesSnapshot, _ ->
+                _places.postValue(placesSnapshot!!.toObjects(Place::class.java))
+            }
+        }
+    }
+
+    fun setName(name: String) {
+        _trip.value?.name = name
+    }
+
+    fun setStartDate(date: Timestamp) {
+        _trip.value?.startDate = date
+    }
+
+    fun setEndDate(date: Timestamp) {
+        _trip.value?.endDate = date
+    }
+
+    fun saveTrip(): Task<DocumentReference>? {
+        return tripsRepository.saveTrip(_trip.value)?.addOnFailureListener {
             Log.e(TAG, "Failed to save trip")
         }
     }
@@ -49,7 +60,9 @@ class ActivityCreationViewModel(tripId: String) : ViewModel() {
         val placeList = _places.value as ArrayList<Place>
         placesRepository.savePlace(place).addOnSuccessListener {
             placeList.add(place)
-            _places.postValue(placeList)
+            _places.value = placeList
         }
+        _trip.value?.places?.add(place.placeId)
+        _trip.postValue(_trip.value)
     }
 }

@@ -5,7 +5,7 @@ import com.google.firebase.Timestamp
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Trip(var userId:String, var tripId:String, var name:String, var startDate:Timestamp,
+class Trip(var userId:String, var tripId:String?, var name:String, var startDate:Timestamp,
            var endDate:Timestamp, var placeRanking:ArrayList<String>, var places:ArrayList<String?>,
            var transportationMethods:ArrayList<TransportationMethods>) {
 

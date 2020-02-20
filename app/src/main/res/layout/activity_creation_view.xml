@@ -6,11 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".CreationView">
 
-    <data>
-        <variable name="tripName" type="String" />
-        <!--        <variable name="places" type="com.example.pinatlas.model.Place" />-->
-    </data>
-
     <fragment
         android:id="@+id/searchBar"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
@@ -30,7 +25,7 @@
         android:ems="10"
         android:inputType="text"
         android:hint="@string/autofill_trip_name_hint"
-        android:text="@{tripName}"
+        android:text="@string/default_trip_name"
         android:textColor="@color/white"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"

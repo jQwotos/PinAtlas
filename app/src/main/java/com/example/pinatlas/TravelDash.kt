@@ -162,18 +162,17 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     }
 
     fun createNewTrip(view: View) {
-        var intent: Intent = Intent(this, CreationView::class.java)
-        startActivity(intent)
-//
-//        tripsCollection.add(Trip(userId = currentUser!!.uid)).addOnSuccessListener {
-//            documentReference ->
-//                intent.putExtra(Constants.TRIP_ID.type, documentReference.id)
-//                Log.w("TRAVELDASH", "Adding trip " + documentReference.id)
-//                startActivity(intent)
-//        }.addOnFailureListener { e ->
-//            Log.e("TRAVELDASH", "Failed to create trip with error " + e)
-//            Toast.makeText(context, "Failed to make trip", Toast.LENGTH_LONG).show()
-//        }
+        val intent = Intent(this, CreationView::class.java)
+
+        tripsCollection.add(Trip(userId = currentUser!!.uid)).addOnSuccessListener {
+                documentReference ->
+                intent.putExtra(Constants.TRIP_ID.type, documentReference.id)
+                Log.w("TRAVELDASH", "Adding trip " + documentReference.id)
+                startActivity(intent)
+        }.addOnFailureListener { e ->
+            Log.e("TRAVELDASH", "Failed to create trip with error " + e)
+            Toast.makeText(context, "Failed to make trip", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onResume() {
