@@ -36,14 +36,16 @@
         android:id="@+id/imageView"
         android:layout_width="250dp"
         android:layout_height="235dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="96dp"
         android:alpha=".30"
         android:contentDescription="@string/logo_desc"
         android:gravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView"
-        app:srcCompat="@mipmap/pin_atlas_logo" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@mipmap/pin_atlas_logo"
+        tools:layout_editor_absoluteX="80dp"
+        tools:layout_editor_absoluteY="827dp" />
 
     <TextView
         android:id="@+id/textView"
