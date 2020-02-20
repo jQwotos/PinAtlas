@@ -108,10 +108,10 @@ class CreationView : AppCompatActivity() {
 
             override fun onPlaceSelected(place: GPlace) {
                 if (place.id != null) {
-                    trip.places.add(place)
+                    trip.places.add(place.id)
                     Log.d(TAG, place.id)
                     viewModel.saveTrip()
-                    viewModel.addPlace()
+                    viewModel.addPlace(place as Place)
                     adapter.notifyItemChanged(trip.places.size)
                 }
             }
