@@ -1,6 +1,7 @@
 package com.example.pinatlas.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,6 +35,8 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             if (trip!!.places.size > 0) {
                 placesRepository.fetchPlaces(trip.places).get().addOnSuccessListener { placesSnapshot ->
                     _places.postValue(placesSnapshot.toObjects(Place::class.java))
+                }.addOnFailureListener {
+                    Log.e(TAG, "Couldn't fetch places for trip: ${it.message}")
                 }
             }
         }

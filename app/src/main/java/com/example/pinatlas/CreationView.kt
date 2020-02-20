@@ -90,7 +90,9 @@ class CreationView : AppCompatActivity() {
         )
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onError(status: Status) {
-                Log.e(TAG, "An error occurred: $status")
+                val msg = "An error occurred: $status"
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                Log.e(TAG, msg)
             }
 
             override fun onPlaceSelected(gPlace: GPlace) {
