@@ -35,6 +35,7 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
+
 class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener, TripAdapter.OnTripSelectedListener {
     private var TAG = TravelDash::class.java.simpleName
 
@@ -216,6 +217,16 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     fun finishFetchingDistanceMatrix(distanceMatrixModel: DistanceMatrixModel) {
         Log.d(TAG, distanceMatrixModel.rows!!.size.toString())
         Log.d(TAG, distanceMatrixModel.status)
+
+        //distanceMatrixModel.rows.get(0).elements.get(0)
+
+        for(n in distanceMatrixModel.rows!!.indices ) {
+            for(k in distanceMatrixModel.rows!!.get(n).elements!!.indices ) {
+                    Log.d(TAG, distanceMatrixModel.rows!!.get(n).elements!!.get(k).duration!!.value.toString())
+
+            }
+            Log.d(TAG,"\n\n")
+        }
     }
 
     fun createMatrix(view: View) {
