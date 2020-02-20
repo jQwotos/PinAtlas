@@ -19,7 +19,6 @@ class ActivityCreationViewModel(tripId: String, userId: String) : ViewModel() {
     private val placesRepository = PlacesRepository()
 
     private val _trip = MutableLiveData<Trip>()
-    private val _name = MutableLiveData<String>()
     private val _places = MutableLiveData<List<Place>>()
 
     val tripPlaces : LiveData<List<Place>>
@@ -31,9 +30,13 @@ class ActivityCreationViewModel(tripId: String, userId: String) : ViewModel() {
             trip?.userId = userId
             trip?.tripId = tripSnapshot.id
             _trip.postValue(trip)
-            _name.postValue(trip?.name)
-            placesRepository.fetchPlacesInTrip(tripId).addSnapshotListener { placesSnapshot, _ ->
-                _places.postValue(placesSnapshot!!.toObjects(Place::class.java))
+
+            if (trip!!.places.size > 0) {
+                placesRepository.fetchPlaces(trip!!.places).get().addOnSuccessListener { placesSnapshot ->
+                    val t = trip
+                    val p = placesSnapshot!!.toObjects(Place::class.java)
+                    _places.postValue(placesSnapshot!!.toObjects(Place::class.java))
+                }
             }
         }
     }
@@ -47,7 +50,9 @@ class ActivityCreationViewModel(tripId: String, userId: String) : ViewModel() {
     }
 
     fun setEndDate(date: Timestamp) {
-        _trip.value?.endDate = date
+        val trip = _trip.value
+        trip?.endDate = date
+        _trip.postValue(trip)
     }
 
     fun saveTrip(): Task<DocumentReference>? {
@@ -57,12 +62,9 @@ class ActivityCreationViewModel(tripId: String, userId: String) : ViewModel() {
     }
 
     fun addPlace(place: Place) {
-        val placeList = _places.value as ArrayList<Place>
         placesRepository.savePlace(place).addOnSuccessListener {
-            placeList.add(place)
-            _places.value = placeList
+            _trip.value?.places?.add(place.placeId)
+            _trip.postValue(_trip.value)
         }
-        _trip.value?.places?.add(place.placeId)
-        _trip.postValue(_trip.value)
     }
 }

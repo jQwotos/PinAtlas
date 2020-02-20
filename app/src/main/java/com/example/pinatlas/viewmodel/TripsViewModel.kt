@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.repository.TripsRepository
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentReference
 
 class TripsViewModel(userId: String) : ViewModel() {
     val TAG = TripsViewModel::class.java.simpleName
@@ -17,6 +19,10 @@ class TripsViewModel(userId: String) : ViewModel() {
         tripsRepository.fetchTripsForUser(userId).addSnapshotListener { value, _ ->
             _previousTrips.postValue(value!!.toObjects(Trip::class.java))
         }
+    }
+
+    fun addTrip(trip: Trip) : Task<DocumentReference>? {
+       return tripsRepository.saveTrip(trip)
     }
 
     val previousTrips : LiveData<List<Trip>>
