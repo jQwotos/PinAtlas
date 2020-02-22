@@ -1,6 +1,7 @@
 package com.example.pinatlas.model
 
-import android.location.Location
+import com.google.android.libraries.places.api.model.Place
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import kotlin.collections.ArrayList
 
@@ -13,14 +14,13 @@ class Place {
     var busyTimes: ArrayList<String>? = null       // Array of busy times
     var phoneNumber: String? = null                // Phone number as string
     var rating: Double? = null                       // Google Maps rating
-    var types: ArrayList<String>? = null            // Type (museum, hotel, etc...)
-    var openingHours: ArrayList<String>? = null    // Google Maps array of hours of operation
+    var types: List<Place.Type>? = null            // Type (museum, hotel, etc...)
+    var openingHours: List<String>? = null    // Google Maps array of hours of operation
     var permanentlyClosed: Boolean? = null         // True if location is permanently closed
     var photos: ArrayList<String>? = null           // URL of photos from google maps
-    var coordinates: Location? = null               // Coordinates of location
+    var coordinates: GeoPoint? = null               // Coordinates of location
 
     constructor()
-
     constructor(
         placeId: String,
         name: String?,
@@ -28,11 +28,11 @@ class Place {
         busyTimes: ArrayList<String>?,
         phoneNumber: String?,
         rating: Double?,
-        types: ArrayList<String>?,
-        openingHours: ArrayList<String>?,
+        types: List<Place.Type>?,
+        openingHours: List<String>?,
         permanentlyClosed: Boolean?,
         photos: ArrayList<String>?,
-        coordinates: Location?
+        coordinates: GeoPoint?
     ) {
         this.placeId = placeId
         this.name = name
@@ -46,4 +46,6 @@ class Place {
         this.photos = photos
         this.coordinates = coordinates
     }
+
+
 }

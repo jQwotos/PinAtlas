@@ -27,6 +27,7 @@ import com.example.pinatlas.model.Place
 import com.example.pinatlas.viewmodel.CreationViewModel
 import com.example.pinatlas.viewmodel.CreationViewModelFactory
 import com.google.android.gms.common.api.Status
+import com.google.firebase.firestore.GeoPoint
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
@@ -103,8 +104,10 @@ class CreationView : AppCompatActivity() {
             override fun onPlaceSelected(gPlace: GPlace) {
                 if (gPlace.id != null) {
                     val place = Place(gPlace.id!!, gPlace.name!!,
-                        gPlace.address!!, null, gPlace.phoneNumber, gPlace.rating, null,
-                        null, null, null, null)
+                        gPlace.address!!, null, gPlace.phoneNumber, gPlace.rating, gPlace.types,
+                        gPlace.openingHours!!.weekdayText, null, null,
+                        GeoPoint(gPlace.latLng!!.latitude, gPlace.latLng!!.longitude))
+
 
                     viewModel.addPlace(place).addOnSuccessListener {
                         viewModel.saveTrip()
