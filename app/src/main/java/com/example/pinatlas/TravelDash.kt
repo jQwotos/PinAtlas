@@ -53,9 +53,6 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     override fun onTripSelected(trip: Trip) {
         val intent = Intent(this, CreationView::class.java)
         intent.putExtra(Constants.TRIP_ID.type, trip.tripId)
-        intent.putExtra(Constants.TRIP_NAME.type, trip.name)
-        intent.putExtra(Constants.TRIP_START_DATE.type, trip.startDate)
-        intent.putExtra(Constants.TRIP_END_DATE.type, trip.endDate)
         startActivity(intent)
     }
 
