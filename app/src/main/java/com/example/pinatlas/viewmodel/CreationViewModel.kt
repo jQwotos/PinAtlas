@@ -1,7 +1,6 @@
 package com.example.pinatlas.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,9 +26,8 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
 
     init {
         tripsRepository.fetchTrip(tripId).addSnapshotListener { tripSnapshot, _ ->
-            val trip = tripSnapshot!!.toObject(Trip::class.java)
+            val trip = Trip.fromFirestore(tripSnapshot!!)
             trip?.userId = userId
-            trip?.tripId = tripSnapshot.id
             _trip.postValue(trip)
 
             if (trip!!.places.size > 0) {

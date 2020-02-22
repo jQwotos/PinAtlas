@@ -13,7 +13,6 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import java.util.*
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import android.util.Log
 import android.view.View
@@ -68,6 +67,8 @@ class CreationView : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+        tripName.setText(intent.getStringExtra(Constants.TRIP_NAME.type),
+            TextView.BufferType.EDITABLE)
 
         val adapter = ActivityListAdapter(viewModel.tripPlaces)
         val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
@@ -119,7 +120,7 @@ class CreationView : AppCompatActivity() {
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
         : DatePickerDialog.OnDateSetListener {
         override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
-            var calendar = Calendar.getInstance()
+            val calendar = Calendar.getInstance()
             calendar.set(year, month, day)
             this.datePicker.button.text = "$day/${(month + 1)}/$year"
             this.datePicker.setDate(Timestamp(calendar.time))

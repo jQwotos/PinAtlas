@@ -25,7 +25,6 @@
         android:ems="10"
         android:inputType="text"
         android:hint="@string/autofill_trip_name_hint"
-        android:text="@string/default_trip_name"
         android:textColor="@color/white"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
