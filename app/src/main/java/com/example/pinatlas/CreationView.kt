@@ -13,15 +13,16 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import java.util.*
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
+import com.example.pinatlas.databinding.CreationViewBinding
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.viewmodel.CreationViewModel
 import com.example.pinatlas.viewmodel.CreationViewModelFactory
@@ -46,7 +47,7 @@ class CreationView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.creation_view)
+        val binding : CreationViewBinding = DataBindingUtil.setContentView(this, R.layout.creation_view)
         GPlaces.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
 
         context = this
@@ -55,6 +56,10 @@ class CreationView : AppCompatActivity() {
         val factory = CreationViewModelFactory(tripId, currentUser!!.uid)
         viewModel = ViewModelProviders.of(this, factory)
             .get(CreationViewModel::class.java)
+
+        // Bind to viewModel
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = this
 
         startDateButton = findViewById(R.id.editStartDate)
         endDateButton = findViewById(R.id.endDateButton)
@@ -119,9 +124,8 @@ class CreationView : AppCompatActivity() {
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
         : DatePickerDialog.OnDateSetListener {
         override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
-            var calendar = Calendar.getInstance()
+            val calendar = Calendar.getInstance()
             calendar.set(year, month, day)
-            this.datePicker.button.text = "$day/${(month + 1)}/$year"
             this.datePicker.setDate(Timestamp(calendar.time))
         }
     }

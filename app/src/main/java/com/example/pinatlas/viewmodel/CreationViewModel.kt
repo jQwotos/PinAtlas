@@ -1,14 +1,15 @@
 package com.example.pinatlas.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.pinatlas.repository.TripsRepository
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.repository.PlacesRepository
+import com.example.pinatlas.utils.DateUtils
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
@@ -25,11 +26,26 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     val tripPlaces : LiveData<List<Place>>
         get() = _places
 
+    val trip: LiveData<Trip>
+        get() = _trip
+
+    val startDateStr: LiveData<String> = Transformations.map(_trip) {trip ->
+        if (trip != null) DateUtils.formatTimestamp(trip.startDate) else null
+    }
+
+    val endDateStr: LiveData<String> = Transformations.map(_trip) {trip ->
+        if (trip != null) DateUtils.formatTimestamp(trip.endDate) else null
+    }
+
+    val tripName: LiveData<String> = Transformations.map(_trip) {trip ->
+        trip!!.name
+    }
+
+
     init {
         tripsRepository.fetchTrip(tripId).addSnapshotListener { tripSnapshot, _ ->
-            val trip = tripSnapshot!!.toObject(Trip::class.java)
+            val trip = Trip.fromFirestore(tripSnapshot!!)
             trip?.userId = userId
-            trip?.tripId = tripSnapshot.id
             _trip.postValue(trip)
 
             if (trip!!.places.size > 0) {

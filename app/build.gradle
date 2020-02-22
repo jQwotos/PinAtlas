@@ -23,6 +23,9 @@ android {
         multiDexEnabled true
         buildConfigField("String", "PLACES_API_KEY", apikeyProperties['PLACES_API_KEY'])
     }
+    dataBinding {
+        enabled = true
+    }
     buildTypes {
         release {
             minifyEnabled false

@@ -51,7 +51,9 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
 
     override fun onTripSelected(trip: Trip) {
-        Toast.makeText(context, "Clicked on " + trip.name, Toast.LENGTH_LONG).show()
+        val intent = Intent(this, CreationView::class.java)
+        intent.putExtra(Constants.TRIP_ID.type, trip.tripId)
+        startActivity(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -172,7 +174,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
             intent.putExtra(Constants.TRIP_ID.type, it.id)
             startActivity(intent)
         }.addOnFailureListener {
-            Log.e(TAG, "Failed to create trip with error ${it}")
+            Log.e(TAG, "Failed to create trip with error $it")
             Toast.makeText(context, "Failed to make trip", Toast.LENGTH_LONG).show()
         }
     }

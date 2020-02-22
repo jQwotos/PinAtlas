@@ -17,7 +17,11 @@ class TripsViewModel(userId: String) : ViewModel() {
 
     init {
         tripsRepository.fetchTripsForUser(userId).addSnapshotListener { value, _ ->
-            _previousTrips.postValue(value!!.toObjects(Trip::class.java))
+            val trips = arrayListOf<Trip>()
+            for (t in value!!.iterator()) {
+                trips.add(Trip.fromFirestore(t)!!)
+            }
+            _previousTrips.postValue(trips)
         }
     }
 

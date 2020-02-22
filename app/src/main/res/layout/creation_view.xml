@@ -1,104 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CreationView">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.example.pinatlas.utils.DateUtils" />
+        <variable name="viewmodel" type="com.example.pinatlas.viewmodel.CreationViewModel" />
+    </data>
 
-    <fragment
-        android:id="@+id/searchBar"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editStartDate" />
+        android:layout_height="match_parent"
+        tools:context=".CreationView">
 
-    <EditText
-        android:id="@+id/tripName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:height="500dp"
-        android:autofillHints="@string/autofill_trip_name_hint"
-        android:background="@color/navyBlue"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/autofill_trip_name_hint"
-        android:text="@string/default_trip_name"
-        android:textColor="@color/white"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="250dp"
-        android:layout_height="235dp"
-        android:alpha=".30"
-        android:contentDescription="@string/logo_desc"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@mipmap/pin_atlas_logo"
-        tools:layout_editor_absoluteX="80dp"
-        tools:layout_editor_absoluteY="827dp" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin"
-        android:gravity="center_horizontal"
-        android:text="@string/blank_creation_step"
-        android:textColor="#B5B5B5"
+        <fragment
+            android:id="@+id/searchBar"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editStartDate" />
 
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        <EditText
+            android:id="@+id/tripName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="500dp"
+            android:autofillHints="@string/autofill_trip_name_hint"
+            android:background="@color/navyBlue"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="@string/autofill_trip_name_hint"
+            android:text="@{viewmodel.tripName}"
+            android:textColor="@color/white"
+            android:textSize="36sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/editStartDate"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="120dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginTop="@dimen/margin"
-        android:background="#FFFFFF"
-        android:drawableEnd="@drawable/ic_arrow_drop_down_navy_blue_24dp"
-        android:onClick="createStartDatePicker"
-        android:text="@string/start_date_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tripName" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_height="235dp"
+            android:alpha=".30"
+            android:contentDescription="@string/logo_desc"
+            android:gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@mipmap/pin_atlas_logo"
+            tools:layout_editor_absoluteX="80dp"
+            tools:layout_editor_absoluteY="827dp" />
 
-    <Button
-        android:id="@+id/endDateButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="120dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="8dp"
-        android:background="#FFFFFF"
-        android:drawableEnd="@drawable/ic_arrow_drop_down_navy_blue_24dp"
-        android:onClick="createEndDatePicker"
-        android:text="@string/end_date_btn"
-        app:layout_constraintStart_toEndOf="@+id/editStartDate"
-        app:layout_constraintTop_toTopOf="@+id/editStartDate" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:gravity="center_horizontal"
+            android:text="@string/blank_creation_step"
+            android:textColor="#B5B5B5"
 
-    <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-        android:id="@+id/activityList"
-        android:layout_width="match_parent"
-        android:layout_height="382dp"
-        android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBar"
-        app:msrv_gravity="end"
-        app:msrv_interval="10"
-        app:msrv_speed_ms_per_inch="100" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/editStartDate"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="120dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:background="#FFFFFF"
+            android:drawableEnd="@drawable/ic_arrow_drop_down_navy_blue_24dp"
+            android:onClick="createStartDatePicker"
+            android:text='@{viewmodel.startDateStr, default="@string/start_date_btn"}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tripName" />
+
+
+        <Button
+            android:id="@+id/endDateButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="120dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="8dp"
+            android:background="#FFFFFF"
+            android:drawableEnd="@drawable/ic_arrow_drop_down_navy_blue_24dp"
+            android:onClick="createEndDatePicker"
+            android:text='@{viewmodel.endDateStr, default="@string/end_date_btn"}'
+            app:layout_constraintStart_toEndOf="@+id/editStartDate"
+            app:layout_constraintTop_toTopOf="@+id/editStartDate" />
+
+        <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+            android:id="@+id/activityList"
+            android:layout_width="match_parent"
+            android:layout_height="382dp"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar"
+            app:msrv_gravity="end"
+            app:msrv_interval="10"
+            app:msrv_speed_ms_per_inch="100" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
