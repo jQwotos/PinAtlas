@@ -1,0 +1,2 @@
+- 1 hr  | Helped implement one way binding with Arryan
+- 2 hrs | Helped bind TravelDash to CreationView
