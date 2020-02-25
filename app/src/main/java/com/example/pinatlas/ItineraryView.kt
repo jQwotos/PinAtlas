@@ -1,12 +1,19 @@
 package com.example.pinatlas
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pinatlas.adapter.Submitted_List_Adapter
+import com.example.pinatlas.adapter.ActivityListAdapter
+import com.example.pinatlas.constants.Constants
+//import com.example.pinatlas.databinding.ItineraryViewBinding
+import com.example.pinatlas.viewmodel.ItineraryViewModel
+import com.example.pinatlas.viewmodel.ItineraryViewModelFactory
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
@@ -24,11 +31,13 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
 
     private lateinit var mapView : MapView
     private lateinit var mapboxMap: MapboxMap
+    private lateinit var tripName: TextView
+    private lateinit var viewModel: ItineraryViewModel
+    private lateinit var tripId: String
+
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
 
     private val TILES = Array(1000) { index -> "Item $index" }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,13 +49,33 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
+        tripId = intent.getStringExtra(Constants.TRIP_ID.type)!!
+        tripName = findViewById(R.id.tripName)
+
+//        val binding : ItineraryViewBinding = DataBindingUtil.setContentView(this, R.layout.itinerary_view)
+
+        val factory = ItineraryViewModelFactory(tripId)
+        viewModel = ViewModelProviders.of(this, factory).get(ItineraryViewModel::class.java)
+        viewModel.tripName.observe(this,  Observer {
+            tripName.text = it
+        })
+
+        // Bind to viewModel
+//        binding.viewmodel = viewModel
+//        binding.lifecycleOwner = this
+
         //Local the tiles for past/upcoming trips
-        val adapter = Submitted_List_Adapter(TILES)
+        val adapter = ActivityListAdapter(viewModel.tripPlaces)
         val submitListView = findViewById<MultiSnapRecyclerView>(R.id.sublist_recycler_view)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         submitListView.layoutManager = manager
         submitListView.adapter = adapter
 
+        viewModel.tripPlaces.observe(this, Observer { update ->
+            if (update != null) {
+                adapter.notifyDataSetChanged()
+            }
+        })
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
@@ -56,12 +85,11 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         }
     }
 
-    @SuppressLint("MissingPermission")
     private fun enableLocationComponent(loadedMapStyle: Style) {
-// Check if permissions are enabled and if not request
+        // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
 
-// Create and customize the LocationComponent's options
+            // Create and customize the LocationComponent's options
             val customLocationComponentOptions = LocationComponentOptions.builder(this)
                 .trackingGesturesManagement(true)
                 .accuracyColor(ContextCompat.getColor(this, R.color.mapbox_blue))
@@ -97,14 +125,16 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
     }
 
     override fun onExplanationNeeded(permissionsToExplain: List<String>) {
-        Toast.makeText(this, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show() //Need this is to be removed
+        //Need this is to be removed
+        Toast.makeText(this, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show()
     }
 
     override fun onPermissionResult(granted: Boolean) {
         if (granted) {
             enableLocationComponent(mapboxMap.style!!)
         } else {
-            Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show() //Need this is to be removed
+            //Need this is to be removed
+            Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show()
             finish()
         }
     }
