@@ -1,17 +1,16 @@
 package com.example.pinatlas
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
-//import com.example.pinatlas.databinding.ItineraryViewBinding
 import com.example.pinatlas.viewmodel.ItineraryViewModel
 import com.example.pinatlas.viewmodel.ItineraryViewModelFactory
 import com.mapbox.android.core.permissions.PermissionsListener
@@ -28,6 +27,8 @@ import com.mapbox.mapboxsdk.maps.Style
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
 class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListener {
+    private val TAG = ItineraryView::class.java
+    private val context: Context = this
 
     private lateinit var mapView : MapView
     private lateinit var mapboxMap: MapboxMap
@@ -36,8 +37,6 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
     private lateinit var tripId: String
 
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
-
-    private val TILES = Array(1000) { index -> "Item $index" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,17 +51,11 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         tripId = intent.getStringExtra(Constants.TRIP_ID.type)!!
         tripName = findViewById(R.id.tripName)
 
-//        val binding : ItineraryViewBinding = DataBindingUtil.setContentView(this, R.layout.itinerary_view)
-
         val factory = ItineraryViewModelFactory(tripId)
         viewModel = ViewModelProviders.of(this, factory).get(ItineraryViewModel::class.java)
         viewModel.tripName.observe(this,  Observer {
             tripName.text = it
         })
-
-        // Bind to viewModel
-//        binding.viewmodel = viewModel
-//        binding.lifecycleOwner = this
 
         //Local the tiles for past/upcoming trips
         val adapter = ActivityListAdapter(viewModel.tripPlaces)

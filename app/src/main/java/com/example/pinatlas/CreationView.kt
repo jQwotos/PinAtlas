@@ -32,11 +32,10 @@ import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
 class CreationView : AppCompatActivity() {
-    private var TAG = CreationView::class.java.simpleName
-
+    private val TAG = CreationView::class.java.simpleName
     private val context: Context = this
-    private lateinit var viewModel: CreationViewModel
 
+    private lateinit var viewModel: CreationViewModel
     private lateinit var picker: DatePickerDialog
     private lateinit var startDateButton : Button
     private lateinit var endDateButton : Button
