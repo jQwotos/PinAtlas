@@ -1,2 +1,3 @@
 - 2 hr | Continue converting to MVVM (pr #57)
 - 2 hr | Start binding data to itinerary view (pr #61)
+- 2 hr | Bind creation view for edit (pr #59)
