@@ -6,8 +6,6 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.google.gms.google-services'
 
-apply plugin: 'kotlin-kapt'
-
 def apikeyPropertiesFile = rootProject.file("apikey.properties")
 def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
@@ -26,14 +24,14 @@ android {
         buildConfigField("String", "PLACES_API_KEY", apikeyProperties['PLACES_API_KEY'])
         buildConfigField("String", "DISTANCE_MATRIX_API_KEY", apikeyProperties['DISTANCE_MATRIX_API_KEY'])
     }
+    dataBinding {
+        enabled = true
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-    dataBinding {
-        enabled = true
     }
 }
 

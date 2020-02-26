@@ -2,11 +2,12 @@ package com.example.pinatlas.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import java.lang.IllegalArgumentException
 
-class ActivityCreationViewModelFactory (private val tripId: String) : ViewModelProvider.Factory {
+class TripsViewModelFactory (private val userId: String) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ActivityCreationViewModel::class.java)) {
-            return ActivityCreationViewModel(tripId) as T
+        if (modelClass.isAssignableFrom(TripsViewModel::class.java)) {
+            return TripsViewModel(userId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
