@@ -1,0 +1,3 @@
+- 2 hr | Research MVVM architecture
+- 3 hr | Convert creation view to MVVM (pr #57)
+

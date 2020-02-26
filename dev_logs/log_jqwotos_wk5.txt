@@ -1,0 +1,3 @@
+- 2 hrs | Worked on creating helper for Google Distance Matrix API
+- 2 hrs | Helped with Refactoring code to MVVM
+- .5 hrs| Bind saving additional data from Google Maps to Firestore
