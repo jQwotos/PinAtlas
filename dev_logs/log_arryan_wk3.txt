@@ -1,0 +1,1 @@
+- 3 hr | Add search bar and populate activity list (#24)
