@@ -27,19 +27,6 @@
             android:src="@drawable/mapbox_compass_icon"
             ></ImageView>
 
-        <TextView
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="5dp"
-            android:paddingLeft="120dp"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:text="New York"></TextView>
-
         <ImageView
             android:id="@+id/cal_symbol"
             android:layout_width="wrap_content"
@@ -48,16 +35,52 @@
             android:layout_gravity="left|top"
             android:scaleType="fitCenter"
             android:src="@drawable/mapbox_compass_icon"></ImageView>
+
         <TextView
+            android:id="@+id/activityPriority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="4"
             android:layout_gravity="center"
+            android:text="1"
             android:textColor="#fff"
-            android:textStyle="bold"
             android:textSize="16dp"
-            android:text="#1">
-        </TextView>
+            android:textStyle="bold"></TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/activityName"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="5dp"
+                android:paddingLeft="120dp"
+                android:text="New York"
+                android:textColor="#fff"
+                android:textSize="16dp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:id="@+id/activityAddress"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="5dp"
+                android:paddingLeft="120dp"
+                android:text="New York, New York, USA"
+                android:textColor="#fff"
+                android:textSize="10sp"
+                android:textStyle="bold"></TextView>
+        </LinearLayout>
+
     </GridLayout>
 
 

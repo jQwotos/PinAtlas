@@ -8,19 +8,33 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Button
-import android.widget.DatePicker
-import android.widget.EditText
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pinatlas.adapter.ActivityListAdapter
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.model.Place
+import com.google.firebase.firestore.Query
+import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+import kotlin.collections.ArrayList
+
 
 class Creation_View : AppCompatActivity() {
+    private var TAG = Creation_View::class.java.simpleName
     private lateinit var context: Context
     private lateinit var picker: DatePickerDialog
     private lateinit var startDateButton : Button
@@ -31,36 +45,69 @@ class Creation_View : AppCompatActivity() {
     private val mFirestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
     private var trip: Trip = Trip(user_id = currentUser!!.uid)
-
+    private lateinit var autocompleteFragment: AutocompleteSupportFragment
     private lateinit var tripDocument: DocumentReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)
 
-            setContentView(R.layout.activity_creation__view)
+        setContentView(R.layout.activity_creation__view)
 
-            tripID = intent.getStringExtra(Constants.TRIP_ID.type)
-            trip.trip_id = tripID
-            tripDocument = mFirestore.collection("trips").document(tripID)
+        tripID = intent.getStringExtra(Constants.TRIP_ID.type)
+        trip.trip_id = tripID
+        tripDocument = mFirestore.collection("trips").document(tripID)
 
-            context = this
+        context = this
 
-            startDateButton = findViewById(R.id.editStartDate)
+        startDateButton = findViewById(R.id.editStartDate)
 
-            // Set the endDateButton to the component
-            endDateButton = findViewById(R.id.endDateButton)
-            tripName = findViewById(R.id.tripName)
-            tripName.addTextChangedListener(object: TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    trip.name = s.toString()
-                    updateData()
-                }
+        // Set the endDateButton to the component
+        endDateButton = findViewById(R.id.endDateButton)
+        tripName = findViewById(R.id.tripName)
+        tripName.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                trip.name = s.toString()
+                updateData()
+            }
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
-        }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        Places.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
+
+        autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
+        autocompleteFragment.setPlaceFields(
+            listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.PHONE_NUMBER,
+                Place.Field.RATING,
+                Place.Field.TYPES,
+                Place.Field.OPENING_HOURS,
+                Place.Field.LAT_LNG)
+        )
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onError(status: Status) {
+                Log.e(TAG, "An error occurred: $status")
+            }
+
+            override fun onPlaceSelected(place: Place) {
+                trip.places.add(place)
+            }
+
+        })
+
+        val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
+        val placeAdapter = ActivityListAdapter(trip.places)
+        val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        activityList.adapter = placeAdapter
+        activityList.layoutManager = manager
+
+    }
 
     inner class onCreateDateSetListener: DatePickerDialog.OnDateSetListener {
         // Create new variable in the onCreateDateSetListener to hold the button
@@ -123,4 +170,3 @@ class Creation_View : AppCompatActivity() {
         tripDocument.set(trip)
     }
 }
-

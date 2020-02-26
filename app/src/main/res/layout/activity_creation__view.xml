@@ -6,16 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Creation_View">
 
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginEnd="@dimen/margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="@id/tripName"
-        app:layout_constraintTop_toBottomOf="@+id/editStartDate" />
+    <fragment
+        android:id="@+id/searchBar"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tripName"
+        app:layout_constraintVertical_bias="0.153"
+        tools:layout_editor_absoluteX="8dp" />
 
     <EditText
         android:id="@+id/tripName"
@@ -88,15 +87,17 @@
         app:layout_constraintStart_toEndOf="@+id/editStartDate"
         app:layout_constraintTop_toTopOf="@+id/editStartDate" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
         android:id="@+id/activityList"
-        android:layout_width="78dp"
-        android:layout_height="337dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="317dp"
+        android:layout_width="match_parent"
+        android:layout_height="382dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/searchView"
-        app:layout_constraintStart_toStartOf="@+id/searchView"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_gravity="bottom"
+        app:msrv_gravity="end"
+        app:msrv_interval="10"
+        app:msrv_speed_ms_per_inch="100"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
