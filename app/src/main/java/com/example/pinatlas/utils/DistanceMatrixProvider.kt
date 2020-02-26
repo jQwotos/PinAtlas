@@ -44,8 +44,11 @@ object DistanceMatrixProvider {
 
     /**
      * Fetches distance matrix from google api
+     * we use the distance matrix to calculate the time it takes to get
+     * between each point which will be used
+     * for calculating the optimal route.
      *
-     * @param destinations List of destinations
+     * @param destinations List of destinations for the trip
      * @param mode mode of transportation
      * @param responseHandler procedure that is invoked when query is finished
      */
