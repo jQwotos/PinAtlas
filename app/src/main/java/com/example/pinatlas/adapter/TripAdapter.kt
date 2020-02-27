@@ -1,17 +1,22 @@
 package com.example.pinatlas.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.R
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.utils.DateUtils
+import com.example.pinatlas.utils.PlaceThumbnailUtil
 
-class TripAdapter (private val pastTrips: LiveData<List<Trip>>, onTripSelectedListener: OnTripSelectedListener): RecyclerView.Adapter<TripAdapter.ViewHolder>() {
+class TripAdapter (private val pastTrips: LiveData<List<Trip>>, context: Context,
+                   onTripSelectedListener: OnTripSelectedListener): RecyclerView.Adapter<TripAdapter.ViewHolder>() {
     private var listener: OnTripSelectedListener = onTripSelectedListener
+    private val placeThumbnailUtil = PlaceThumbnailUtil(context)
 
     interface OnTripSelectedListener {
         fun onTripSelected(trip: Trip)
@@ -29,13 +34,17 @@ class TripAdapter (private val pastTrips: LiveData<List<Trip>>, onTripSelectedLi
     override fun getItemCount(): Int = pastTrips.value?.size ?: 0
 
     // Binds to the RecyclerView and converts the object into something useful
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var title: TextView = itemView.findViewById(R.id.location)
-        var date: TextView = itemView.findViewById(R.id.dates)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val title: TextView = itemView.findViewById(R.id.location)
+        val date: TextView = itemView.findViewById(R.id.dates)
+        val thumbnail: ImageView = itemView.findViewById(R.id.locationThumbnail)
 
         fun bind(trip: Trip, listener: OnTripSelectedListener) {
-            title.setText(trip.name)
-            date.setText(DateUtils.formatTripDate(trip))
+            title.text = trip.name
+            date.text = DateUtils.formatTripDate(trip)
+            if (trip.places.size > 0) {
+                placeThumbnailUtil.populateImageView(trip.places[0]!!, thumbnail)
+            }
 
             itemView.setOnClickListener(object: View.OnClickListener {
                 override fun onClick(view: View) {

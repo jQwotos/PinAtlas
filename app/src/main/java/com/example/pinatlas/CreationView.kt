@@ -45,6 +45,17 @@ class CreationView : AppCompatActivity() {
 
     private lateinit var tripId: String
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
+    private val PLACE_FIELDS = listOf(
+        GPlace.Field.ID,
+        GPlace.Field.NAME,
+        GPlace.Field.ADDRESS,
+        GPlace.Field.PHONE_NUMBER,
+        GPlace.Field.RATING,
+        GPlace.Field.TYPES,
+        GPlace.Field.OPENING_HOURS,
+        GPlace.Field.LAT_LNG,
+        GPlace.Field.PHOTO_METADATAS
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,17 +92,7 @@ class CreationView : AppCompatActivity() {
         activityList.layoutManager = manager
 
         autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
-        autocompleteFragment.setPlaceFields(
-            listOf(
-                GPlace.Field.ID,
-                GPlace.Field.NAME,
-                GPlace.Field.ADDRESS,
-                GPlace.Field.PHONE_NUMBER,
-                GPlace.Field.RATING,
-                GPlace.Field.TYPES,
-                GPlace.Field.OPENING_HOURS,
-                GPlace.Field.LAT_LNG)
-        )
+        autocompleteFragment.setPlaceFields(PLACE_FIELDS)
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onError(status: Status) {
                 val msg = "An error occurred: $status"

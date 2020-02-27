@@ -1,5 +1,6 @@
 package com.example.pinatlas.model
 
+import android.graphics.Bitmap
 import android.location.Location
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import kotlin.collections.ArrayList
@@ -18,6 +19,7 @@ class Place {
     var permanentlyClosed: Boolean? = null         // True if location is permanently closed
     var photos: ArrayList<String>? = null           // URL of photos from google maps
     var coordinates: Location? = null               // Coordinates of location
+    var thumbnail: Bitmap? = null
 
     constructor()
 
@@ -31,8 +33,8 @@ class Place {
         types: ArrayList<String>?,
         openingHours: ArrayList<String>?,
         permanentlyClosed: Boolean?,
-        photos: ArrayList<String>?,
-        coordinates: Location?
+        coordinates: Location?,
+        thumbnail: Bitmap?
     ) {
         this.placeId = placeId
         this.name = name
@@ -45,5 +47,6 @@ class Place {
         this.permanentlyClosed = permanentlyClosed
         this.photos = photos
         this.coordinates = coordinates
+        this.thumbnail = thumbnail
     }
 }

@@ -81,7 +81,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
             TripsViewModelFactory(userId = this.currentUser!!.uid))
             .get(TripsViewModel::class.java)
 
-        pastTripsAdapter = TripAdapter(viewModel.previousTrips, this)
+        pastTripsAdapter = TripAdapter(viewModel.previousTrips, context, this)
 
         // Factory Pattern: we modify the ViewModel to do what we need
         // Observer Pattern: we watch when the trips change
