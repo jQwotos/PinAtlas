@@ -16,19 +16,17 @@ class Salesman(
     private val tournamentSize: Int
 
     init {
-        this.genomeSize = numberOfCities - 1
-
+        genomeSize = numberOfCities - 1
         generationSize = 5000
         reproductionSize = 200
         maxIterations = 1000
         mutationRate = 0.1f
         tournamentSize = 40
-    }//this.selectionType = selectionType;
+    }
 
     fun initialPopulation(): List<SalesmanGenome> {
         val population = ArrayList<SalesmanGenome>()
         for (i in 0 until generationSize) {
-            // Creating almost 5000 permutations of the same matrix
             population.add(
                 SalesmanGenome(
                     numberOfCities,
@@ -48,13 +46,13 @@ class Salesman(
         return selected
     }
 
-    //called by initial population -
+    //called by initial population
     fun tournamentSelection(population: List<SalesmanGenome>): SalesmanGenome {
         val selected =
             pickNRandomElements<SalesmanGenome>(
                 population,
                 tournamentSize
-            ) // 40
+            )
         return Collections.min(selected!!)
     }
 
@@ -93,17 +91,14 @@ class Salesman(
     }
 
     fun crossover(parents: List<SalesmanGenome>): MutableList<SalesmanGenome> {
-        // housekeeping
+
         val random = Random()
         val breakpoint = random.nextInt(genomeSize)
         val children = ArrayList<SalesmanGenome>()
 
-        // copy parental genomes - we copy so we wouldn't modify in case they were
-        // chosen to participate in crossover multiple times
         var parent1Genome: List<Int> = ArrayList(parents[0].genome)
         val parent2Genome = ArrayList(parents[1].genome)
 
-        // creating child 1
         for (i in 0 until breakpoint) {
             val newVal: Int
             newVal = parent2Genome.get(i)
@@ -117,9 +112,8 @@ class Salesman(
                 startingCity
             )
         )
-        parent1Genome = parents[0].genome // reseting the edited parent
+        parent1Genome = parents[0].genome
 
-        // creating child 2
         for (i in breakpoint until genomeSize) {
             val newVal = parent1Genome[i]
             Collections.swap(parent2Genome, parent2Genome.indexOf(newVal), i)
@@ -150,7 +144,6 @@ class Salesman(
     }
 
     companion object {
-
         fun <E> pickNRandomElements(list: List<E>, n: Int): List<E>? {
             val r = Random()
             val length = list.size
@@ -160,7 +153,6 @@ class Salesman(
             for (i in length - 1 downTo length - n) {
                 Collections.swap(list, i, r.nextInt(i + 1))
             }
-            //System.out.println(" pickNRandom Elements : "+ list.subList(length - n, length));
             return list.subList(length - n, length)
         }
     }
