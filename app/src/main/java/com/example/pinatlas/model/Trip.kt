@@ -14,6 +14,7 @@ class Trip {
     var endDate: Timestamp = Timestamp(Date())
     var placeRanking: ArrayList<String> = arrayListOf()
     var places: ArrayList<String?> = ArrayList()          // Array of places (not sorted in any way)
+    // var ArrayList<String>
 
     var transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
 
