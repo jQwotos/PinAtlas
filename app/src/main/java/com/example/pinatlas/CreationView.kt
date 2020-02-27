@@ -6,6 +6,7 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import android.os.Bundle
+import android.view.View
 import android.text.Editable
 import android.text.TextWatcher
 import com.google.android.libraries.places.api.Places as GPlaces
@@ -15,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
