@@ -10,7 +10,8 @@ import com.example.pinatlas.ItemMoveCallback
 import com.example.pinatlas.R
 import com.example.pinatlas.model.Place
 
-class ActivityListAdapter ( private val places: LiveData<List<Place>>) : RecyclerView.Adapter<ActivityListAdapter.ViewHolder>(), ItemMoveCallback.ItemTouchHelperContract {
+class ActivityListAdapter ( private val places: LiveData<List<Place>>
+) : RecyclerView.Adapter<ActivityListAdapter.ViewHolder>(), ItemMoveCallback.ItemTouchHelperContract {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)

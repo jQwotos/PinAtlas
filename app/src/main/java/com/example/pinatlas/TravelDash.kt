@@ -18,6 +18,9 @@ import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.viewmodel.TripsViewModel
 import com.example.pinatlas.viewmodel.TripsViewModelFactory
+import com.example.pinatlas.model.matrix.DistanceMatrixModel
+import com.example.pinatlas.model.matrix.Salesman
+import com.example.pinatlas.utils.DistanceMatrixProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.mapbox.android.core.permissions.PermissionsListener
@@ -209,8 +212,53 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         mapView.onLowMemory()
     }
 
+    fun finishFetchingDistanceMatrix(distanceMatrixModel: DistanceMatrixModel) {
+        Log.d(TAG, distanceMatrixModel.rows!!.indices.toString())
+        Log.d(TAG, distanceMatrixModel.status)
+
+        //distanceMatrixModel.rows.get(0).elements.get(0)
+        val travelDurations = Array(distanceMatrixModel.rows!!.size) { IntArray(distanceMatrixModel.rows!!.size) }
+        for(n in 0 until (distanceMatrixModel.rows!!.size - 1)) {
+            for(k in 0 until (distanceMatrixModel.rows!!.size - 1)) {
+                    travelDurations[n][k] = distanceMatrixModel.rows!!.get(n).elements!!.get(k).duration!!.value.toInt()
+                    Log.d(TAG,distanceMatrixModel.rows!!.get(n).elements!!.get(k).duration!!.value.toString())
+            }
+            Log.d(TAG,"\n\n")
+        }
+
+        val geneticAlgorithm =
+            Salesman(distanceMatrixModel.rows!!.size, travelDurations, 0, 0)
+        val result = geneticAlgorithm.optimize()
+        Log.d(TAG,result.toString())
+    }
+
+    fun createMatrix(view: View) {
+        // TODO: Use the new get trip Places function
+        var HARD_CODED_PLACES_REMOVE: ArrayList<String> = arrayListOf("1375 Prince of Wales", "Parliament Hill",  "Carleton University", "3 Brothers Rideau", "The Caf Carleton")
+        DistanceMatrixProvider.fetchDistanceMatrix(HARD_CODED_PLACES_REMOVE) {
+                result: DistanceMatrixModel ->
+            finishFetchingDistanceMatrix(result) // After we fetched invoke function
+        }
+        // TODO: SHUBHAM LOOK HERE
+    }
+
 }
 
 
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 1074
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 507
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 1130
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 1108
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 0
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 742
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 308
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 422
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 730
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 0
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 747
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 1013
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 305
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 624
+//2020-02-22 23:05:50.344 17959-17959/com.example.pinatlas D/TravelDash: 0
 
 
