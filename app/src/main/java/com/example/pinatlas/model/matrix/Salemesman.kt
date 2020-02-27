@@ -1,5 +1,5 @@
 package com.example.pinatlas.model.matrix
-
+//This code is a modified version of : https://stackabuse.com/traveling-salesman-problem-with-genetic-algorithms-in-java/
 import java.util.*
 
 class Salesman(

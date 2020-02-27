@@ -10,9 +10,7 @@ import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.repository.PlacesRepository
 import com.example.pinatlas.utils.DateUtils
-import com.google.android.gms.tasks.Task
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentReference
+
 
 class ItineraryViewModel(tripId: String) : ViewModel() {
     val TAG = ItineraryViewModel::class.java.simpleName
@@ -47,7 +45,7 @@ class ItineraryViewModel(tripId: String) : ViewModel() {
             _trip.postValue(trip)
 
             if (trip!!.places.size > 0) {
-                placesRepository.fetchPlaces(trip.places).get().addOnSuccessListener { placesSnapshot ->
+                placesRepository.fetchPlaces(trip.places as ArrayList<String?>).get().addOnSuccessListener { placesSnapshot ->
                     _places.postValue(placesSnapshot.toObjects(Place::class.java))
                 }.addOnFailureListener {
                     Log.e(TAG, "Couldn't fetch places for trip: ${it.message}")

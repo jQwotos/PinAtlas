@@ -13,9 +13,11 @@ class Trip {
     var startDate: Timestamp = Timestamp(Date())            // Start date of the trip
     var endDate: Timestamp = Timestamp(Date())
     var placeRanking: ArrayList<String> = arrayListOf()
-    var places: ArrayList<String?> = ArrayList()          // Array of places (not sorted in any way)
+    var places: ArrayList<String> = ArrayList()          // Array of places (not sorted in any way)
 
     var transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
+
+    var TAG = javaClass.canonicalName
 
     override fun toString(): String {
         return "User: $userId | Trip: $tripId | Name: $name | start_date: ${startDate.toString()} | end_date: ${endDate.toString()}"
@@ -30,7 +32,7 @@ class Trip {
         startDate: Timestamp = Timestamp(Date()),
         endDate: Timestamp = Timestamp(Date()),
         placeRanking: ArrayList<String> = arrayListOf(),
-        places: ArrayList<String?> = arrayListOf(),
+        places: ArrayList<String> = arrayListOf(),
         transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
     ) {
         this.userId = userId
@@ -39,7 +41,7 @@ class Trip {
         this.startDate = startDate
         this.endDate = endDate
         this.placeRanking = placeRanking
-        this.places = places
+        this.places = places //Places ID
         this.transportationMethods = transportationMethods
     }
 
@@ -48,7 +50,6 @@ class Trip {
         fun fromFirestore(document: DocumentSnapshot): Trip? {
             val trip =  document.toObject(Trip::class.java)
             trip?.tripId = document.id
-
             return trip
         }
     }

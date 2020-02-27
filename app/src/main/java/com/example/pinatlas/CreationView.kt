@@ -25,6 +25,7 @@ import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.databinding.CreationViewBinding
 import com.example.pinatlas.model.Place
+import com.example.pinatlas.utils.MatrixifyUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
 import com.example.pinatlas.viewmodel.CreationViewModelFactory
 import com.google.android.gms.common.api.Status
@@ -42,6 +43,7 @@ class CreationView : AppCompatActivity() {
     private lateinit var tripName: EditText
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
     private lateinit var submitButton: Button
+    private lateinit var matrixifyUtil: MatrixifyUtil
 
     private lateinit var tripId: String
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
@@ -121,6 +123,11 @@ class CreationView : AppCompatActivity() {
 
         submitButton = findViewById(R.id.submitButton)
         submitButton.setOnClickListener {
+//            viewModel.trip.value!!.createMatrix(activityList)
+            if (viewModel.tripPlaces.value!!.size > 0) {
+                matrixifyUtil = MatrixifyUtil(viewModel.tripPlaces.value!!)
+                matrixifyUtil.createMatrix(activityList)
+            }
             val intent = Intent(this, ItineraryView::class.java)
             intent.putExtra(Constants.TRIP_ID.type, tripId)
             startActivity(intent)

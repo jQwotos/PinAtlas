@@ -7,3 +7,4 @@ class DistanceMatrixModel {
     var destination_addresses: ArrayList<String>? = ArrayList()
     var rows: ArrayList<Row>? = ArrayList()
 }
+

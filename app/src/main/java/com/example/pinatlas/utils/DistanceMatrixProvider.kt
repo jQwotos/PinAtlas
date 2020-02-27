@@ -80,10 +80,11 @@ object DistanceMatrixProvider {
             }
     }
 
+
+
     class DistanceMatrixDeserializer: ResponseDeserializable<DistanceMatrixModel> {
         override fun deserialize(reader: Reader): DistanceMatrixModel? {
             return Gson().fromJson(reader, DistanceMatrixModel::class.java)
         }
     }
-
 }

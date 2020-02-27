@@ -10,4 +10,5 @@ class ItineraryViewModelFactory (private val tripId: String) : ViewModelProvider
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+
 }
