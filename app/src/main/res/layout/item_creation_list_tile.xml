@@ -1,84 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginVertical="10dp"
-    app:cardBackgroundColor="@color/hotPink">
-
-    <GridLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginVertical="10dp"
+        app:cardBackgroundColor="@color/hotPink">
 
-        <ImageView
-            android:id="@+id/act_symbol"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_column="0"
-            android:layout_gravity="left|top"
-            android:scaleType="centerCrop"
-            android:src="@drawable/mapbox_compass_icon"></ImageView>
-
-        <ImageView
-            android:id="@+id/cal_symbol"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="3"
-            android:layout_gravity="left|top"
-            android:scaleType="fitCenter"
-            android:src="@drawable/mapbox_compass_icon"></ImageView>
-
-        <TextView
-            android:id="@+id/activityPriority"
-            android:layout_width="wrap_content"
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_column="4"
-            android:layout_gravity="center"
-            android:text="1"
-            android:textColor="#fff"
-            android:textSize="16dp"
-            android:textStyle="bold"></TextView>
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_row="0"
-            android:layout_column="2"
-            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/act_symbol"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_column="0"
+                android:layout_gravity="left|top"
+                android:scaleType="centerCrop"
+                android:src="@drawable/mapbox_compass_icon"></ImageView>
+
+            <ImageView
+                android:id="@+id/deleteSymbol"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:tint="@color/white"
+                android:layout_column="4"
+                android:layout_gravity="left|top"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_delete_24px" />
 
             <TextView
-                android:id="@+id/activityName"
-                android:layout_width="170dp"
+                android:id="@+id/activityPriority"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_column="3"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="5dp"
-                android:paddingLeft="120dp"
-                android:text="New York"
+                android:text="1"
                 android:textColor="#fff"
                 android:textSize="16dp"
+                android:textAlignment="center"
                 android:textStyle="bold"></TextView>
 
-            <TextView
-                android:id="@+id/activityAddress"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="5dp"
-                android:paddingLeft="120dp"
-                android:text="New York, New York, USA"
-                android:textColor="#fff"
-                android:textSize="10sp"
-                android:textStyle="bold"></TextView>
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:orientation="vertical">
 
-    </GridLayout>
+                <TextView
+                    android:id="@+id/activityName"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:paddingLeft="120dp"
+                    android:text="New York"
+                    android:textColor="#fff"
+                    android:textSize="16dp"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:id="@+id/activityAddress"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:paddingLeft="120dp"
+                    android:text="New York, New York, USA"
+                    android:textColor="#fff"
+                    android:textSize="10sp"
+                    android:textStyle="bold"></TextView>
+            </LinearLayout>
+
+        </GridLayout>
 
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

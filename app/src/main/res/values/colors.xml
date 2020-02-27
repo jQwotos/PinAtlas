@@ -10,4 +10,5 @@
     <color name="navyBlue"> #263B4C </color>
     <color name="success">#70C563</color>
     <color name="danger">#EA6363</color>
+    <color name="red">#FF0000</color>
 </resources>

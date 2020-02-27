@@ -54,6 +54,8 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
                 }.addOnFailureListener {
                     Log.e(TAG, "Couldn't fetch places for trip: ${it.message}")
                 }
+            } else {
+                _places.postValue(listOf())
             }
         }
     }
@@ -91,5 +93,10 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.value?.places?.add(place.placeId)
             _trip.postValue(_trip.value)
         }
+    }
+
+    fun deletePlace(i: Int) {
+        _trip.value?.places?.removeAt(i)
+        _trip.postValue(_trip.value)
     }
 }

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
+import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.viewmodel.CreationViewModel
 import com.example.pinatlas.viewmodel.CreationViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
@@ -62,7 +63,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         })
 
         //Local the tiles for past/upcoming trips
-        val adapter = ActivityListAdapter(viewModel)
+        val adapter = ActivityListAdapter(viewModel, ViewModes.ITINERARY_MODE)
         val submitListView = findViewById<MultiSnapRecyclerView>(R.id.sublist_recycler_view)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         submitListView.layoutManager = manager
