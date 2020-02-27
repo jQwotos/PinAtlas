@@ -20,7 +20,9 @@ import android.util.Log
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.databinding.CreationViewBinding
@@ -73,9 +75,13 @@ class CreationView : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        val adapter = ActivityListAdapter(viewModel.tripPlaces)
+        val adapter = ActivityListAdapter(viewModel)
         val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val touchCallback = ItemMoveCallback(adapter)
+        val touchHelper = ItemTouchHelper(touchCallback)
+
+        touchHelper.attachToRecyclerView(activityList)
 
         activityList.adapter = adapter
         activityList.layoutManager = manager

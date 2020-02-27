@@ -1,17 +1,26 @@
 package com.example.pinatlas.adapter
 
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.ItemMoveCallback
 import com.example.pinatlas.R
 import com.example.pinatlas.model.Place
+import com.example.pinatlas.viewmodel.CreationViewModel
+import com.google.common.io.Resources
 
-class ActivityListAdapter ( private val places: LiveData<List<Place>>
+class ActivityListAdapter ( private val viewModel: CreationViewModel
 ) : RecyclerView.Adapter<ActivityListAdapter.ViewHolder>(), ItemMoveCallback.ItemTouchHelperContract {
+
+    private val places = viewModel.tripPlaces
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
@@ -34,17 +43,18 @@ class ActivityListAdapter ( private val places: LiveData<List<Place>>
         val activity: TextView = itemView.findViewById(R.id.activityName) as TextView
         val address: TextView = itemView.findViewById(R.id.activityAddress) as TextView
         val priority: TextView = itemView.findViewById(R.id.activityPriority) as TextView
+        val card: CardView = itemView as CardView
     }
 
     override fun onRowClear(viewHolder: ViewHolder) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        viewHolder.card.setCardBackgroundColor(Color.parseColor("#EA3F60"))
     }
 
     override fun onRowMoved(fromPosition: Int, toPosition: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        viewModel.updatePlacePriority(fromPosition, toPosition)
     }
 
     override fun onRowSelected(viewHolder: ViewHolder) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        viewHolder.card.setCardBackgroundColor(Color.parseColor("#e87289"))
     }
 }

@@ -58,6 +58,13 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         }
     }
 
+    fun updatePlacePriority(fromPos: Int, toPos: Int) {
+        val arrayOfPlaces = _places.value as ArrayList
+        arrayOfPlaces.add(toPos, arrayOfPlaces.removeAt(fromPos))
+
+        _places.postValue(arrayOfPlaces)
+    }
+
     fun setName(name: String) {
         _trip.value?.name = name
         _trip.postValue(_trip.value)
