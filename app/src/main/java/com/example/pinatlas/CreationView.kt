@@ -2,6 +2,7 @@ package com.example.pinatlas
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -31,16 +32,16 @@ import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
 class CreationView : AppCompatActivity() {
-    private var TAG = CreationView::class.java.simpleName
+    private val TAG = CreationView::class.java.simpleName
+    private val context: Context = this
 
-    private lateinit var context: Context
     private lateinit var viewModel: CreationViewModel
-
     private lateinit var picker: DatePickerDialog
     private lateinit var startDateButton : Button
     private lateinit var endDateButton : Button
     private lateinit var tripName: EditText
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
+    private lateinit var submitButton: Button
 
     private lateinit var tripId: String
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
@@ -50,12 +51,10 @@ class CreationView : AppCompatActivity() {
         val binding : CreationViewBinding = DataBindingUtil.setContentView(this, R.layout.creation_view)
         GPlaces.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
 
-        context = this
         tripId = intent.getStringExtra(Constants.TRIP_ID.type)!!
 
         val factory = CreationViewModelFactory(tripId, currentUser!!.uid)
-        viewModel = ViewModelProviders.of(this, factory)
-            .get(CreationViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(CreationViewModel::class.java)
 
         // Bind to viewModel
         binding.viewmodel = viewModel
@@ -119,6 +118,13 @@ class CreationView : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
         })
+
+        submitButton = findViewById(R.id.submitButton)
+        submitButton.setOnClickListener {
+            val intent = Intent(this, ItineraryView::class.java)
+            intent.putExtra(Constants.TRIP_ID.type, tripId)
+            startActivity(intent)
+        }
     }
 
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
@@ -154,7 +160,8 @@ class CreationView : AppCompatActivity() {
     // Switch createDatePicker to accept a button
     private fun createDatePicker(datePickerParam: DatePicker) {
         val c = Calendar.getInstance()
-        picker = DatePickerDialog(context, OnCreateDateSetListener(datePickerParam), c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
+        picker = DatePickerDialog(context, OnCreateDateSetListener(datePickerParam),
+            c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
         picker.show()
     }
 

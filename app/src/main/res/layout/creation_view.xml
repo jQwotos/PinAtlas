@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="com.example.pinatlas.utils.DateUtils" />
+        <import type="android.widget.Toast" />
         <variable name="viewmodel" type="com.example.pinatlas.viewmodel.CreationViewModel" />
     </data>
 
@@ -11,8 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".CreationView">
-
-
 
         <fragment
             android:id="@+id/searchBar"
@@ -100,15 +99,52 @@
         <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
             android:id="@+id/activityList"
             android:layout_width="match_parent"
-            android:layout_height="382dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchBar"
+            app:layout_constraintVertical_bias="0.0"
             app:msrv_gravity="end"
             app:msrv_interval="10"
             app:msrv_speed_ms_per_inch="100" />
 
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="409dp"
+            android:layout_height="44dp"
+            android:clipToPadding="true"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="1dp">
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="-20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/success"
+                android:backgroundTintMode="multiply"
+                android:includeFontPadding="true"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/restartButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/danger"
+                android:backgroundTintMode="multiply"
+                android:text="Restart"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

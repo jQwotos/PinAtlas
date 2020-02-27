@@ -1,37 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:andriod="http://schemas.android.com/apk/res/android"
-    tools:context=".TravelDash">
-    >
+    tools:context=".ItineraryView">
+
     <TextView
-        android:id="@+id/MAINtitle"
+        android:id="@+id/tripName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Travel Dashboard"></TextView>
+        android:layout_height="wrap_content" />
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_below="@id/MAINtitle"
-        tools:layout_editor_absoluteX="-3dp"
-        >
-
-        <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-            andriod:id="@+id/tiles"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_gravity="bottom"
-            android:orientation="horizontal"
-            app:msrv_gravity="end"
-            app:msrv_interval="10"
-            app:msrv_speed_ms_per_inch="100"
-            />
+        android:layout_below="@id/tripName"
+        tools:layout_editor_absoluteX="-3dp">
     </com.mapbox.mapboxsdk.maps.MapView>
+
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
         android:id="@+id/sublist_recycler_view"
         android:layout_width="match_parent"
@@ -41,12 +29,5 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:msrv_gravity="start"
-        app:msrv_interval="1"
-        />
-
-
-
-
-
-
+        app:msrv_interval="1" />
 </RelativeLayout>

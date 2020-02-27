@@ -8,14 +8,14 @@
     tools:context=".TravelDash">
     >
     <TextView
-        android:id="@+id/MAINtitle"
+        android:id="@+id/tripName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Travel Dashboard" ></TextView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mapViewContainer"
-        andriod:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
