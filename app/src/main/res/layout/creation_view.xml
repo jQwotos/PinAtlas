@@ -1,32 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.example.pinatlas.utils.DateUtils" />
+        <import type="android.widget.Toast" />
+        <variable name="viewmodel" type="com.example.pinatlas.viewmodel.CreationViewModel" />
+    </data>
 
-    <EditText
-        android:id="@+id/editText"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/navyBlue"
-        android:ems="10"
-        android:inputType="text"
-        android:text="New Trip"
-        android:textColor="@color/white"/>
+        android:layout_height="match_parent"
+        tools:context=".CreationView">
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="286dp"
-        android:layout_height="297dp"
-        android:alpha="255"
-        android:cropToPadding="false"
-        app:srcCompat="@mipmap/pin_atlas_logo" />
+        <fragment
+            android:id="@+id/searchBar"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editStartDate" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add some items"
-        android:textColor="@color/grey" />
+        <EditText
+            android:id="@+id/tripName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="500dp"
+            android:autofillHints="@string/autofill_trip_name_hint"
+            android:background="@color/navyBlue"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="@string/autofill_trip_name_hint"
+            android:text="@{viewmodel.tripName}"
+            android:textColor="@color/white"
+            android:textSize="36sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_height="235dp"
+            android:alpha=".30"
+            android:contentDescription="@string/logo_desc"
+            android:gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@mipmap/pin_atlas_logo"
+            tools:layout_editor_absoluteX="80dp"
+            tools:layout_editor_absoluteY="827dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:gravity="center_horizontal"
+            android:text="@string/blank_creation_step"
+            android:textColor="#B5B5B5"
+
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+        <Button
+            android:id="@+id/editStartDate"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="120dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:background="#FFFFFF"
+            android:drawableEnd="@drawable/ic_arrow_drop_down_navy_blue_24dp"
+            android:onClick="createStartDatePicker"
+            android:text='@{viewmodel.startDateStr, default="@string/start_date_btn"}'
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tripName" />
+
+
+        <Button
+            android:id="@+id/endDateButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="120dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="8dp"
+            android:background="#FFFFFF"
+            android:drawableEnd="@drawable/ic_arrow_drop_down_navy_blue_24dp"
+            android:onClick="createEndDatePicker"
+            android:text='@{viewmodel.endDateStr, default="@string/end_date_btn"}'
+            app:layout_constraintStart_toEndOf="@+id/editStartDate"
+            app:layout_constraintTop_toTopOf="@+id/editStartDate" />
+
+        <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+            android:id="@+id/activityList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar"
+            app:layout_constraintVertical_bias="0.0"
+            app:msrv_gravity="end"
+            app:msrv_interval="10"
+            app:msrv_speed_ms_per_inch="100" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="409dp"
+            android:layout_height="44dp"
+            android:clipToPadding="true"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="1dp">
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="-20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/success"
+                android:backgroundTintMode="multiply"
+                android:includeFontPadding="true"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/restartButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/danger"
+                android:backgroundTintMode="multiply"
+                android:text="Restart"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

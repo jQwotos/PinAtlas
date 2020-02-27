@@ -4,11 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.R
-import com.google.android.libraries.places.api.model.Place
+import com.example.pinatlas.model.Place
 
-class ActivityListAdapter ( private val places: ArrayList<Place>
+class ActivityListAdapter ( private val places: LiveData<List<Place>>
 ) : RecyclerView.Adapter<ActivityListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -18,13 +19,13 @@ class ActivityListAdapter ( private val places: ArrayList<Place>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.activity.text = places[position].name
-        holder.address.text = places[position].address
+        holder.activity.text = places.value!![position].name
+        holder.address.text = places.value!![position].address
         holder.priority.text = "#${position+1}"
     }
 
     override fun getItemCount(): Int {
-        return places.size
+        return places.value?.size ?: 0
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(

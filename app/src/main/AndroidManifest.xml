@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Creation_View" />
+        <activity android:name=".CreationView" />
         <activity android:name=".GoogleLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +23,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TravelDash" />
+        <activity android:name=".ItineraryView" />
     </application>
 
 </manifest>
