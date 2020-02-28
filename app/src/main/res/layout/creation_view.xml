@@ -118,7 +118,8 @@
             android:clipToPadding="true"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="1dp">
+            tools:layout_editor_absoluteX="1dp"
+            tools:ignore="MissingConstraints">
 
             <Button
                 android:id="@+id/submitButton"

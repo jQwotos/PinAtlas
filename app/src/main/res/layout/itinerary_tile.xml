@@ -3,13 +3,22 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:id="@+id/itineraryCard"
+    android:layout_width="400dp"
+    android:layout_gravity="center|bottom"
+    android:layout_marginBottom="20dp"
     android:layout_height="150dp"
-    android:layout_below="@id/mapView"
     app:cardMaxElevation="4dp"
     app:cardElevation="3dp"
     app:cardCornerRadius="10dp"
     >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Popular Times"
+        android:textSize="16sp"
+        android:padding="5dp"
+        ></TextView>
 
 
 </androidx.cardview.widget.CardView>
