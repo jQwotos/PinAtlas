@@ -191,4 +191,9 @@ class CreationView : AppCompatActivity() {
     fun createEndDatePicker(view : View) {
         createDatePicker(EndDatePicker())
     }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.tripListener.remove()
+    }
 }
