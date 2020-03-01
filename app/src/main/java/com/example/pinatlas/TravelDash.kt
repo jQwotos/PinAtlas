@@ -97,6 +97,19 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         pastRecyclerView.layoutManager = pastManager
         pastRecyclerView.adapter = pastTripsAdapter
 
+        // upcoming trips
+        upcommingTripsAdapter = TripAdapter(viewModel.upcomingTrips, this, this)
+        viewModel.upcomingTrips.observe(this, Observer { update ->
+            if (update != null) {
+                upcommingTripsAdapter.notifyDataSetChanged()
+            }
+        })
+
+        val upcomingRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
+        val upcomingManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        upcomingRecyclerView.layoutManager = upcomingManager
+        upcomingRecyclerView.adapter = upcommingTripsAdapter
+
         // TODO: Change upcommingTripsQuery to find past trips instead of all trips
 //        val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
 //        val upcomManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)

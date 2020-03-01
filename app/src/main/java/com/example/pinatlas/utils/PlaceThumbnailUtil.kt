@@ -20,7 +20,7 @@ class PlaceThumbnailUtil(context: Context) {
     fun populateImageView(placeId: String, view: ImageView) {
         val placeRequest = FetchPlaceRequest.newInstance(placeId, listOf(Place.Field.PHOTO_METADATAS))
         placesClient.fetchPlace(placeRequest).addOnSuccessListener {
-            if (it.place.photoMetadatas!!.size > 0) {
+            if (it.place.photoMetadatas != null) {
                 // TODO: add photoMetadata to Trip.thumbnail to reduce amount of requests
                 val photoRequest = FetchPhotoRequest.newInstance(it.place.photoMetadatas!![0])
                 placesClient.fetchPhoto(photoRequest).addOnSuccessListener { photo ->
