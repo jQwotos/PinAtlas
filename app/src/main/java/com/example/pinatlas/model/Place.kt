@@ -39,7 +39,7 @@ class Place {
         busyTimes: ArrayList<Timings>? = null,
         waitTimes: ArrayList<Timings>? = null,
         avgSpentTimes: ArrayList<Int>? = null,
-        thumbnail: Bitmap?
+        thumbnail: Bitmap? = null
     ) {
         this.placeId = placeId
         this.name = name
