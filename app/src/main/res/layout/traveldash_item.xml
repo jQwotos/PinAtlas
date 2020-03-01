@@ -15,7 +15,7 @@
             android:layout_marginBottom="5dp"
             >
             <ImageView
-                android:id="@+id/imageP"
+                android:id="@+id/locationThumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:layout_gravity="center"
