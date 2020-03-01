@@ -1,0 +1,6 @@
+- Followed a tutorial on MVVM for drag and drop (3H) 
+- Finished implanting drag and drop with jQwotos & Aryan (0.5H)
+- Worked on how to allow the user to edit their iternary without duplicating code for the creation view (0.5H) 
+- Assisted in jQwotos with the implementation and debugging of delete function (3H) 
+- Worked on deliverable write up and component diagram; verified that information was correct between team members (2H) 
+- Code reviews (1H)

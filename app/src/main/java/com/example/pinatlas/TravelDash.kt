@@ -83,7 +83,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
             TripsViewModelFactory(userId = this.currentUser!!.uid))
             .get(TripsViewModel::class.java)
 
-        pastTripsAdapter = TripAdapter(viewModel.previousTrips, this)
+        pastTripsAdapter = TripAdapter(viewModel.previousTrips, context, this)
 
         // Factory Pattern: we modify the ViewModel to do what we need
         // Observer Pattern: we watch when the trips change
@@ -99,11 +99,18 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         pastRecyclerView.layoutManager = pastManager
         pastRecyclerView.adapter = pastTripsAdapter
 
-        // TODO: Change upcommingTripsQuery to find past trips instead of all trips
-//        val upcomRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
-//        val upcomManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        upcomRecyclerView.layoutManager = upcomManager
-//        upcomRecyclerView.adapter = upcommingTripsAdapter
+        // upcoming trips
+        upcommingTripsAdapter = TripAdapter(viewModel.upcomingTrips, this, this)
+        viewModel.upcomingTrips.observe(this, Observer { update ->
+            if (update != null) {
+                upcommingTripsAdapter.notifyDataSetChanged()
+            }
+        })
+
+        val upcomingRecyclerView = findViewById<MultiSnapRecyclerView>(R.id.UTView)
+        val upcomingManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        upcomingRecyclerView.layoutManager = upcomingManager
+        upcomingRecyclerView.adapter = upcommingTripsAdapter
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {

@@ -22,6 +22,10 @@ class TripsRepository {
         return null
     }
 
+    fun deleteTrip(trip: Trip?): Task<Void>? {
+        return fetchTrip(trip!!.tripId!!).delete()
+    }
+
     fun fetchTrip(tripId: String): DocumentReference {
         return tripsCollection.document(tripId)
     }

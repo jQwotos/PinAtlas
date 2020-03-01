@@ -1,5 +1,6 @@
 package com.example.pinatlas.model
 
+import android.graphics.Bitmap
 import android.location.Location
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.IgnoreExtraProperties;
@@ -21,6 +22,7 @@ class Place {
     var busyTimes: ArrayList<Timings>? = null      // How busy a place is on a Day of the week
     var waitTimes: ArrayList<Timings>? = null      // How long are wait times in minutes
     var avgSpentTimes: ArrayList<Int>? = null      // Range of average time spent in minutes, between [0] to [1] minutes spent
+    var thumbnail: Bitmap? = null
 
     constructor()
 
@@ -37,7 +39,8 @@ class Place {
         coordinates: GeoPoint? = null,
         busyTimes: ArrayList<Timings>? = null,
         waitTimes: ArrayList<Timings>? = null,
-        avgSpentTimes: ArrayList<Int>? = null
+        avgSpentTimes: ArrayList<Int>? = null,
+        thumbnail: Bitmap? = null
     ) {
         this.placeId = placeId
         this.name = name
@@ -52,6 +55,7 @@ class Place {
         this.busyTimes = busyTimes
         this.waitTimes = waitTimes
         this.avgSpentTimes = avgSpentTimes
+        this.thumbnail = thumbnail
     }
 
 

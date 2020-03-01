@@ -13,6 +13,7 @@ import com.example.pinatlas.utils.DateUtils
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.ListenerRegistration
 
 class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     val TAG = CreationViewModel::class.java.simpleName
@@ -22,6 +23,8 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
 
     private val _trip = MutableLiveData<Trip>()
     private val _places = MutableLiveData<List<Place>>()
+
+    var tripListener: ListenerRegistration
 
     val tripPlaces : LiveData<List<Place>>
         get() = _places
@@ -41,14 +44,13 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         trip!!.name
     }
 
-
     init {
-        tripsRepository.fetchTrip(tripId).addSnapshotListener { tripSnapshot, _ ->
+        tripListener =  tripsRepository.fetchTrip(tripId).addSnapshotListener { tripSnapshot, _ ->
             val trip = Trip.fromFirestore(tripSnapshot!!)
             trip?.userId = userId
             _trip.postValue(trip)
 
-            if (trip!!.places.size > 0) {
+            if (trip != null && trip.places.size > 0) {
                 placesRepository.fetchPlaces(trip.places as
                 ArrayList<String?>).addSnapshotListener { placesSnapshot, e ->
                     if (e != null) {
@@ -89,6 +91,11 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         return tripsRepository.saveTrip(_trip.value)?.addOnFailureListener {
             Log.e(TAG, "Failed to save trip")
         }
+    }
+
+    fun deleteTrip(): Task<Void>? {
+        tripListener.remove()
+        return tripsRepository.deleteTrip(_trip.value)
     }
 
     fun addPlace(place: Place): Task<Void> {

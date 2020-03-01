@@ -24,7 +24,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.ViewModes
@@ -37,7 +36,6 @@ import com.google.android.gms.common.api.Status
 import com.google.firebase.firestore.GeoPoint
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-import kotlinx.android.synthetic.*
 
 class CreationView : AppCompatActivity() {
     private val TAG = CreationView::class.java.simpleName
@@ -47,13 +45,25 @@ class CreationView : AppCompatActivity() {
     private lateinit var picker: DatePickerDialog
     private lateinit var startDateButton : Button
     private lateinit var endDateButton : Button
-    private lateinit var tripName: EditText
+    private lateinit var tripNameText: EditText
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
     private lateinit var submitButton: Button
+    private lateinit var deleteButton: Button
     private lateinit var matrixifyUtil: MatrixifyUtil
 
     private lateinit var tripId: String
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
+    private val PLACE_FIELDS = listOf(
+        GPlace.Field.ID,
+        GPlace.Field.NAME,
+        GPlace.Field.ADDRESS,
+        GPlace.Field.PHONE_NUMBER,
+        GPlace.Field.RATING,
+        GPlace.Field.TYPES,
+        GPlace.Field.OPENING_HOURS,
+        GPlace.Field.LAT_LNG,
+        GPlace.Field.PHOTO_METADATAS
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +82,8 @@ class CreationView : AppCompatActivity() {
         startDateButton = findViewById(R.id.editStartDate)
         endDateButton = findViewById(R.id.endDateButton)
 
-        tripName = findViewById(R.id.tripName)
-        tripName.addTextChangedListener(object: TextWatcher {
+        tripNameText = findViewById(R.id.tripName)
+        tripNameText.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(update: Editable?) {
                 viewModel.setName(update.toString())
                 viewModel.saveTrip()
@@ -94,18 +104,7 @@ class CreationView : AppCompatActivity() {
         activityList.layoutManager = manager
 
         autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
-        autocompleteFragment.setPlaceFields(
-            listOf(
-                GPlace.Field.ID,
-                GPlace.Field.NAME,
-                GPlace.Field.ADDRESS,
-                GPlace.Field.PHONE_NUMBER,
-                GPlace.Field.RATING,
-                GPlace.Field.TYPES,
-                GPlace.Field.OPENING_HOURS,
-                GPlace.Field.LAT_LNG
-            )
-        )
+        autocompleteFragment.setPlaceFields(PLACE_FIELDS)
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onError(status: Status) {
                 val msg = "An error occurred: $status"
@@ -114,9 +113,6 @@ class CreationView : AppCompatActivity() {
             }
 
             override fun onPlaceSelected(gPlace: GPlace) {
-
-
-
                 if (gPlace.id != null) {
                     val place = Place(
                         placeId = gPlace.id!!,
@@ -168,6 +164,13 @@ class CreationView : AppCompatActivity() {
             intent.putExtra(Constants.TRIP_ID.type, tripId)
             startActivity(intent)
         }
+
+        deleteButton = findViewById(R.id.deleteButton)
+        deleteButton.setOnClickListener {
+            viewModel.deleteTrip()
+            finish()
+        }
+
     }
 
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
@@ -215,5 +218,10 @@ class CreationView : AppCompatActivity() {
 
     fun createEndDatePicker(view : View) {
         createDatePicker(EndDatePicker())
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.tripListener.remove()
     }
 }
