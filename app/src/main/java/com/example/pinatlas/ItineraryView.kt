@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -35,8 +36,6 @@ import com.mapbox.mapboxsdk.plugins.annotation.FillOptions
 import com.mapbox.mapboxsdk.plugins.annotation.FillManager
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-
-
 
 class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListener {
     private val TAG = ItineraryView::class.java
@@ -144,7 +143,6 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         }
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
@@ -197,6 +195,12 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
+    }
+
+    fun onClickEditButton(view: View) {
+        val intent = Intent(this, CreationView::class.java)
+        intent.putExtra(Constants.TRIP_ID.type, tripId)
+        startActivity(intent)
     }
 
 }
