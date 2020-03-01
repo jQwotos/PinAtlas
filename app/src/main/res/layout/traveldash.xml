@@ -64,11 +64,9 @@
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
         andriod:id="@+id/PTview"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="210dp"
         andriod:layout_below="@+id/PTtitle"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         app:msrv_gravity="end"
         app:msrv_interval="10"
@@ -86,7 +84,7 @@
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
         android:id="@+id/UTView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="210dp"
         andriod:layout_below="@+id/UTtitle"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="8dp"

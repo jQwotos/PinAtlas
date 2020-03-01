@@ -1,5 +1,5 @@
 package com.example.pinatlas.model.matrix
-
+//This code is a modified version of : https://stackabuse.com/traveling-salesman-problem-with-genetic-algorithms-in-java/
 import java.util.*
 
 
@@ -12,7 +12,7 @@ class SalesmanGenome: Comparable<Any> {
     internal var numberOfCities = 0
     var fitness: Int = 0
 
-    //Random genome- USed in initial population
+    //Random genome- Used in initial population
     constructor(numberOfCities: Int, travelPrices: Array<IntArray>, startingCity: Int) {
         this.travelPrices = travelPrices
         this.startingCity = startingCity
