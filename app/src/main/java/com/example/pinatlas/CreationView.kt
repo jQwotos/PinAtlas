@@ -109,9 +109,12 @@ class CreationView : AppCompatActivity() {
 
             override fun onPlaceSelected(gPlace: GPlace) {
                 if (gPlace.id != null) {
-                    val place = Place(gPlace.id!!, gPlace.name!!,
-                        gPlace.address!!, null, gPlace.phoneNumber, gPlace.rating, null,
-                        null, null, null, null)
+                    val place = Place(
+                        placeId = gPlace.id!!,
+                        name = gPlace.name!!,
+                        address = gPlace.address!!,
+                        phoneNumber = gPlace.phoneNumber,
+                        rating = gPlace.rating)
 
                     viewModel.addPlace(place).addOnSuccessListener {
                         viewModel.saveTrip()

@@ -48,10 +48,12 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.postValue(trip)
 
             if (trip!!.places.size > 0) {
-                placesRepository.fetchPlaces(trip.places).get().addOnSuccessListener { placesSnapshot ->
-                    _places.postValue(placesSnapshot.toObjects(Place::class.java))
-                }.addOnFailureListener {
-                    Log.e(TAG, "Couldn't fetch places for trip: ${it.message}")
+                placesRepository.fetchPlaces(trip.places).addSnapshotListener { placesSnapshot, e ->
+                    if (e != null) {
+                        Log.e(TAG, "Couldn't fetch places for trip: ${e.message}")
+                        return@addSnapshotListener
+                    }
+                    _places.postValue(placesSnapshot!!.toObjects(Place::class.java))
                 }
             } else {
                 _places.postValue(listOf())
