@@ -106,7 +106,6 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
 //            // random add fills across the globe
 //            val fillOptionsList = ArrayList<FillOptions>()
 //            fillManager?.create(fillOptionsList)
-
         }
     }
 

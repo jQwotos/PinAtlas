@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
+import android.location.Location
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import android.os.Bundle
@@ -32,6 +34,7 @@ import com.example.pinatlas.utils.MatrixifyUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
 import com.example.pinatlas.viewmodel.CreationViewModelFactory
 import com.google.android.gms.common.api.Status
+import com.google.firebase.firestore.GeoPoint
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 import kotlinx.android.synthetic.*
@@ -100,7 +103,8 @@ class CreationView : AppCompatActivity() {
                 GPlace.Field.RATING,
                 GPlace.Field.TYPES,
                 GPlace.Field.OPENING_HOURS,
-                GPlace.Field.LAT_LNG)
+                GPlace.Field.LAT_LNG
+            )
         )
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onError(status: Status) {
@@ -110,13 +114,18 @@ class CreationView : AppCompatActivity() {
             }
 
             override fun onPlaceSelected(gPlace: GPlace) {
+
+
+
                 if (gPlace.id != null) {
                     val place = Place(
                         placeId = gPlace.id!!,
                         name = gPlace.name!!,
                         address = gPlace.address!!,
                         phoneNumber = gPlace.phoneNumber,
-                        rating = gPlace.rating)
+                        rating = gPlace.rating,
+                        coordinates = GeoPoint(gPlace.latLng!!.latitude,gPlace.latLng!!.longitude)
+                    )
 
                     viewModel.addPlace(place).addOnSuccessListener {
                         viewModel.saveTrip()
@@ -131,7 +140,6 @@ class CreationView : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
         })
-
 
         /*
         Shubham Sharan
