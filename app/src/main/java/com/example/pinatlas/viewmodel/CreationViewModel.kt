@@ -41,7 +41,7 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     }
 
     val tripName: LiveData<String> = Transformations.map(_trip) {trip ->
-        trip!!.name
+        trip?.name
     }
 
     init {

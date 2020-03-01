@@ -168,7 +168,10 @@ class CreationView : AppCompatActivity() {
         deleteButton = findViewById(R.id.deleteButton)
         deleteButton.setOnClickListener {
             viewModel.deleteTrip()
-            finish()
+            // send to travel dash while clearing activity stack
+            intent = Intent(this, TravelDash::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
         }
 
     }
