@@ -41,7 +41,6 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         trip!!.name
     }
 
-
     init {
         tripsRepository.fetchTrip(tripId).addSnapshotListener { tripSnapshot, _ ->
             val trip = Trip.fromFirestore(tripSnapshot!!)
@@ -86,6 +85,10 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         return tripsRepository.saveTrip(_trip.value)?.addOnFailureListener {
             Log.e(TAG, "Failed to save trip")
         }
+    }
+
+    fun deleteTrip(): Task<Void>? {
+        return tripsRepository.deleteTrip(_trip.value)
     }
 
     fun addPlace(place: Place): Task<Void> {

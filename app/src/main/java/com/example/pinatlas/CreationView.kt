@@ -22,7 +22,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.ViewModes
@@ -33,7 +32,6 @@ import com.example.pinatlas.viewmodel.CreationViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-import kotlinx.android.synthetic.*
 
 class CreationView : AppCompatActivity() {
     private val TAG = CreationView::class.java.simpleName
@@ -43,9 +41,10 @@ class CreationView : AppCompatActivity() {
     private lateinit var picker: DatePickerDialog
     private lateinit var startDateButton : Button
     private lateinit var endDateButton : Button
-    private lateinit var tripName: EditText
+    private lateinit var tripNameText: EditText
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
     private lateinit var submitButton: Button
+    private lateinit var deleteButton: Button
 
     private lateinit var tripId: String
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
@@ -78,8 +77,8 @@ class CreationView : AppCompatActivity() {
         startDateButton = findViewById(R.id.editStartDate)
         endDateButton = findViewById(R.id.endDateButton)
 
-        tripName = findViewById(R.id.tripName)
-        tripName.addTextChangedListener(object: TextWatcher {
+        tripNameText = findViewById(R.id.tripName)
+        tripNameText.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(update: Editable?) {
                 viewModel.setName(update.toString())
                 viewModel.saveTrip()
@@ -134,6 +133,13 @@ class CreationView : AppCompatActivity() {
             intent.putExtra(Constants.TRIP_ID.type, tripId)
             startActivity(intent)
         }
+
+        deleteButton = findViewById(R.id.deleteButton)
+        deleteButton.setOnClickListener {
+            viewModel.deleteTrip()
+            finish()
+        }
+
     }
 
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
