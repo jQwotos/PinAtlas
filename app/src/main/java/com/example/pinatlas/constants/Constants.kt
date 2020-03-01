@@ -8,5 +8,5 @@ enum class Constants (val type: String) {
     REQUEST_DENIED("REQUEST_DENIED"),
     REQUEST_OK("OK"),
     TRIPS_COLLECTION("trips"),
-    PLACES_COLLECTION("places")
+    PLACES_COLLECTION("places"),
 }

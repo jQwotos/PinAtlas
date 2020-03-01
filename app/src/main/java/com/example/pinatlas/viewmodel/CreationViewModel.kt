@@ -49,13 +49,25 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.postValue(trip)
 
             if (trip!!.places.size > 0) {
-                placesRepository.fetchPlaces(trip.places as ArrayList<String?>).get().addOnSuccessListener { placesSnapshot ->
-                    _places.postValue(placesSnapshot.toObjects(Place::class.java))
-                }.addOnFailureListener {
-                    Log.e(TAG, "Couldn't fetch places for trip: ${it.message}")
+                placesRepository.fetchPlaces(trip.places as
+                ArrayList<String?>).addSnapshotListener { placesSnapshot, e ->
+                    if (e != null) {
+                        Log.e(TAG, "Couldn't fetch places for trip: ${e.message}")
+                        return@addSnapshotListener
+                    }
+                    _places.postValue(placesSnapshot!!.toObjects(Place::class.java))
                 }
+            } else {
+                _places.postValue(listOf())
             }
         }
+    }
+
+    fun updatePlacePriority(fromPos: Int, toPos: Int) {
+        val arrayOfPlaces = _places.value as ArrayList
+        arrayOfPlaces.add(toPos, arrayOfPlaces.removeAt(fromPos))
+
+        _places.postValue(arrayOfPlaces)
     }
 
     fun setName(name: String) {
@@ -84,5 +96,10 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.value?.places?.add(place.placeId)
             _trip.postValue(_trip.value)
         }
+    }
+
+    fun deletePlace(i: Int) {
+        _trip.value?.places?.removeAt(i)
+        _trip.postValue(_trip.value)
     }
 }

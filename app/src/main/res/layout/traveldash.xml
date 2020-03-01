@@ -11,21 +11,21 @@
         android:id="@+id/tripName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Travel Dashboard" ></TextView>
+        android:text="Travel Dashboard" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mapViewContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-<!--        <Button-->
-<!--            android:id="@+id/fetchMatrixBtn"-->
-<!--            android:onClick="createMatrix"-->
-<!--            andriod:layout_width="wrap_content"-->
-<!--            andriod:layout_height="wrap_content"-->
-<!--            andriod:text="MATRIXIFY"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent" />-->
+        <Button
+            android:id="@+id/logoutBtn"
+            android:onClick="logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/addTripBtn"

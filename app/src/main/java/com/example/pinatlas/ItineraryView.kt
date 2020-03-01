@@ -14,8 +14,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
-import com.example.pinatlas.viewmodel.ItineraryViewModel
-import com.example.pinatlas.viewmodel.ItineraryViewModelFactory
+import com.example.pinatlas.constants.ViewModes
+import com.example.pinatlas.viewmodel.CreationViewModel
+import com.example.pinatlas.viewmodel.CreationViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
@@ -42,11 +45,13 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
     private lateinit var mapView : MapView
     private lateinit var mapboxMap: MapboxMap
     private lateinit var tripName: TextView
-    private lateinit var viewModel: ItineraryViewModel
+    private lateinit var viewModel: CreationViewModel
     private lateinit var tripId: String
     private lateinit var fillManager: FillManager
 
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
+    private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,14 +66,14 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         tripId = intent.getStringExtra(Constants.TRIP_ID.type)!!
         tripName = findViewById(R.id.tripName)
 
-        val factory = ItineraryViewModelFactory(tripId)
-        viewModel = ViewModelProviders.of(this, factory).get(ItineraryViewModel::class.java)
+        val factory = CreationViewModelFactory(tripId, currentUser!!.uid)
+        viewModel = ViewModelProviders.of(this, factory).get(CreationViewModel::class.java)
         viewModel.tripName.observe(this,  Observer {
             tripName.text = it
         })
 
         //Local the tiles for past/upcoming trips
-        val adapter = ActivityListAdapter(viewModel.tripPlaces)
+        val adapter = ActivityListAdapter(viewModel, ViewModes.ITINERARY_MODE)
         val submitListView = findViewById<MultiSnapRecyclerView>(R.id.sublist_recycler_view)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         submitListView.layoutManager = manager

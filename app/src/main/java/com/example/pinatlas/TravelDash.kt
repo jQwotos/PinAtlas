@@ -56,7 +56,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
 
     override fun onTripSelected(trip: Trip) {
-        val intent = Intent(this, CreationView::class.java)
+        val intent = Intent(this, ItineraryView::class.java)
         intent.putExtra(Constants.TRIP_ID.type, trip.tripId)
         startActivity(intent)
     }
@@ -173,7 +173,6 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         mapView.onStart()
     }
 
-    //
     fun createNewTrip(view: View) {
         val intent = Intent(this, CreationView::class.java)
 
@@ -185,7 +184,6 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
             Toast.makeText(context, "Failed to make trip", Toast.LENGTH_LONG).show()
         }
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -217,7 +215,10 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         mapView.onLowMemory()
     }
 
+    fun logout(view: View) {
+        FirebaseAuth.getInstance().signOut()
+        finish()
+    }
+
 }
-
-
 
