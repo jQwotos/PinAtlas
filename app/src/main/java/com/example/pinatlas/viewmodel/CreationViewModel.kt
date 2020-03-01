@@ -54,8 +54,17 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
                 }.addOnFailureListener {
                     Log.e(TAG, "Couldn't fetch places for trip: ${it.message}")
                 }
+            } else {
+                _places.postValue(listOf())
             }
         }
+    }
+
+    fun updatePlacePriority(fromPos: Int, toPos: Int) {
+        val arrayOfPlaces = _places.value as ArrayList
+        arrayOfPlaces.add(toPos, arrayOfPlaces.removeAt(fromPos))
+
+        _places.postValue(arrayOfPlaces)
     }
 
     fun setName(name: String) {
@@ -84,5 +93,10 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.value?.places?.add(place.placeId)
             _trip.postValue(_trip.value)
         }
+    }
+
+    fun deletePlace(i: Int) {
+        _trip.value?.places?.removeAt(i)
+        _trip.postValue(_trip.value)
     }
 }

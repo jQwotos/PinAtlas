@@ -20,9 +20,12 @@ import android.util.Log
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.adapter.ActivityListAdapter
 import com.example.pinatlas.constants.Constants
+import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.databinding.CreationViewBinding
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.viewmodel.CreationViewModel
@@ -30,6 +33,7 @@ import com.example.pinatlas.viewmodel.CreationViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+import kotlinx.android.synthetic.*
 
 class CreationView : AppCompatActivity() {
     private val TAG = CreationView::class.java.simpleName
@@ -84,9 +88,13 @@ class CreationView : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        val adapter = ActivityListAdapter(viewModel.tripPlaces)
+        val adapter = ActivityListAdapter(viewModel, ViewModes.EDIT_MODE)
         val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val touchCallback = ItemMoveCallback(adapter)
+        val touchHelper = ItemTouchHelper(touchCallback)
+
+        touchHelper.attachToRecyclerView(activityList)
 
         activityList.adapter = adapter
         activityList.layoutManager = manager
