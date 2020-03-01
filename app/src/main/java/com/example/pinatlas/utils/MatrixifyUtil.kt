@@ -31,7 +31,7 @@ class MatrixifyUtil(private val places: List<Place>) {
         val geneticAlgorithm =
             Salesman(distanceMatrixModel.rows!!.size, travelDurations, 0, 0)
         val result = geneticAlgorithm.optimize()
-        Log.d(TAG,result.toString())
+        Log.d(TAG,"Genome"+result.genome.toString())
     }
 
     fun createMatrix(view: View) {

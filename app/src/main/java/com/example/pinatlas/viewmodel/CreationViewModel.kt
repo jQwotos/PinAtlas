@@ -51,8 +51,7 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.postValue(trip)
 
             if (trip != null && trip.places.size > 0) {
-                placesRepository.fetchPlaces(trip.places as
-                ArrayList<String?>).addSnapshotListener { placesSnapshot, e ->
+                placesRepository.fetchPlaces(trip.places).addSnapshotListener { placesSnapshot, e ->
                     if (e != null) {
                         Log.e(TAG, "Couldn't fetch places for trip: ${e.message}")
                         return@addSnapshotListener

@@ -17,8 +17,6 @@ class Trip {
 
     var transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
 
-    var TAG = javaClass.canonicalName
-
     override fun toString(): String {
         return "User: $userId | Trip: $tripId | Name: $name | start_date: ${startDate.toString()} | end_date: ${endDate.toString()}"
     }

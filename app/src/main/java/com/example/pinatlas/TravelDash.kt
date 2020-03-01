@@ -45,11 +45,9 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     private lateinit var context: Context
     private lateinit var addTripBtn: Button
 
-    // FIRESTORE
+    // FIREBASE
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
-
     private lateinit var viewModel: TripsViewModel
-
     private lateinit var pastTripsAdapter: TripAdapter
     private lateinit var upcommingTripsAdapter: TripAdapter
 
