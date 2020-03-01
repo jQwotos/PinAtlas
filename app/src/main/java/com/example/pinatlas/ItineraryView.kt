@@ -1,11 +1,14 @@
 package com.example.pinatlas
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +19,7 @@ import com.example.pinatlas.viewmodel.ItineraryViewModelFactory
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
@@ -24,7 +28,12 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.plugins.annotation.FillOptions
+import com.mapbox.mapboxsdk.plugins.annotation.FillManager
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+
+
 
 class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListener {
     private val TAG = ItineraryView::class.java
@@ -35,6 +44,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
     private lateinit var tripName: TextView
     private lateinit var viewModel: ItineraryViewModel
     private lateinit var tripId: String
+    private lateinit var fillManager: FillManager
 
     private var permissionsManager: PermissionsManager = PermissionsManager(this)
 
@@ -75,6 +85,23 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         this.mapboxMap = mapboxMap
         mapboxMap.setStyle(Style.MAPBOX_STREETS) {
             enableLocationComponent(it)
+//            val placesList = viewModel.tripPlaces.value
+//            val inLatLngs = ArrayList<LatLng>()
+//
+//            for(n in 0 until placesList!!.size){
+//                inLatLngs.add(LatLng(placesList[n].coordinates!!.latitude, placesList[n].coordinates!!.longitude))
+//            }
+//            val latLngs = ArrayList<List<LatLng>>()
+//            latLngs.add(inLatLngs)
+//
+//            val fillOptions = FillOptions()
+//                .withLatLngs(latLngs)
+//            fillManager?.create(fillOptions)
+//
+//            // random add fills across the globe
+//            val fillOptionsList = ArrayList<FillOptions>()
+//            fillManager?.create(fillOptionsList)
+
         }
     }
 
@@ -112,6 +139,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
             permissionsManager.requestLocationPermissions(this)
         }
     }
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)

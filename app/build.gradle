@@ -70,4 +70,5 @@ dependencies {
     implementation 'com.github.kittinunf.fuel:fuel-android:2.2.1'
     implementation 'com.github.kittinunf.fuel:fuel-gson:2.2.1'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v8:0.7.0'
 }

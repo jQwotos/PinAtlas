@@ -1,13 +1,19 @@
 package com.example.pinatlas.utils
 
+import android.content.Context
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.matrix.DistanceMatrixModel
 import com.example.pinatlas.model.matrix.Salesman
 
 class MatrixifyUtil(private val places: List<Place>) {
+
     private val TAG = MatrixifyUtil::class.java.simpleName
+    private lateinit var context: Context
+
+
 
     fun finishFetchingDistanceMatrix(distanceMatrixModel: DistanceMatrixModel) {
         Log.d(TAG, distanceMatrixModel.rows!!.indices.toString())
@@ -31,14 +37,15 @@ class MatrixifyUtil(private val places: List<Place>) {
     fun createMatrix(view: View) {
         // TODO: Use the new get trip Places function
         var placesIdArray: ArrayList<String> = arrayListOf()
-        for (place in places) {
-            placesIdArray.add(place.name!!)
-        }
 
-        DistanceMatrixProvider.fetchDistanceMatrix(placesIdArray) {
-                result: DistanceMatrixModel ->
-            finishFetchingDistanceMatrix(result) // After we fetched invoke function
-        }
-        // TODO: SHUBHAM LOOK HERE
+
+            for (place in places) {
+                placesIdArray.add(place.name!!)
+            }
+
+            DistanceMatrixProvider.fetchDistanceMatrix(placesIdArray) {
+                    result: DistanceMatrixModel ->
+                finishFetchingDistanceMatrix(result) // After we fetched invoke function
+            }
     }
 }
