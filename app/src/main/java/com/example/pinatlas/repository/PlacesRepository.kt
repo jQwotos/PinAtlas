@@ -19,7 +19,7 @@ class PlacesRepository {
             .document(placeId)
     }
 
-    fun fetchPlaces(placeIds: ArrayList<String?>) : Query {
+    fun fetchPlaces(placeIds: ArrayList<String>) : Query {
         return firestoreDB.collection(Constants.PLACES_COLLECTION.type).whereIn("placeId", placeIds)
     }
 }

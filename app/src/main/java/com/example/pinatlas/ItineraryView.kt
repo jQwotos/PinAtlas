@@ -1,8 +1,10 @@
 package com.example.pinatlas
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -170,6 +172,12 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
+    }
+
+    fun onClickEditButton(view: View) {
+        val intent = Intent(this, CreationView::class.java)
+        intent.putExtra(Constants.TRIP_ID.type, tripId)
+        startActivity(intent)
     }
 
 }

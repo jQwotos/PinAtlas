@@ -7,16 +7,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ItineraryView">
 
-    <TextView
-        android:id="@+id/tripName"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tripName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/autofill_trip_name_hint"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/editButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:onClick="onClickEditButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_below="@id/tripName"
+        android:layout_below="@id/topBar"
         tools:layout_editor_absoluteX="-3dp">
     </com.mapbox.mapboxsdk.maps.MapView>
 
