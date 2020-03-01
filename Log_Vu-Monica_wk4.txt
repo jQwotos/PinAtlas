@@ -1,0 +1,3 @@
+- Reassigned tasks (0.5H)
+- Researched about moving and deleting items in a list in Android Studio (not MVVM) (1H)
+- Identified architecture and design patterns in code based (0.5H)
