@@ -127,6 +127,7 @@ class CreationView : AppCompatActivity() {
                         viewModel.saveTrip()
                     }
                 }
+                //Toast.makeText(context, GeoPoint(gPlace.latLng!!.latitude,gPlace.latLng!!.longitude).toString() , Toast.LENGTH_SHORT).show()
             }
         })
 
