@@ -47,6 +47,8 @@ class CreationView : AppCompatActivity() {
     private lateinit var endDateButton : Button
     private lateinit var tripNameText: EditText
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
+    private lateinit var submitButton: Button
+    private lateinit var deleteButton: Button
     private lateinit var loader: ConstraintLayout
 
     private lateinit var tripId: String
@@ -106,9 +108,11 @@ class CreationView : AppCompatActivity() {
         autocompleteFragment.setPlaceFields(PLACE_FIELDS)
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onError(status: Status) {
-                val msg = "An error occurred: $status"
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                Log.e(TAG, msg)
+                if (!status.isCanceled) {
+                    val msg = "An error occurred: $status"
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, msg)
+                }
             }
 
             override fun onPlaceSelected(gPlace: GPlace) {
@@ -126,7 +130,6 @@ class CreationView : AppCompatActivity() {
                         viewModel.saveTrip()
                     }
                 }
-                //Toast.makeText(context, GeoPoint(gPlace.latLng!!.latitude,gPlace.latLng!!.longitude).toString() , Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -151,6 +154,15 @@ class CreationView : AppCompatActivity() {
             * Building of the data structure utilised in the complex classes
             * Not specifically part of Facade Design Pattern
         * */
+
+        deleteButton = findViewById(R.id.deleteButton)
+        deleteButton.setOnClickListener {
+            viewModel.deleteTrip()
+            // send to travel dash while clearing activity stack
+            intent = Intent(this, TravelDash::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        }
     }
 
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
