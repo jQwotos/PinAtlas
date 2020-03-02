@@ -34,13 +34,17 @@ object MatrixifyUtil {
         return Tasks.forResult(geneticAlgorithm.optimize())
     }
 
-    fun optimize(places: List<String>, responseHandler: (result: List<String>) -> Unit?) {
+    fun optimize(places: List<String>, responseHandler: (result: List<String>?) -> Unit?) {
         doAsync {
-            DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<String>){ result: DistanceMatrixModel ->
-                generateGenome(distanceMatrixModel = result).continueWithTask { genome: Task<SalesmanGenome> ->
-                    repositionPlaces(places, genome.result!!.optimizedRoute)
-                }.addOnSuccessListener { optimizedRoute: List<String> ->
-                    responseHandler(optimizedRoute)
+            DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<String>){ result: DistanceMatrixModel? ->
+                if (result != null ) {
+                    generateGenome(distanceMatrixModel = result).continueWithTask { genome: Task<SalesmanGenome> ->
+                        repositionPlaces(places, genome.result!!.optimizedRoute)
+                    }.addOnSuccessListener { optimizedRoute: List<String> ->
+                        responseHandler(optimizedRoute)
+                    }
+                } else {
+                    responseHandler(null)
                 }
             }
         }

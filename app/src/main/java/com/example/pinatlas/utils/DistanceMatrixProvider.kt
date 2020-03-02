@@ -51,11 +51,13 @@ object DistanceMatrixProvider {
      * @param mode mode of transportation
      * @param responseHandler procedure that is invoked when query is finished
      */
-    fun fetchDistanceMatrix(destinations: ArrayList<String>, mode: String = TransportationMethods.DRIVING.type, responseHandler: (result: DistanceMatrixModel) -> Any?){
+    fun fetchDistanceMatrix(destinations: ArrayList<String>, mode: String = TransportationMethods.DRIVING.type, responseHandler: (result: DistanceMatrixModel?) -> Any?){
         buildDistanceMatrixURI(destinations = destinations, mode = mode).httpGet().responseObject(DistanceMatrixDeserializer()) { _, _, result ->
             when (result) {
                 is Result.Failure -> {
                     Log.w(TAG, "Error when fetching distance matrix: " + result.getException())
+                    responseHandler(null)
+
                 }
 
                 is Result.Success -> {

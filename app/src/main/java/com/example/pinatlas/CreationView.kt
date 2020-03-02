@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import android.util.Log
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -46,7 +47,7 @@ class CreationView : AppCompatActivity() {
     private lateinit var endDateButton : Button
     private lateinit var tripNameText: EditText
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
-    private lateinit var loader: ProgressBar
+    private lateinit var loader: ConstraintLayout
 
     private lateinit var tripId: String
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
@@ -214,7 +215,9 @@ class CreationView : AppCompatActivity() {
             loader.visibility = View.VISIBLE
             doAsync {
                 MatrixifyUtil.optimize(viewModel.trip.value!!.places) { newOrderedPlaces ->
-                    viewModel.reorderPlaces(newOrderedPlaces)
+                    if (newOrderedPlaces != null) {
+                        viewModel.reorderPlaces(newOrderedPlaces)
+                    }
                     changeToItineraryView()
                 }
             }
