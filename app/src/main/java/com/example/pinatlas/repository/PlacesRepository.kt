@@ -19,7 +19,11 @@ class PlacesRepository {
             .document(placeId)
     }
 
+    /**
+     * Warning!! This function does not guarantee the order of the ids
+     */
     fun fetchPlaces(placeIds: ArrayList<String>) : Query {
-        return firestoreDB.collection(Constants.PLACES_COLLECTION.type).whereIn("placeId", placeIds)
+        return firestoreDB.collection(Constants.PLACES_COLLECTION.type)
+            .whereIn("placeId", placeIds)
     }
 }

@@ -51,12 +51,17 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.postValue(trip)
 
             if (trip != null && trip.places.size > 0) {
-                placesRepository.fetchPlaces(trip.places as ArrayList<String>).addSnapshotListener { placesSnapshot, e ->
+                placesRepository.fetchPlaces(trip.places).addSnapshotListener { placesSnapshot, e ->
                     if (e != null) {
                         Log.e(TAG, "Couldn't fetch places for trip: ${e.message}")
                         return@addSnapshotListener
                     }
-                    _places.postValue(placesSnapshot!!.toObjects(Place::class.java))
+                    val unorderedPlaces = placesSnapshot!!.toObjects(Place::class.java)
+                    val orderedPlaces = arrayListOf<Place>()
+                    for (id in trip.places) {
+                        orderedPlaces.add(unorderedPlaces.first { it.placeId == id })
+                    }
+                    _places.postValue(orderedPlaces)
                 }
             } else {
                 _places.postValue(listOf())
@@ -67,7 +72,8 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     fun updatePlacePriority(fromPos: Int, toPos: Int) {
         val arrayOfPlaces = _places.value as ArrayList
         arrayOfPlaces.add(toPos, arrayOfPlaces.removeAt(fromPos))
-
+        _trip.value!!.places = arrayOfPlaces.map { p -> p.placeId } as ArrayList<String>
+        _trip.postValue(_trip.value)
         _places.postValue(arrayOfPlaces)
     }
 
