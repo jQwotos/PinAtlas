@@ -1,6 +1,5 @@
 package com.example.pinatlas.repository
 
-import androidx.lifecycle.Transformations
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Place
 import com.google.android.gms.tasks.Task
