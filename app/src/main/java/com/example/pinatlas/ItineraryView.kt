@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -35,26 +34,19 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.Fill
-import com.mapbox.mapboxsdk.plugins.markerview.MarkerView
-import com.mapbox.mapboxsdk.plugins.markerview.MarkerViewManager
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
 class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListener{
-    private val TAG = ItineraryView::class.java
-
     private val context: Context = this
-
     private lateinit var mapView : MapView
     private lateinit var mapboxMap: MapboxMap
     private lateinit var tripName: TextView
     private lateinit var viewModel: CreationViewModel
     private lateinit var tripId: String
-    private lateinit var markerViewManager : MarkerViewManager
     private lateinit var adapter: ActivityListAdapter
-    private lateinit var marker: MarkerView
 
     private lateinit var  fill : Fill
 
@@ -94,43 +86,38 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
             }
         })
     }
+
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
         viewModel.tripPlaces.observe(this, Observer { placesList ->
             if (placesList != null) {
                 val inLatLngs : ArrayList<Feature> = ArrayList<Feature>()
-
                 for (n in 0 until placesList.size) {
                     inLatLngs.add(  Feature.fromGeometry(
-                        Point.fromLngLat(placesList[n].coordinates!!.latitude,placesList[n].coordinates!!.longitude))
+                        Point.fromLngLat(placesList[n].coordinates!!.longitude, placesList[n].coordinates!!.latitude))
                     )
                 }
-
                 mapboxMap.setStyle(Style.MAPBOX_STREETS){style ->
-                        // Add the SymbolLayer icon image to the map style
-                        style.addImage(ICON_ID, BitmapFactory.decodeResource(
-                            this.getResources(), R.drawable.mapbox_compass_icon))
-                        // Adding a GeoJson source for the SymbolLayer icons.
-                        style.addSource(
-                            GeoJsonSource(
-                                SOURCE_ID,
-                                FeatureCollection.fromFeatures(inLatLngs)
+                    // Add the SymbolLayer icon image to the map style
+                    style.addImage(ICON_ID, BitmapFactory.decodeResource(
+                        this.getResources(), R.drawable.mapbox_compass_icon))
+                    // Adding a GeoJson source for the SymbolLayer icons.
+                    style.addSource(
+                        GeoJsonSource(
+                            SOURCE_ID,
+                            FeatureCollection.fromFeatures(inLatLngs)
+                        )
+                    )
+                    style.addLayer(
+                        SymbolLayer(LAYER_ID, SOURCE_ID)
+                            .withProperties(
+                                PropertyFactory.iconImage(ICON_ID),
+                                PropertyFactory.iconIgnorePlacement(true),
+                                PropertyFactory.iconSize(1f),
+                                PropertyFactory.iconAllowOverlap(true)
                             )
-                        )
-                        // Adding the actual SymbolLayer to the map style. An offset is added that the bottom of the red
-                        // marker icon gets fixed to the coordinate, rather than the middle of the icon being fixed to
-                        // the coordinate point. This is offset is not always needed and is dependent on the image
-                        // that you use for the SymbolLayer icon.
-                        style.addLayer(
-                            SymbolLayer(LAYER_ID, SOURCE_ID)
-                                .withProperties(
-                                    PropertyFactory.iconImage(ICON_ID),
-                                    PropertyFactory.iconIgnorePlacement(true),
-                                    PropertyFactory.iconAllowOverlap(true)
-                                )
-                        )
+                    )
                     enableLocationComponent(style)
-                    Log.e("TAG_123:",inLatLngs.toString())// This comes out as an error statement
                 }
             }
         })
@@ -218,7 +205,6 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
 
     override fun onDestroy() {
         super.onDestroy()
-        markerViewManager?.onDestroy()
         mapView.onDestroy()
     }
 
