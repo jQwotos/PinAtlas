@@ -1,5 +1,6 @@
 package com.example.pinatlas.repository
 
+import androidx.lifecycle.Transformations
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.model.Place
 import com.google.android.gms.tasks.Task
@@ -19,7 +20,11 @@ class PlacesRepository {
             .document(placeId)
     }
 
+    /**
+     * Warning!! This function does not guarantee the order of the ids
+     */
     fun fetchPlaces(placeIds: ArrayList<String>) : Query {
-        return firestoreDB.collection(Constants.PLACES_COLLECTION.type).whereIn("placeId", placeIds)
+        return firestoreDB.collection(Constants.PLACES_COLLECTION.type)
+            .whereIn("placeId", placeIds)
     }
 }

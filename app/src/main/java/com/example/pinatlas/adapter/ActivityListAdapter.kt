@@ -59,6 +59,7 @@ class ActivityListAdapter ( private val viewModel: CreationViewModel, private va
 
     override fun onRowMoved(fromPosition: Int, toPosition: Int) {
         viewModel.updatePlacePriority(fromPosition, toPosition)
+        viewModel.saveTrip()
     }
 
     override fun onRowSelected(viewHolder: ViewHolder) {
