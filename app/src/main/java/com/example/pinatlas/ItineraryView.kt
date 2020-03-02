@@ -103,7 +103,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                 if (placesList.isNotEmpty()) {
                     val lat = placesList[0].coordinates!!.latitude
                     val lgn = placesList[0].coordinates!!.longitude
-                    mapboxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat, lgn), 10.0))
+                    mapboxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat, lgn), 15.0))
                 }
                 mapboxMap.setStyle(Style.MAPBOX_STREETS){style ->
                     // Add the SymbolLayer icon image to the map style
@@ -156,7 +156,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                 isLocationComponentEnabled = true
 
                 // Set the LocationComponent's camera mode
-                cameraMode = CameraMode.TRACKING
+                cameraMode = CameraMode.NONE
 
                 // Set the LocationComponent's render mode
                 renderMode = RenderMode.COMPASS
