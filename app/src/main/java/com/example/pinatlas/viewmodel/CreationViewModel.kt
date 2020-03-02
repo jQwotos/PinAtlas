@@ -104,6 +104,12 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         }
     }
 
+    fun reorderPlaces(places: List<String>) {
+        _trip.value?.places?.clear()
+        _trip.value?.places?.addAll(places)
+        _trip.postValue(_trip.value)
+    }
+
     fun deletePlace(i: Int) {
         _trip.value?.places?.removeAt(i)
         _trip.postValue(_trip.value)
