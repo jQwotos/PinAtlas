@@ -4,8 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.icu.util.Calendar
-import android.location.Location
-import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import android.os.Bundle
@@ -36,6 +34,7 @@ import com.google.android.gms.common.api.Status
 import com.google.firebase.firestore.GeoPoint
 import com.google.android.libraries.places.api.model.Place as GPlace
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+import org.jetbrains.anko.doAsync
 
 class CreationView : AppCompatActivity() {
     private val TAG = CreationView::class.java.simpleName
@@ -47,9 +46,7 @@ class CreationView : AppCompatActivity() {
     private lateinit var endDateButton : Button
     private lateinit var tripNameText: EditText
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
-    private lateinit var submitButton: Button
-    private lateinit var deleteButton: Button
-    private lateinit var matrixifyUtil: MatrixifyUtil
+    private lateinit var loader: ProgressBar
 
     private lateinit var tripId: String
     private val currentUser: FirebaseUser? by lazy { FirebaseAuth.getInstance().currentUser }
@@ -94,6 +91,7 @@ class CreationView : AppCompatActivity() {
 
         val adapter = ActivityListAdapter(viewModel, ViewModes.EDIT_MODE)
         val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
+        loader = findViewById(R.id.loader)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val touchCallback = ItemMoveCallback(adapter)
         val touchHelper = ItemTouchHelper(touchCallback)
@@ -151,26 +149,6 @@ class CreationView : AppCompatActivity() {
             * Building of the data structure utilised in the complex classes
             * Not specifically part of Facade Design Pattern
         * */
-        submitButton = findViewById(R.id.submitButton)
-        submitButton.setOnClickListener {
-            var message: String  = "Must add more than 2 locations to provide some optimal route"
-                if (viewModel.tripPlaces.value!!.size > 2) {
-                matrixifyUtil = MatrixifyUtil(viewModel.tripPlaces.value!!)
-                matrixifyUtil.createMatrix(activityList)
-            }else{
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                }
-            val intent = Intent(this, ItineraryView::class.java)
-            intent.putExtra(Constants.TRIP_ID.type, tripId)
-            startActivity(intent)
-        }
-
-        deleteButton = findViewById(R.id.deleteButton)
-        deleteButton.setOnClickListener {
-            viewModel.deleteTrip()
-            finish()
-        }
-
     }
 
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
@@ -218,6 +196,31 @@ class CreationView : AppCompatActivity() {
 
     fun createEndDatePicker(view : View) {
         createDatePicker(EndDatePicker())
+    }
+
+    fun deleteTrip(view: View) {
+        viewModel.deleteTrip()
+        finish()
+    }
+
+    fun changeToItineraryView(view: View? = null) {
+        val intent = Intent(context, ItineraryView::class.java)
+        intent.putExtra(Constants.TRIP_ID.type, tripId)
+        startActivity(intent)
+    }
+
+    fun optimize(view: View) {
+        if (viewModel.tripPlaces.value!!.size > 2) {
+            loader.visibility = View.VISIBLE
+            doAsync {
+                MatrixifyUtil.optimize(viewModel.trip.value!!.places) { newOrderedPlaces ->
+                    viewModel.reorderPlaces(newOrderedPlaces)
+                    changeToItineraryView()
+                }
+            }
+        } else {
+            Toast.makeText(context, "You must add more than 2 locations to provide an optimal route", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onStop() {

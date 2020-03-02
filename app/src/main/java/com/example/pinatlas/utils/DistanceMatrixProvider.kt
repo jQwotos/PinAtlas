@@ -7,12 +7,10 @@ import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.TransportationMethods
 import com.example.pinatlas.model.matrix.DistanceMatrixModel
 import com.github.kittinunf.fuel.core.ResponseDeserializable
-import com.github.kittinunf.fuel.core.ResponseHandler
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import com.google.gson.Gson
 import java.io.Reader
-import java.lang.Exception
 
 object DistanceMatrixProvider {
     var TAG = DistanceMatrixProvider::class.java.simpleName
@@ -20,7 +18,8 @@ object DistanceMatrixProvider {
     val DISTANCE_MATRIX_BASE_URL: String = "maps.googleapis.com"
 
     fun createDestinationsString(destinations: ArrayList<String>) : String {
-        return destinations.joinToString (separator = "|")
+        val appendedNames = destinations.map { destination -> "place_id:$destination" }
+        return appendedNames.joinToString (separator = "|")
     }
 
     fun buildDistanceMatrixURI(destinations: ArrayList<String>, mode: String = TransportationMethods.DRIVING.type) : String {
@@ -52,35 +51,25 @@ object DistanceMatrixProvider {
      * @param mode mode of transportation
      * @param responseHandler procedure that is invoked when query is finished
      */
-    fun fetchDistanceMatrix(
-        destinations: ArrayList<String>,
-        mode: String = TransportationMethods.DRIVING.type,
-        responseHandler: (result: DistanceMatrixModel) -> Unit?) {
-        buildDistanceMatrixURI(destinations, mode).httpGet()
-            .responseObject(DistanceMatrixDeserializer()){ _, _, result ->
-                when (result) {
-                    is Result.Failure -> {
-                        Log.w(TAG, "Error when fetching distance matrix: " + result.getException().message)
-                        result.getException().stackTrace
-                        throw Exception(result.getException())
+    fun fetchDistanceMatrix(destinations: ArrayList<String>, mode: String = TransportationMethods.DRIVING.type, responseHandler: (result: DistanceMatrixModel) -> Any?){
+        buildDistanceMatrixURI(destinations = destinations, mode = mode).httpGet().responseObject(DistanceMatrixDeserializer()) { _, _, result ->
+            when (result) {
+                is Result.Failure -> {
+                    Log.w(TAG, "Error when fetching distance matrix: " + result.getException())
+                }
+
+                is Result.Success -> {
+                    val (data, _) = result
+                    val distanceMatrixModel = data as DistanceMatrixModel
+
+                    if (distanceMatrixModel.status.equals(Constants.REQUEST_DENIED.type)) {
+                        Log.w(TAG, "Warning: Distance Matrix query failed, is your API key out of uses or enabled for distance matrix?")
                     }
-
-                    is Result.Success -> {
-                        val(data, _) = result
-
-                        val distanceMatrixModel = data as DistanceMatrixModel
-
-                        if (distanceMatrixModel.status.equals(Constants.REQUEST_DENIED.type)) {
-                            Log.w(TAG, "Warning: Distance Matrix query failed, is your API key out of uses or enabled for distance matrix?")
-                        }
-
-                        responseHandler.invoke(data as DistanceMatrixModel)
-                    }
+                    responseHandler(distanceMatrixModel)
                 }
             }
+        }
     }
-
-
 
     class DistanceMatrixDeserializer: ResponseDeserializable<DistanceMatrixModel> {
         override fun deserialize(reader: Reader): DistanceMatrixModel? {

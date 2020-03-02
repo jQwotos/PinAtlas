@@ -1,21 +1,22 @@
 package com.example.pinatlas.utils
 
-import android.content.Context
 import android.util.Log
-import android.view.View
-import android.widget.Toast
-import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.matrix.DistanceMatrixModel
 import com.example.pinatlas.model.matrix.Salesman
+import com.example.pinatlas.model.matrix.SalesmanGenome
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import org.jetbrains.anko.doAsync
 
-class MatrixifyUtil(private val places: List<Place>) {
+object MatrixifyUtil {
 
     private val TAG = MatrixifyUtil::class.java.simpleName
-    private lateinit var context: Context
 
+    fun repositionPlaces(places: List<String>, optimizedIndex: List<Int>) : Task<List<String>> {
+        return Tasks.forResult(optimizedIndex.map { index -> places.get(index) })
+    }
 
-
-    fun finishFetchingDistanceMatrix(distanceMatrixModel: DistanceMatrixModel) {
+    fun generateGenome(distanceMatrixModel: DistanceMatrixModel): Task<SalesmanGenome> {
         Log.d(TAG, distanceMatrixModel.rows!!.indices.toString())
         Log.d(TAG, distanceMatrixModel.status)
 
@@ -30,22 +31,18 @@ class MatrixifyUtil(private val places: List<Place>) {
 
         val geneticAlgorithm =
             Salesman(distanceMatrixModel.rows!!.size, travelDurations, 0, 0)
-        val result = geneticAlgorithm.optimize()
-        Log.d(TAG,"Genome"+result.genome.toString())
+        return Tasks.forResult(geneticAlgorithm.optimize())
     }
 
-    fun createMatrix(view: View) {
-        // TODO: Use the new get trip Places function
-        var placesIdArray: ArrayList<String> = arrayListOf()
-
-
-            for (place in places) {
-                placesIdArray.add(place.name!!)
+    fun optimize(places: List<String>, responseHandler: (result: List<String>) -> Unit?) {
+        doAsync {
+            DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<String>){ result: DistanceMatrixModel ->
+                generateGenome(distanceMatrixModel = result).continueWithTask { genome: Task<SalesmanGenome> ->
+                    repositionPlaces(places, genome.result!!.optimizedRoute)
+                }.addOnSuccessListener { optimizedRoute: List<String> ->
+                    responseHandler(optimizedRoute)
+                }
             }
-
-            DistanceMatrixProvider.fetchDistanceMatrix(placesIdArray) {
-                    result: DistanceMatrixModel ->
-                finishFetchingDistanceMatrix(result) // After we fetched invoke function
-            }
+        }
     }
 }

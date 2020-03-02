@@ -1,6 +1,7 @@
 package com.example.pinatlas.model.matrix
 //This code is a modified version of : https://stackabuse.com/traveling-salesman-problem-with-genetic-algorithms-in-java/
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SalesmanGenome: Comparable<Any> {
@@ -70,6 +71,9 @@ class SalesmanGenome: Comparable<Any> {
         sb.append(this.fitness)
         return sb.toString()
     }
+
+    val optimizedRoute: List<Int>
+        get() = listOf(listOf(startingCity), genome, listOf(startingCity)).flatten()
 
 
     override operator fun compareTo(o: Any): Int {
