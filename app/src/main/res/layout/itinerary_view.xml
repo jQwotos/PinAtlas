@@ -11,14 +11,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/navyBlue">
 
         <TextView
             android:id="@+id/tripName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/autofill_trip_name_hint"
-            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:textSize="36sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/editButton"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,8 +30,8 @@
             android:id="@+id/editButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit"
             android:onClick="onClickEditButton"
+            android:text="Edit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -51,18 +53,11 @@
             app:cardCornerRadius="10dp"
             app:cardMaxElevation="4dp"
             app:cardElevation="3dp"
-            android:layout_gravity="center|top"
-            >
-            <include
-                android:id="@+id/selected"
-                layout="@layout/item_itinerary_list_tile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </androidx.cardview.widget.CardView>
+            android:layout_gravity="center|top" />
 
-        <include
-            android:id="@+id/itineraryCard"
-            layout="@layout/itinerary_tile" />
+<!--        <include-->
+<!--            android:id="@+id/itineraryCard"-->
+<!--            layout="@layout/itinerary_tile" />-->
     </com.mapbox.mapboxsdk.maps.MapView>
 
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView

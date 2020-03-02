@@ -47,7 +47,6 @@ class CreationView : AppCompatActivity() {
     private lateinit var endDateButton : Button
     private lateinit var tripNameText: EditText
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
-    private lateinit var submitButton: Button
     private lateinit var deleteButton: Button
     private lateinit var loader: ConstraintLayout
 
