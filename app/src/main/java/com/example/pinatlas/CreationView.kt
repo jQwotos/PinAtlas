@@ -230,6 +230,7 @@ class CreationView : AppCompatActivity() {
                 MatrixifyUtil.optimize(viewModel.trip.value!!.places) { newOrderedPlaces ->
                     if (newOrderedPlaces != null) {
                         viewModel.reorderPlaces(newOrderedPlaces)
+                        viewModel.saveTrip()
                     }
                     changeToItineraryView()
                 }
