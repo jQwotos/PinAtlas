@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -93,10 +94,8 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
             }
         })
     }
-
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
-        mapView = findViewById(R.id.mapView)
         viewModel.tripPlaces.observe(this, Observer { placesList ->
             if (placesList != null) {
                 val inLatLngs : ArrayList<Feature> = ArrayList<Feature>()
@@ -107,46 +106,35 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                     )
                 }
 
-
-
-                mapboxMap.setStyle(
-                    Style.Builder().fromUri("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41")
-
+                mapboxMap.setStyle(Style.MAPBOX_STREETS){style ->
                         // Add the SymbolLayer icon image to the map style
-                        .withImage(ICON_ID, BitmapFactory.decodeResource(
-                            this.getResources(), R.drawable.common_full_open_on_phone))
+                        style.addImage(ICON_ID, BitmapFactory.decodeResource(
+                            this.getResources(), R.drawable.mapbox_compass_icon))
                         // Adding a GeoJson source for the SymbolLayer icons.
-                        .withSource(
+                        style.addSource(
                             GeoJsonSource(
                                 SOURCE_ID,
                                 FeatureCollection.fromFeatures(inLatLngs)
                             )
                         )
-
                         // Adding the actual SymbolLayer to the map style. An offset is added that the bottom of the red
                         // marker icon gets fixed to the coordinate, rather than the middle of the icon being fixed to
                         // the coordinate point. This is offset is not always needed and is dependent on the image
                         // that you use for the SymbolLayer icon.
-                        .withLayer(
+                        style.addLayer(
                             SymbolLayer(LAYER_ID, SOURCE_ID)
                                 .withProperties(
-                                    PropertyFactory.iconAllowOverlap(true),
-                                    PropertyFactory.iconOffset(arrayOf(0f, -9f)),
-                                    PropertyFactory.iconSize(100f)
+                                    PropertyFactory.iconImage(ICON_ID),
+                                    PropertyFactory.iconIgnorePlacement(true),
+                                    PropertyFactory.iconAllowOverlap(true)
                                 )
                         )
-                ) {
-                    enableLocationComponent(it)
+                    enableLocationComponent(style)
+                    Log.e("TAG_123:",inLatLngs.toString())// This comes out as an error statement
                 }
-
-
-
-
             }
         })
-
     }
-
 
 
     private fun enableLocationComponent(loadedMapStyle: Style) {
