@@ -25,6 +25,9 @@ import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.camera.CameraUpdate
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
@@ -96,6 +99,11 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                     inLatLngs.add(  Feature.fromGeometry(
                         Point.fromLngLat(placesList[n].coordinates!!.longitude, placesList[n].coordinates!!.latitude))
                     )
+                }
+                if (placesList.isNotEmpty()) {
+                    val lat = placesList[0].coordinates!!.latitude
+                    val lgn = placesList[0].coordinates!!.longitude
+                    mapboxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat, lgn), 10.0))
                 }
                 mapboxMap.setStyle(Style.MAPBOX_STREETS){style ->
                     // Add the SymbolLayer icon image to the map style
