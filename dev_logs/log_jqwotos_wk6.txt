@@ -1,0 +1,3 @@
+- 2 hrs | created functions for google busy places
+- 1 hr  | binding optimization algorithm to firestore data
+- 2 hrs | helping others with random bug fixes
