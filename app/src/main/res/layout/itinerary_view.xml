@@ -28,10 +28,17 @@
 
         <Button
             android:id="@+id/editButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="#EA3F60"
+            android:backgroundTintMode="add"
+            android:fontFamily="sans-serif"
             android:onClick="onClickEditButton"
-            android:text="Edit"
+            android:text="edit"
+            android:textAllCaps="false"
+            android:textColor="@color/navyBlue"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

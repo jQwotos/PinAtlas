@@ -77,7 +77,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         })
 
         //Local the tiles for past/upcoming trips
-        adapter = ActivityListAdapter(viewModel, ViewModes.ITINERARY_MODE)
+        adapter = ActivityListAdapter(viewModel, ViewModes.ITINERARY_MODE, this)
         val submitListView = findViewById<MultiSnapRecyclerView>(R.id.sublist_recycler_view)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         submitListView.layoutManager = manager
@@ -92,6 +92,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
 
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
+        var isInit = false
         viewModel.tripPlaces.observe(this, Observer { placesList ->
             if (placesList != null) {
                 val inLatLngs : ArrayList<Feature> = ArrayList<Feature>()
@@ -101,9 +102,16 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                     )
                 }
                 if (placesList.isNotEmpty()) {
-                    val lat = placesList[0].coordinates!!.latitude
-                    val lgn = placesList[0].coordinates!!.longitude
-                    mapboxMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat, lgn), 15.0))
+                    viewModel.latLng.observe(this, Observer { coordinates ->
+                        val lat = coordinates.latitude
+                        val lng = coordinates.longitude
+                        val zoom = when (isInit) {
+                            true -> 12.5
+                            else -> 11.0
+                        }
+                        this.mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), zoom))
+                        isInit = true
+                    })
                 }
                 mapboxMap.setStyle(Style.MAPBOX_STREETS){style ->
                     // Add the SymbolLayer icon image to the map style

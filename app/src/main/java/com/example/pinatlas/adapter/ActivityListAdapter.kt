@@ -1,5 +1,6 @@
 package com.example.pinatlas.adapter
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.ItemMoveCallback
 import com.example.pinatlas.R
 import com.example.pinatlas.constants.ViewModes
+import com.example.pinatlas.utils.PlaceThumbnailUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
 
-class ActivityListAdapter ( private val viewModel: CreationViewModel, private val mode: ViewModes
+class ActivityListAdapter ( private val viewModel: CreationViewModel, private val mode: ViewModes, private val context: Context
 ) : RecyclerView.Adapter<ActivityListAdapter.ViewHolder>(), ItemMoveCallback.ItemTouchHelperContract {
 
     private val places = viewModel.tripPlaces
@@ -25,13 +27,19 @@ class ActivityListAdapter ( private val viewModel: CreationViewModel, private va
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val place =  places.value!![position]
 
         if (mode == ViewModes.ITINERARY_MODE) {
             holder.deleteButton.visibility = View.GONE
+
+            holder.itemView.setOnClickListener {
+                viewModel.latLng.postValue(place.coordinates)
+            }
         }
 
-        holder.activity.text = places.value!![position].name
-        holder.address.text = places.value!![position].address
+        PlaceThumbnailUtil(context).populateImageView(place.placeId, holder.thumbnail)
+        holder.activity.text = place.name
+        holder.address.text = place.address
         holder.priority.text = "#${position+1}"
         holder.deleteButton.setOnClickListener {
             viewModel.deletePlace(position)
@@ -49,7 +57,7 @@ class ActivityListAdapter ( private val viewModel: CreationViewModel, private va
         val address: TextView = itemView.findViewById(R.id.activityAddress) as TextView
         val priority: TextView = itemView.findViewById(R.id.activityPriority) as TextView
         val deleteButton: ImageView = itemView.findViewById(R.id.deleteSymbol) as ImageView
-
+        val thumbnail: ImageView = itemView.findViewById(R.id.thumbnail) as ImageView
         val card: CardView = itemView as CardView
     }
 

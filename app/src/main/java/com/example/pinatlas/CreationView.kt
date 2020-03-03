@@ -91,7 +91,7 @@ class CreationView : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        val adapter = ActivityListAdapter(viewModel, ViewModes.EDIT_MODE)
+        val adapter = ActivityListAdapter(viewModel, ViewModes.EDIT_MODE, this)
         val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
         loader = findViewById(R.id.loader)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
