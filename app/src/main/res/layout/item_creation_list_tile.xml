@@ -10,17 +10,16 @@
 
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp">
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/act_symbol"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/thumbnail"
+                android:layout_width="65dp"
+                android:layout_height="55dp"
                 android:layout_column="0"
-                android:layout_gravity="left|top"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:baselineAlignBottom="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/mapbox_compass_icon"></ImageView>
 
@@ -28,22 +27,22 @@
                 android:id="@+id/deleteSymbol"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:tint="@color/white"
                 android:layout_column="4"
                 android:layout_gravity="left|top"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_delete_24px" />
+                android:src="@drawable/ic_delete_24px"
+                android:tint="@color/navyBlue" />
 
             <TextView
                 android:id="@+id/activityPriority"
-                android:layout_width="100dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:layout_column="3"
                 android:layout_gravity="center"
                 android:text="1"
-                android:textColor="#fff"
-                android:textSize="16dp"
                 android:textAlignment="center"
+                android:textColor="@color/navyBlue"
+                android:textSize="16dp"
                 android:textStyle="bold"></TextView>
 
             <LinearLayout
@@ -55,9 +54,10 @@
 
                 <TextView
                     android:id="@+id/activityName"
-                    android:layout_width="170dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:width="200dp"
                     android:gravity="center"
                     android:padding="5dp"
                     android:paddingLeft="120dp"
@@ -68,14 +68,15 @@
 
                 <TextView
                     android:id="@+id/activityAddress"
-                    android:layout_width="170dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:width="200dp"
                     android:gravity="center"
                     android:padding="5dp"
                     android:paddingLeft="120dp"
                     android:text="New York, New York, USA"
-                    android:textColor="#fff"
+                    android:textColor="@color/navyBlue"
                     android:textSize="10sp"
                     android:textStyle="bold"></TextView>
             </LinearLayout>

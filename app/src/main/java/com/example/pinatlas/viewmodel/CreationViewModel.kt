@@ -13,6 +13,7 @@ import com.example.pinatlas.utils.DateUtils
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ListenerRegistration
 
 class CreationViewModel(tripId: String, userId: String) : ViewModel() {
@@ -44,6 +45,8 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         trip?.name
     }
 
+    val latLng: MutableLiveData<GeoPoint> = MutableLiveData<GeoPoint>()
+
     init {
         tripListener =  tripsRepository.fetchTrip(tripId).addSnapshotListener { tripSnapshot, _ ->
             val trip = Trip.fromFirestore(tripSnapshot!!)
@@ -58,9 +61,15 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
                     }
                     val unorderedPlaces = placesSnapshot!!.toObjects(Place::class.java)
                     val orderedPlaces = arrayListOf<Place>()
+                    var lat = 0.0
+                    var lgt = 0.0
                     for (id in trip.places) {
-                        orderedPlaces.add(unorderedPlaces.first { it.placeId == id })
+                        val place = unorderedPlaces.first { it.placeId == id }
+                        orderedPlaces.add(place)
+                        lat += place.coordinates!!.latitude / trip.places.size
+                        lgt += place.coordinates!!.longitude / trip.places.size
                     }
+                    latLng.postValue(GeoPoint(lat, lgt))
                     _places.postValue(orderedPlaces)
                 }
             } else {
