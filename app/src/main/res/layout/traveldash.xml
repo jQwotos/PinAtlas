@@ -57,9 +57,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/mapViewContainer"
+        android:padding="10dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="Past Trips"></TextView>
+        android:text="Past Trips"
+        android:textAllCaps="true"></TextView>
 
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
         andriod:id="@+id/PTview"
@@ -68,18 +69,19 @@
         andriod:layout_below="@+id/PTtitle"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
+        android:paddingStart="10dp"
         app:msrv_gravity="end"
         app:msrv_interval="10"
         app:msrv_speed_ms_per_inch="100" />
+
     <TextView
         android:id="@+id/UTtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Upcoming Trips"
         android:layout_below="@id/PTview"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        ></TextView>
+        android:padding="10dp"
+        android:text="Upcoming Trips"
+        android:textAllCaps="true"></TextView>
 
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
         android:id="@+id/UTView"
@@ -90,10 +92,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal"
+        android:paddingStart="10dp"
         app:msrv_gravity="end"
         app:msrv_interval="10"
-        app:msrv_speed_ms_per_inch="100" >
-    </com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView>
+        app:msrv_speed_ms_per_inch="100"></com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView>
 
 
 </RelativeLayout>
