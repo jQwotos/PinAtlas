@@ -1,0 +1,2 @@
+- Deleted two unused adapters and commented on some code (1 hour) 
+- Started UML Class Diagram for D3 and started write-up (3 hours)
