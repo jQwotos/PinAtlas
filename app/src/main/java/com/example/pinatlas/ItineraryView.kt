@@ -67,7 +67,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-        tripId = intent.getStringExtra(Constants.TRIP_ID.type)!!
+        tripId = intent.getStringExtra("TRIP_ID")!!
         tripName = findViewById(R.id.tripName)
 
         val factory = CreationViewModelFactory(tripId, currentUser!!.uid)
@@ -235,7 +235,6 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         startActivity(intent)
     }
     companion object {
-
         // Create names for the map's source, icon, and layer IDs.
         private val SOURCE_ID = "SOURCE_ID"
         private val ICON_ID = "ICON_ID"

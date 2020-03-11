@@ -38,11 +38,13 @@ class TripAdapter (private val pastTrips: LiveData<List<Trip>>, context: Context
     override fun getItemCount(): Int = pastTrips.value?.size ?: 0
 
     // Binds to the RecyclerView and converts the object into something useful
+    // inner --> trying to get access something in viewholder (related to placeThumb
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.location)
         val date: TextView = itemView.findViewById(R.id.dates)
         val thumbnail: ImageView = itemView.findViewById(R.id.locationThumbnail)
 
+        // TODO:
         fun bind(trip: Trip, listener: OnTripSelectedListener) {
             title.text = trip.name
             date.text = DateUtils.formatTripDate(trip)

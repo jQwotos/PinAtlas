@@ -39,7 +39,7 @@ class ActivityListAdapter ( private val viewModel: CreationViewModel, private va
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val place =  places.value!![position]
 
-        /* in itinerary mode, we disable the delete button in itinerary
+        /* in itinerary mode, we hide the delete button in itinerary
         *
         * We do this to prevent page duplication since the only difference (for now) between itinerary mode and creation mode
         * is that itinerary mode does not allow users to delete items (in our system)
@@ -88,6 +88,7 @@ class ActivityListAdapter ( private val viewModel: CreationViewModel, private va
     // when the user clicks on the card, it'll change the background colour to show what the user is selecting
 
     // todo: change to XML colours (MONICA)
+    // change the background colour while it's being dragged (so user knows it's selected)
     override fun onRowClear(viewHolder: ViewHolder) {
         viewHolder.card.setCardBackgroundColor(Color.parseColor("#EA3F60"))
     }

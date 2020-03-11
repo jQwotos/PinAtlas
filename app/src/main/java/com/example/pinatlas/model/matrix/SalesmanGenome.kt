@@ -1,10 +1,11 @@
 package com.example.pinatlas.model.matrix
+
 //This code is a modified version of : https://stackabuse.com/traveling-salesman-problem-with-genetic-algorithms-in-java/
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SalesmanGenome: Comparable<Any> {
+class SalesmanGenome : Comparable<Any> {
     var genome: List<Int>
         internal set
     internal var travelPrices: Array<IntArray>
@@ -36,7 +37,7 @@ class SalesmanGenome: Comparable<Any> {
         fitness = this.calculateFitness()
     }
 
-    fun calculateFitness(): Int {
+    private fun calculateFitness(): Int {
         var fitness = 0
         var currentCity = startingCity
         for (gene in genome) {
@@ -72,6 +73,7 @@ class SalesmanGenome: Comparable<Any> {
         return sb.toString()
     }
 
+    // getter
     val optimizedRoute: List<Int>
         get() = listOf(listOf(startingCity), genome, listOf(startingCity)).flatten()
 

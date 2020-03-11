@@ -24,7 +24,7 @@ class Salesman(
         tournamentSize = 40
     }
 
-    fun initialPopulation(): List<SalesmanGenome> {
+    private fun initialPopulation(): List<SalesmanGenome> {
         val population = ArrayList<SalesmanGenome>()
         for (i in 0 until generationSize) {
             population.add(
@@ -38,7 +38,7 @@ class Salesman(
         return population
     }
 
-    fun selection(population: List<SalesmanGenome>): List<SalesmanGenome> {
+    private fun selection(population: List<SalesmanGenome>): List<SalesmanGenome> {
         val selected = ArrayList<SalesmanGenome>()
         for (i in 0 until reproductionSize) {
             selected.add(tournamentSelection(population))
@@ -47,7 +47,7 @@ class Salesman(
     }
 
     //called by initial population
-    fun tournamentSelection(population: List<SalesmanGenome>): SalesmanGenome {
+    private fun tournamentSelection(population: List<SalesmanGenome>): SalesmanGenome {
         val selected =
             pickNRandomElements<SalesmanGenome>(
                 population,
@@ -56,7 +56,7 @@ class Salesman(
         return Collections.min(selected!!)
     }
 
-    fun mutate(salesman: SalesmanGenome): SalesmanGenome {
+    private fun mutate(salesman: SalesmanGenome): SalesmanGenome {
         val random = Random()
         val mutate = random.nextFloat()
         if (mutate < mutationRate) {
@@ -72,7 +72,7 @@ class Salesman(
         return salesman
     }
 
-    fun createGeneration(population: List<SalesmanGenome>): List<SalesmanGenome> {
+    private fun createGeneration(population: List<SalesmanGenome>): List<SalesmanGenome> {
         val generation = ArrayList<SalesmanGenome>()
         var currentGenerationSize = 0
         while (currentGenerationSize < generationSize) {
@@ -90,7 +90,7 @@ class Salesman(
         return generation
     }
 
-    fun crossover(parents: List<SalesmanGenome>): MutableList<SalesmanGenome> {
+    private fun crossover(parents: List<SalesmanGenome>): MutableList<SalesmanGenome> {
 
         val random = Random()
         val breakpoint = random.nextInt(genomeSize)

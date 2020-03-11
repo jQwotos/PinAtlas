@@ -4,7 +4,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 class User {
-    var userId: String = ""                                // Auto-generated id from firestore
+    var userId: String = ""                         // Auto-generated id from firestore
     var trips: ArrayList<String> = arrayListOf()    // Array of tripIDs
 
     constructor()
@@ -26,7 +26,7 @@ class User {
         trips.clear()
     }
 
-    fun getAllTrips() : ArrayList<String> {
+    fun getAllTrips(): ArrayList<String> {
         return trips
     }
 }
