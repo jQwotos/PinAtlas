@@ -92,16 +92,16 @@ class CreationView : AppCompatActivity() {
         })
 
         val adapter = PlaceListAdapter(viewModel, ViewModes.EDIT_MODE, this)
-        val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
+        val placeList: MultiSnapRecyclerView = findViewById(R.id.placeList)
         loader = findViewById(R.id.loader)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val touchCallback = ItemMoveCallback(adapter)
         val touchHelper = ItemTouchHelper(touchCallback)
 
-        touchHelper.attachToRecyclerView(activityList)
+        touchHelper.attachToRecyclerView(placeList)
 
-        activityList.adapter = adapter
-        activityList.layoutManager = manager
+        placeList.adapter = adapter
+        placeList.layoutManager = manager
 
         autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(PLACE_FIELDS)
