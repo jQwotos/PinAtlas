@@ -15,7 +15,11 @@ import com.example.pinatlas.utils.PlaceThumbnailUtil
 
 class TripAdapter (private val pastTrips: LiveData<List<Trip>>, context: Context,
                    onTripSelectedListener: OnTripSelectedListener): RecyclerView.Adapter<TripAdapter.ViewHolder>() {
+
+    // event listener for when a trip gets tapped
     private var listener: OnTripSelectedListener = onTripSelectedListener
+
+    // generates another object, which generates images from util class (PlaceThumbnailUtil)
     private val placeThumbnailUtil = PlaceThumbnailUtil(context)
 
     interface OnTripSelectedListener {
