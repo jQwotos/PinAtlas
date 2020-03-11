@@ -1,0 +1,1 @@
+- Edited UML Diagram, started slideshow presenetation, added some comments, deleted a few unused variables, worked on Delieverable 3 document (3 hours)
