@@ -15,9 +15,9 @@ import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.utils.PlaceThumbnailUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
 
-// Whenever we create an ActivityListAdapter, we specify the mode, the view model, context
-class ActivityListAdapter ( private val viewModel: CreationViewModel, private val mode: ViewModes, private val context: Context
-) : RecyclerView.Adapter<ActivityListAdapter.ViewHolder>(), ItemMoveCallback.ItemTouchHelperContract {
+// Whenever we create an PlaceListAdapter, we specify the mode, the view model, context
+class PlaceListAdapter (private val viewModel: CreationViewModel, private val mode: ViewModes, private val context: Context
+) : RecyclerView.Adapter<PlaceListAdapter.ViewHolder>(), ItemMoveCallback.ItemTouchHelperContract {
 
     private val places = viewModel.tripPlaces
 

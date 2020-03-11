@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pinatlas.adapter.ActivityListAdapter
+import com.example.pinatlas.adapter.PlaceListAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.viewmodel.CreationViewModel
@@ -25,7 +25,6 @@ import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
-import com.mapbox.mapboxsdk.camera.CameraUpdate
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
@@ -49,7 +48,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
     private lateinit var tripName: TextView
     private lateinit var viewModel: CreationViewModel
     private lateinit var tripId: String
-    private lateinit var adapter: ActivityListAdapter
+    private lateinit var adapter: PlaceListAdapter
 
     private lateinit var  fill : Fill
 
@@ -77,7 +76,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         })
 
         //Local the tiles for past/upcoming trips
-        adapter = ActivityListAdapter(viewModel, ViewModes.ITINERARY_MODE, this)
+        adapter = PlaceListAdapter(viewModel, ViewModes.ITINERARY_MODE, this)
         val submitListView = findViewById<MultiSnapRecyclerView>(R.id.sublist_recycler_view)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         submitListView.layoutManager = manager
