@@ -23,7 +23,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pinatlas.adapter.ActivityListAdapter
+import com.example.pinatlas.adapter.PlaceListAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.databinding.CreationViewBinding
@@ -91,17 +91,17 @@ class CreationView : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        val adapter = ActivityListAdapter(viewModel, ViewModes.EDIT_MODE, this)
-        val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
+        val adapter = PlaceListAdapter(viewModel, ViewModes.EDIT_MODE, this)
+        val placeList: MultiSnapRecyclerView = findViewById(R.id.placeList)
         loader = findViewById(R.id.loader)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val touchCallback = ItemMoveCallback(adapter)
         val touchHelper = ItemTouchHelper(touchCallback)
 
-        touchHelper.attachToRecyclerView(activityList)
+        touchHelper.attachToRecyclerView(placeList)
 
-        activityList.adapter = adapter
-        activityList.layoutManager = manager
+        placeList.adapter = adapter
+        placeList.layoutManager = manager
 
         autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(PLACE_FIELDS)

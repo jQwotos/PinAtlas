@@ -5,7 +5,6 @@
     <color name="colorAccent">@color/hotPink</color>
     <color name="hotPink">#EA3F60</color>
     <color name="white"> #FFFFFF</color>
-    <color name="grey"> #E0E0E0</color>
     <color name="navyBlue"> #263B4C </color>
     <color name="success">#70C563</color>
     <color name="danger">#EA6363</color>
