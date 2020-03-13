@@ -3,6 +3,7 @@ package com.example.pinatlas
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -23,6 +24,7 @@ import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
+import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
@@ -36,6 +38,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.Fill
+import com.mapbox.mapboxsdk.style.layers.LineLayer
+import com.mapbox.mapboxsdk.style.layers.Property
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
@@ -95,10 +99,12 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         viewModel.tripPlaces.observe(this, Observer { placesList ->
             if (placesList != null) {
                 val inLatLngs : ArrayList<Feature> = ArrayList<Feature>()
+                val markers : MutableList<Point> = ArrayList()
                 for (n in 0 until placesList.size) {
                     inLatLngs.add(  Feature.fromGeometry(
                         Point.fromLngLat(placesList[n].coordinates!!.longitude, placesList[n].coordinates!!.latitude))
                     )
+                    markers.add(Point.fromLngLat(placesList[n].coordinates!!.longitude, placesList[n].coordinates!!.latitude))
                 }
                 if (placesList.isNotEmpty()) {
                     viewModel.latLng.observe(this, Observer { coordinates ->
@@ -132,6 +138,27 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                                 PropertyFactory.iconAllowOverlap(true)
                             )
                     )
+
+                    style.addSource(
+                        GeoJsonSource(
+                            "line-source",
+                            FeatureCollection.fromFeatures(
+                                arrayOf(
+                                    Feature.fromGeometry(
+                                        LineString.fromLngLats(markers!!)
+                                    )
+                                )
+                            )
+                        )
+                    )
+
+                    style.addLayer(
+                        LineLayer("linelayer", "line-source").withProperties(
+                            PropertyFactory.lineDasharray(arrayOf(0.21f, 2f)),
+                            PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                            PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
+                            PropertyFactory.lineWidth(5f),
+                            PropertyFactory.lineColor(Color.parseColor("#e55e5e"))))
                     enableLocationComponent(style)
                 }
             }
