@@ -17,7 +17,7 @@ class Salesman(
 
     init {
         genomeSize = numberOfCities - 1
-        generationSize = 5000
+        generationSize = 3000 //Changed from previous 5k making it quicker
         reproductionSize = 200
         maxIterations = 1000
         mutationRate = 0.1f
@@ -91,11 +91,9 @@ class Salesman(
     }
 
     fun crossover(parents: List<SalesmanGenome>): MutableList<SalesmanGenome> {
-
         val random = Random()
         val breakpoint = random.nextInt(genomeSize)
         val children = ArrayList<SalesmanGenome>()
-
         var parent1Genome: List<Int> = ArrayList(parents[0].genome)
         val parent2Genome = ArrayList(parents[1].genome)
 
@@ -131,7 +129,7 @@ class Salesman(
     }
 
     fun optimize(): SalesmanGenome {
-        var population = initialPopulation() // 5000 possible permutations of the matrix
+        var population = initialPopulation() // 4000 possible permutations of the matrix
         var globalBestGenome = population[0] //Set one first to be the best
         for (i in 0 until maxIterations) {   //Run a 1000 times
             val selected = selection(population)    // 200 Instances given  suing tournament method

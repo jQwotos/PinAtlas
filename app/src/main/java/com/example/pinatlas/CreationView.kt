@@ -211,7 +211,7 @@ class CreationView : AppCompatActivity() {
         Shubham Sharan
         * Facade design pattern used.
         * Client is the UI: creation_view.xml : It contains the submit button. which when clicked launches the genetic algorithm
-        * Facade class : CreationView : This where they createMatrix method is called which initiates the algorithmn
+        * Facade class : CreationView : This where they optimize method is called which initiates the matrixifyUtil's optimize algorithmn ->
         * My complex classes are : Salesman, SalesmanGenome, MatrixifyUtil, Distance Matrix Provider
             * SalesmanGenome : A candidate optimal solution. This class to stores the random generation, fitness function, the fitness itself, etc.
             * Salesman : This class will improve our model, and functions contained within it allow it to enhance the model to provide a viable solution
