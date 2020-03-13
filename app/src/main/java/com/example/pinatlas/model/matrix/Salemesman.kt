@@ -129,7 +129,7 @@ class Salesman(
     }
 
     fun optimize(): SalesmanGenome {
-        var population = initialPopulation() // 4000 possible permutations of the matrix
+        var population = initialPopulation() // 3000 possible permutations of the matrix
         var globalBestGenome = population[0] //Set one first to be the best
         for (i in 0 until maxIterations) {   //Run a 1000 times
             val selected = selection(population)    // 200 Instances given  suing tournament method
