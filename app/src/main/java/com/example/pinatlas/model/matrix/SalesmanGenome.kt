@@ -7,10 +7,14 @@ import kotlin.collections.ArrayList
 class SalesmanGenome: Comparable<Any> {
     var genome: List<Int>
         internal set
+
     internal var travelPrices: Array<IntArray>
+
     var startingCity: Int = 0
         internal set
-    internal var numberOfCities = 0
+
+    internal var numberOfCities: Int = 0
+
     var fitness: Int = 0
 
     //Random genome- Used in initial population
@@ -55,21 +59,6 @@ class SalesmanGenome: Comparable<Any> {
         }
         Collections.shuffle(result)
         return result
-    }
-
-    override fun toString(): String {
-        val sb = StringBuilder()
-        sb.append("Path: ")
-        sb.append(startingCity)
-        for (gene in genome) {
-            sb.append(" ")
-            sb.append(gene)
-        }
-        sb.append(" ")
-        sb.append(startingCity)
-        sb.append("\nLength: ")
-        sb.append(this.fitness)
-        return sb.toString()
     }
 
     val optimizedRoute: List<Int>

@@ -64,6 +64,7 @@ class CreationView : AppCompatActivity() {
         GPlace.Field.PHOTO_METADATAS
     )
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding : CreationViewBinding = DataBindingUtil.setContentView(this, R.layout.creation_view)
@@ -139,21 +140,6 @@ class CreationView : AppCompatActivity() {
             }
         })
 
-        /*
-        Shubham Sharan
-        * Facade design pattern used.
-        * Client is the UI: creation_view.xml : It contains the submit button. which when clicked launches the genetic algorithm
-        * Facade class : CreationView : This where they createMatrix method is called which initiates the algorithmn
-        * My complex classes are : Salesman, SalesmanGenome, MatrixifyUtil, Distance Matrix Provider
-            * SalesmanGenome : A candidate optimal solution. This class to stores the random generation, fitness function, the fitness itself, etc.
-            * Salesman : This class will improve our model, and functions contained within it allow it to enhance the model to provide a viable solution
-            * MatrixifyUtil : Calls the Saleman class to return the optimized solution
-            * DistanceMatrixProvider : Fetches distance matrix from google api we use the distance matrix to calculate the time it takes to get between each point.
-        * Helper Classes: All the classes inside the model.matrix : Duration, Element, Row
-            * Building of the data structure utilised in the complex classes
-            * Not specifically part of Facade Design Pattern
-        * */
-
         deleteButton = findViewById(R.id.deleteButton)
         deleteButton.setOnClickListener {
             viewModel.deleteTrip()
@@ -221,6 +207,20 @@ class CreationView : AppCompatActivity() {
         intent.putExtra(Constants.TRIP_ID.type, tripId)
         startActivity(intent)
     }
+    /*
+        Shubham Sharan
+        * Facade design pattern used.
+        * Client is the UI: creation_view.xml : It contains the submit button. which when clicked launches the genetic algorithm
+        * Facade class : CreationView : This where they optimize method is called which initiates the matrixifyUtil's optimize algorithmn ->
+        * My complex classes are : Salesman, SalesmanGenome, MatrixifyUtil, Distance Matrix Provider
+            * SalesmanGenome : A candidate optimal solution. This class to stores the random generation, fitness function, the fitness itself, etc.
+            * Salesman : This class will improve our model, and functions contained within it allow it to enhance the model to provide a viable solution
+            * MatrixifyUtil : Calls the Saleman class to return the optimized solution
+            * DistanceMatrixProvider : Fetches distance matrix from google api we use the distance matrix to calculate the time it takes to get between each point.
+        * Helper Classes: All the classes inside the model.matrix : Duration, Element, Row
+            * Building of the data structure utilised in the complex classes
+            * Not specifically part of Facade Design Pattern
+        * */
 
     fun optimize(view: View) {
         if (viewModel.tripPlaces.value!!.size > 2) {
