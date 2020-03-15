@@ -64,14 +64,13 @@ class CreationView : AppCompatActivity() {
         GPlace.Field.PHOTO_METADATAS
     )
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding : CreationViewBinding = DataBindingUtil.setContentView(this, R.layout.creation_view)
         GPlaces.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
 
         tripId = intent.getStringExtra(Constants.TRIP_ID.type)!!
-
+        /* Owner: AZ */
         val factory = CreationViewModelFactory(tripId, currentUser!!.uid)
         viewModel = ViewModelProviders.of(this, factory).get(CreationViewModel::class.java)
 
@@ -150,6 +149,7 @@ class CreationView : AppCompatActivity() {
         }
     }
 
+    /* Owner: MV */
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
         : DatePickerDialog.OnDateSetListener {
         override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
@@ -196,6 +196,7 @@ class CreationView : AppCompatActivity() {
     fun createEndDatePicker(view : View) {
         createDatePicker(EndDatePicker())
     }
+    /* End of Owner: MV */
 
     fun deleteTrip(view: View) {
         viewModel.deleteTrip()

@@ -10,6 +10,7 @@ import com.google.android.libraries.places.api.net.FetchPhotoRequest
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 
+/* Owner: AZ */
 object PlaceThumbnailUtil{
     private var  placesClient: PlacesClient
 

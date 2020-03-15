@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ListenerRegistration
 
+/* Owner: AZ */
 class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     val TAG = CreationViewModel::class.java.simpleName
 

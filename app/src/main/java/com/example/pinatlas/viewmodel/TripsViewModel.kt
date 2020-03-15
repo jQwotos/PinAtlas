@@ -11,6 +11,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import java.util.*
 
+/* Owner: AZ */
 class TripsViewModel(userId: String) : ViewModel() {
     val TAG = TripsViewModel::class.java.simpleName
 

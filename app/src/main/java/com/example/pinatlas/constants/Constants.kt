@@ -8,6 +8,7 @@ If we have a typo/want to change, then we have to modify the code everywhere.
 Instead, we use enum's as a "variables" (don't have to update code if we
  */
 
+/* Owner: MV */
 enum class Constants (val type: String) {
     TRIP_ID("TRIP_ID"),
     REQUEST_DENIED("REQUEST_DENIED"),
