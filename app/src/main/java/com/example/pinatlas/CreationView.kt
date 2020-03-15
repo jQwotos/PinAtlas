@@ -23,7 +23,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pinatlas.adapter.ActivityListAdapter
+import com.example.pinatlas.adapter.PlaceListAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.databinding.CreationViewBinding
@@ -64,6 +64,7 @@ class CreationView : AppCompatActivity() {
         GPlace.Field.PHOTO_METADATAS
     )
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding : CreationViewBinding = DataBindingUtil.setContentView(this, R.layout.creation_view)
@@ -91,17 +92,17 @@ class CreationView : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        val adapter = ActivityListAdapter(viewModel, ViewModes.EDIT_MODE, this)
-        val activityList: MultiSnapRecyclerView = findViewById(R.id.activityList)
+        val adapter = PlaceListAdapter(viewModel, ViewModes.EDIT_MODE, this)
+        val placeList: MultiSnapRecyclerView = findViewById(R.id.placeList)
         loader = findViewById(R.id.loader)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val touchCallback = ItemMoveCallback(adapter)
         val touchHelper = ItemTouchHelper(touchCallback)
 
-        touchHelper.attachToRecyclerView(activityList)
+        touchHelper.attachToRecyclerView(placeList)
 
-        activityList.adapter = adapter
-        activityList.layoutManager = manager
+        placeList.adapter = adapter
+        placeList.layoutManager = manager
 
         autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(PLACE_FIELDS)
@@ -138,21 +139,6 @@ class CreationView : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
         })
-
-        /*
-        Shubham Sharan
-        * Facade design pattern used.
-        * Client is the UI: creation_view.xml : It contains the submit button. which when clicked launches the genetic algorithm
-        * Facade class : CreationView : This where they createMatrix method is called which initiates the algorithmn
-        * My complex classes are : Salesman, SalesmanGenome, MatrixifyUtil, Distance Matrix Provider
-            * SalesmanGenome : A candidate optimal solution. This class to stores the random generation, fitness function, the fitness itself, etc.
-            * Salesman : This class will improve our model, and functions contained within it allow it to enhance the model to provide a viable solution
-            * MatrixifyUtil : Calls the Saleman class to return the optimized solution
-            * DistanceMatrixProvider : Fetches distance matrix from google api we use the distance matrix to calculate the time it takes to get between each point.
-        * Helper Classes: All the classes inside the model.matrix : Duration, Element, Row
-            * Building of the data structure utilised in the complex classes
-            * Not specifically part of Facade Design Pattern
-        * */
 
         deleteButton = findViewById(R.id.deleteButton)
         deleteButton.setOnClickListener {
@@ -221,6 +207,20 @@ class CreationView : AppCompatActivity() {
         intent.putExtra(Constants.TRIP_ID.type, tripId)
         startActivity(intent)
     }
+    /*
+        Shubham Sharan
+        * Facade design pattern used.
+        * Client is the UI: creation_view.xml : It contains the submit button. which when clicked launches the genetic algorithm
+        * Facade class : CreationView : This where they optimize method is called which initiates the matrixifyUtil's optimize algorithmn ->
+        * My complex classes are : Salesman, SalesmanGenome, MatrixifyUtil, Distance Matrix Provider
+            * SalesmanGenome : A candidate optimal solution. This class to stores the random generation, fitness function, the fitness itself, etc.
+            * Salesman : This class will improve our model, and functions contained within it allow it to enhance the model to provide a viable solution
+            * MatrixifyUtil : Calls the Saleman class to return the optimized solution
+            * DistanceMatrixProvider : Fetches distance matrix from google api we use the distance matrix to calculate the time it takes to get between each point.
+        * Helper Classes: All the classes inside the model.matrix : Duration, Element, Row
+            * Building of the data structure utilised in the complex classes
+            * Not specifically part of Facade Design Pattern
+        * */
 
     fun optimize(view: View) {
         if (viewModel.tripPlaces.value!!.size > 2) {

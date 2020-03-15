@@ -142,7 +142,7 @@
             app:layout_constraintTop_toTopOf="@+id/editStartDate" />
 
         <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
-            android:id="@+id/activityList"
+            android:id="@+id/placeList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

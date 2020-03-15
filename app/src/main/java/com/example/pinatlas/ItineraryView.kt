@@ -3,6 +3,7 @@ package com.example.pinatlas
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -12,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pinatlas.adapter.ActivityListAdapter
+import com.example.pinatlas.adapter.PlaceListAdapter
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.viewmodel.CreationViewModel
@@ -23,9 +24,9 @@ import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
+import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
-import com.mapbox.mapboxsdk.camera.CameraUpdate
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
@@ -37,6 +38,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.Fill
+import com.mapbox.mapboxsdk.style.layers.LineLayer
+import com.mapbox.mapboxsdk.style.layers.Property
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
@@ -49,7 +52,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
     private lateinit var tripName: TextView
     private lateinit var viewModel: CreationViewModel
     private lateinit var tripId: String
-    private lateinit var adapter: ActivityListAdapter
+    private lateinit var adapter: PlaceListAdapter
 
     private lateinit var  fill : Fill
 
@@ -77,7 +80,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         })
 
         //Local the tiles for past/upcoming trips
-        adapter = ActivityListAdapter(viewModel, ViewModes.ITINERARY_MODE, this)
+        adapter = PlaceListAdapter(viewModel, ViewModes.ITINERARY_MODE, this)
         val submitListView = findViewById<MultiSnapRecyclerView>(R.id.sublist_recycler_view)
         val manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         submitListView.layoutManager = manager
@@ -96,10 +99,12 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         viewModel.tripPlaces.observe(this, Observer { placesList ->
             if (placesList != null) {
                 val inLatLngs : ArrayList<Feature> = ArrayList<Feature>()
+                val markers : MutableList<Point> = ArrayList()
                 for (n in 0 until placesList.size) {
                     inLatLngs.add(  Feature.fromGeometry(
                         Point.fromLngLat(placesList[n].coordinates!!.longitude, placesList[n].coordinates!!.latitude))
                     )
+                    markers.add(Point.fromLngLat(placesList[n].coordinates!!.longitude, placesList[n].coordinates!!.latitude))
                 }
                 if (placesList.isNotEmpty()) {
                     viewModel.latLng.observe(this, Observer { coordinates ->
@@ -133,6 +138,27 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                                 PropertyFactory.iconAllowOverlap(true)
                             )
                     )
+
+                    style.addSource(
+                        GeoJsonSource(
+                            "line-source",
+                            FeatureCollection.fromFeatures(
+                                arrayOf(
+                                    Feature.fromGeometry(
+                                        LineString.fromLngLats(markers!!)
+                                    )
+                                )
+                            )
+                        )
+                    )
+
+                    style.addLayer(
+                        LineLayer("linelayer", "line-source").withProperties(
+                            PropertyFactory.lineDasharray(arrayOf(0.21f, 2f)),
+                            PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
+                            PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
+                            PropertyFactory.lineWidth(5f),
+                            PropertyFactory.lineColor(Color.parseColor("#e55e5e"))))
                     enableLocationComponent(style)
                 }
             }

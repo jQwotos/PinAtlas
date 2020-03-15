@@ -17,14 +17,14 @@ class Salesman(
 
     init {
         genomeSize = numberOfCities - 1
-        generationSize = 5000
+        generationSize = 3000 //Changed from previous 5k making it quicker
         reproductionSize = 200
         maxIterations = 1000
         mutationRate = 0.1f
         tournamentSize = 40
     }
 
-    private fun initialPopulation(): List<SalesmanGenome> {
+    fun initialPopulation(): List<SalesmanGenome> {
         val population = ArrayList<SalesmanGenome>()
         for (i in 0 until generationSize) {
             population.add(
@@ -38,7 +38,7 @@ class Salesman(
         return population
     }
 
-    private fun selection(population: List<SalesmanGenome>): List<SalesmanGenome> {
+    fun selection(population: List<SalesmanGenome>): List<SalesmanGenome> {
         val selected = ArrayList<SalesmanGenome>()
         for (i in 0 until reproductionSize) {
             selected.add(tournamentSelection(population))
@@ -47,7 +47,7 @@ class Salesman(
     }
 
     //called by initial population
-    private fun tournamentSelection(population: List<SalesmanGenome>): SalesmanGenome {
+    fun tournamentSelection(population: List<SalesmanGenome>): SalesmanGenome {
         val selected =
             pickNRandomElements<SalesmanGenome>(
                 population,
@@ -56,7 +56,7 @@ class Salesman(
         return Collections.min(selected!!)
     }
 
-    private fun mutate(salesman: SalesmanGenome): SalesmanGenome {
+    fun mutate(salesman: SalesmanGenome): SalesmanGenome {
         val random = Random()
         val mutate = random.nextFloat()
         if (mutate < mutationRate) {
@@ -72,7 +72,7 @@ class Salesman(
         return salesman
     }
 
-    private fun createGeneration(population: List<SalesmanGenome>): List<SalesmanGenome> {
+    fun createGeneration(population: List<SalesmanGenome>): List<SalesmanGenome> {
         val generation = ArrayList<SalesmanGenome>()
         var currentGenerationSize = 0
         while (currentGenerationSize < generationSize) {
@@ -90,12 +90,10 @@ class Salesman(
         return generation
     }
 
-    private fun crossover(parents: List<SalesmanGenome>): MutableList<SalesmanGenome> {
-
+    fun crossover(parents: List<SalesmanGenome>): MutableList<SalesmanGenome> {
         val random = Random()
         val breakpoint = random.nextInt(genomeSize)
         val children = ArrayList<SalesmanGenome>()
-
         var parent1Genome: List<Int> = ArrayList(parents[0].genome)
         val parent2Genome = ArrayList(parents[1].genome)
 
@@ -131,7 +129,7 @@ class Salesman(
     }
 
     fun optimize(): SalesmanGenome {
-        var population = initialPopulation() // 5000 possible permutations of the matrix
+        var population = initialPopulation() // 3000 possible permutations of the matrix
         var globalBestGenome = population[0] //Set one first to be the best
         for (i in 0 until maxIterations) {   //Run a 1000 times
             val selected = selection(population)    // 200 Instances given  suing tournament method
