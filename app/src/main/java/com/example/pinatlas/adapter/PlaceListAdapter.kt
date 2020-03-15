@@ -39,7 +39,7 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val place =  places.value!![position]
 
-        /* in itinerary mode, we disable the delete button in itinerary
+        /* in itinerary mode, we hide the delete button in itinerary
         *
         * We do this to prevent page duplication since the only difference (for now) between itinerary mode and creation mode
         * is that itinerary mode does not allow users to delete items (in our system)
