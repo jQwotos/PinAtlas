@@ -1,1 +1,2 @@
 - Edited UML Diagram, started slideshow presenetation, added some comments, deleted a few unused variables, worked on Delieverable 3 document (3 hours)
+- edited part of UML Diagram, D3 document, and slideshow (3 hours)
