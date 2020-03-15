@@ -14,6 +14,7 @@ object MatrixifyUtil {
 
     private val TAG = MatrixifyUtil::class.java.simpleName
 
+    //Maps the algorithm's index to places
     fun repositionPlaces(places: List<String>, optimizedIndex: List<Int>) : Task<List<String>> {
         return Tasks.forResult(optimizedIndex.map { index -> places.get(index) })
     }
@@ -30,7 +31,7 @@ object MatrixifyUtil {
             }
             Log.d(TAG,"\n\n")
         }
-
+        //Optimization is done here
         val geneticAlgorithm =
             Salesman(distanceMatrixModel.rows!!.size, travelDurations, 0, 0)
         return Tasks.forResult(geneticAlgorithm.optimize())

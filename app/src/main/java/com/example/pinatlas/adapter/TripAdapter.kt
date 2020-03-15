@@ -20,9 +20,6 @@ class TripAdapter (private val pastTrips: LiveData<List<Trip>>, context: Context
     // event listener for when a trip gets tapped
     private var listener: OnTripSelectedListener = onTripSelectedListener
 
-    // generates another object, which generates images from util class (PlaceThumbnailUtil)
-    private val placeThumbnailUtil = PlaceThumbnailUtil(context)
-
     interface OnTripSelectedListener {
         fun onTripSelected(trip: Trip)
     }
@@ -48,7 +45,7 @@ class TripAdapter (private val pastTrips: LiveData<List<Trip>>, context: Context
             title.text = trip.name
             date.text = DateUtils.formatTripDate(trip)
             if (trip.places.size > 0) {
-                placeThumbnailUtil.populateImageView(trip.places[0]!!, thumbnail)
+                PlaceThumbnailUtil.populateImageView(trip.places[0]!!, thumbnail)
             }
 
             itemView.setOnClickListener(object: View.OnClickListener {

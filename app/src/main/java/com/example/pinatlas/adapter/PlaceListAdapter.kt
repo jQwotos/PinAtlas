@@ -58,7 +58,7 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
 
 
          */
-        PlaceThumbnailUtil(context).populateImageView(place.placeId, holder.thumbnail)
+        PlaceThumbnailUtil.populateImageView(place.placeId, holder.thumbnail)
         holder.activity.text = place.name
         holder.address.text = place.address
         holder.priority.text = "#${position+1}"
