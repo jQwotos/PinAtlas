@@ -7,7 +7,7 @@ import com.google.firebase.firestore.*
 
 class PlacesRepository {
 
-    // helps us do a log as it typically asks us for the name of the class (to know your log came from)
+    // TAG helps us do a log as it typically asks us for the name of the class (to know your log came from)
     val TAG = PlacesRepository::class.java.simpleName
     var firestoreDB = FirebaseFirestore.getInstance()
 
