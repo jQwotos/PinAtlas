@@ -3,18 +3,19 @@ package com.example.pinatlas.utils
 import android.content.Context
 import android.widget.ImageView
 import com.example.pinatlas.BuildConfig
+import com.example.pinatlas.TravelDash
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPhotoRequest
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 
-class PlaceThumbnailUtil(context: Context) {
+object PlaceThumbnailUtil{
     private var  placesClient: PlacesClient
 
     init {
-        Places.initialize(context, BuildConfig.PLACES_API_KEY)
-        this.placesClient = Places.createClient(context)
+        Places.initialize(TravelDash.context, BuildConfig.PLACES_API_KEY)
+        this.placesClient = Places.createClient(TravelDash.context)
     }
 
     fun populateImageView(placeId: String, view: ImageView) {

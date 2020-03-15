@@ -42,7 +42,6 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
     private lateinit var mapboxMap: MapboxMap
 
     //Items
-    private lateinit var context: Context
     private lateinit var addTripBtn: Button
 
     // FIREBASE
@@ -225,6 +224,10 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         intent = Intent(this, GoogleLogin::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
+    }
+
+    companion object {
+        lateinit var context: Context
     }
 
 }
