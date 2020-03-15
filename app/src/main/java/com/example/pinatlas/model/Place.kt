@@ -24,6 +24,7 @@ class Place {
     var avgSpentTimes: ArrayList<Int>? = null      // Range of average time spent in minutes, between [0] to [1] minutes spent
     var thumbnail: Bitmap? = null
 
+    // here because it needs to deserialize. If it doesn't find a constructor, it'll break
     constructor()
 
     constructor(
@@ -57,7 +58,6 @@ class Place {
         this.avgSpentTimes = avgSpentTimes
         this.thumbnail = thumbnail
     }
-
 
     class Timings {
         var name: String? = null

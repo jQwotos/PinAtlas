@@ -43,7 +43,7 @@ class Trip {
         this.transportationMethods = transportationMethods
     }
 
-
+    // convert a firestore doc into an actual object
     companion object  {
         fun fromFirestore(document: DocumentSnapshot): Trip? {
             val trip =  document.toObject(Trip::class.java)
