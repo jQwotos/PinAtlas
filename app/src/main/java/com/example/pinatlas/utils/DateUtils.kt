@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
+/* Owner: JL  */
 object DateUtils {
     val dateFormat: DateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT)
 

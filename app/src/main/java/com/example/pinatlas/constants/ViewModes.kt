@@ -7,6 +7,8 @@ ex/ inside of itinerary mode, we can either hardcode a string. We could do the s
 If we have a typo/want to change, then we have to modify the code everywhere.
 Instead, we use enum's as a "variables" (don't have to update code if we
  */
+
+/* Owner: MV */
 enum class ViewModes (val type: String) {
     ITINERARY_MODE("itinerary"),
     EDIT_MODE("edit"),

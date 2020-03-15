@@ -70,7 +70,7 @@ class CreationView : AppCompatActivity() {
         GPlaces.initialize(applicationContext, BuildConfig.PLACES_API_KEY)
 
         tripId = intent.getStringExtra(Constants.TRIP_ID.type)!!
-
+        /* Owner: AZ */
         val factory = CreationViewModelFactory(tripId, currentUser!!.uid)
         viewModel = ViewModelProviders.of(this, factory).get(CreationViewModel::class.java)
 
@@ -140,7 +140,7 @@ class CreationView : AppCompatActivity() {
         })
 
         /*
-        Shubham Sharan
+        Owner: Shubham Sharan
         * Facade design pattern used.
         * Client is the UI: creation_view.xml : It contains the submit button. which when clicked launches the genetic algorithm
         * Facade class : CreationView : This where they createMatrix method is called which initiates the algorithmn
@@ -164,6 +164,7 @@ class CreationView : AppCompatActivity() {
         }
     }
 
+    /* Owner: MV */
     inner class OnCreateDateSetListener (private var datePicker: DatePicker)
         : DatePickerDialog.OnDateSetListener {
         override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
@@ -210,6 +211,7 @@ class CreationView : AppCompatActivity() {
     fun createEndDatePicker(view : View) {
         createDatePicker(EndDatePicker())
     }
+    /* End of Owner: MV */
 
     fun deleteTrip(view: View) {
         viewModel.deleteTrip()

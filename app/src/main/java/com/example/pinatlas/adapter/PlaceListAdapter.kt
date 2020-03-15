@@ -16,6 +16,7 @@ import com.example.pinatlas.utils.PlaceThumbnailUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
 
 // Whenever we create an PlaceListAdapter, we specify the mode, the view model, context
+/* Owner: AZ */
 class PlaceListAdapter (private val viewModel: CreationViewModel, private val mode: ViewModes, private val context: Context
 ) : RecyclerView.Adapter<PlaceListAdapter.ViewHolder>(), ItemMoveCallback.ItemTouchHelperContract {
 
@@ -87,6 +88,7 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
 
     // when the user clicks on the card, it'll change the background colour to show what the user is selecting
 
+    /* Owner: MV */
     // todo: change to XML colours (MONICA)
     override fun onRowClear(viewHolder: ViewHolder) {
         viewHolder.card.setCardBackgroundColor(Color.parseColor("#EA3F60"))

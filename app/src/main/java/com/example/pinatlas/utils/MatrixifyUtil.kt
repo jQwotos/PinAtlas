@@ -8,6 +8,8 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import org.jetbrains.anko.doAsync
 
+
+/* Owner: SS  */
 object MatrixifyUtil {
 
     private val TAG = MatrixifyUtil::class.java.simpleName
@@ -34,6 +36,7 @@ object MatrixifyUtil {
         return Tasks.forResult(geneticAlgorithm.optimize())
     }
 
+    /* Optimize merges DistanceMatrixProvider fetchDistanceMatrix and pipes it into generateGenome */
     fun optimize(places: List<String>, responseHandler: (result: List<String>?) -> Unit?) {
         doAsync {
             DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<String>){ result: DistanceMatrixModel? ->

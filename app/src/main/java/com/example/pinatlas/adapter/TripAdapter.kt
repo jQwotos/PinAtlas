@@ -13,6 +13,7 @@ import com.example.pinatlas.model.Trip
 import com.example.pinatlas.utils.DateUtils
 import com.example.pinatlas.utils.PlaceThumbnailUtil
 
+/* Owner: AZ */
 class TripAdapter (private val pastTrips: LiveData<List<Trip>>, context: Context,
                    onTripSelectedListener: OnTripSelectedListener): RecyclerView.Adapter<TripAdapter.ViewHolder>() {
 

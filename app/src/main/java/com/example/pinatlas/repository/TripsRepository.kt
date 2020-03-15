@@ -5,6 +5,7 @@ import com.example.pinatlas.model.Trip
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
 
+/* Owner: JL */
 class TripsRepository {
 
     val TAG = TripsRepository::class.java.simpleName

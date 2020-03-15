@@ -1,5 +1,6 @@
 package com.example.pinatlas.constants
 
+/* Owner: MV */
 enum class Constants (val type: String) {
     TRIP_ID("TRIP_ID"),
     TRIP_NAME("TRIP_NAME"),
