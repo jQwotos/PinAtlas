@@ -64,7 +64,6 @@ class CreationView : AppCompatActivity() {
         GPlace.Field.PHOTO_METADATAS
     )
 
-    // creates
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding : CreationViewBinding = DataBindingUtil.setContentView(this, R.layout.creation_view)
@@ -104,6 +103,7 @@ class CreationView : AppCompatActivity() {
         placeList.adapter = adapter
         placeList.layoutManager = manager
 
+        // get places details
         autocompleteFragment = supportFragmentManager.findFragmentById(R.id.searchBar) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(PLACE_FIELDS)
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
