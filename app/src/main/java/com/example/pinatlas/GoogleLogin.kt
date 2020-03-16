@@ -15,10 +15,12 @@ class GoogleLogin : AppCompatActivity() {
 
     private lateinit var context: Context
 
-
+    // When the activity is created onCreate is invoked
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_login)
+
+        // Checks if the user is authenticated if they are redirect them to the main activity
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             redirectToMainActivity()
@@ -26,12 +28,12 @@ class GoogleLogin : AppCompatActivity() {
 
         context = this;
     }
+    // onActivityResult Called after the google login screen goes through or fails
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        // redirects the user or redirectToMainActivity (back to Google login); both w/ toast and your sign-in
         if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
                 Toast.makeText(context, "Signed in as '" + user!!.email + "'", Toast.LENGTH_LONG).show()
@@ -42,6 +44,7 @@ class GoogleLogin : AppCompatActivity() {
         }
     }
 
+    // called when user logins in successfully, they're taken to
     fun redirectToMainActivity() {
         val intent = Intent(this, TravelDash::class.java)
         startActivity(intent)

@@ -27,11 +27,18 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
 
     var tripListener: ListenerRegistration
 
+    // getters
     val tripPlaces : LiveData<List<Place>>
         get() = _places
 
     val trip: LiveData<Trip>
         get() = _trip
+
+    /*
+    Transformations: modifies your live data into something useful (but keeps it as live data).
+    If we use a normal getter and turn the data into something data, it loses the property of the live data.
+    Hence why we use a transformation.
+     */
 
     val startDateStr: LiveData<String> = Transformations.map(_trip) {trip ->
         if (trip != null) DateUtils.formatTimestamp(trip.startDate) else null
@@ -45,8 +52,11 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         trip?.name
     }
 
+    // live data for user's location
     val latLng: MutableLiveData<GeoPoint> = MutableLiveData<GeoPoint>()
 
+    // initialize values & constantly gets new data ex/ trip updates, then it updates
+    // internal code from line 61 runs when there's any changes to a trip (add, rename, re-order) (subscribers)
     init {
         tripListener =  tripsRepository.fetchTrip(tripId).addSnapshotListener { tripSnapshot, _ ->
             val trip = Trip.fromFirestore(tripSnapshot!!)
@@ -78,6 +88,9 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         }
     }
 
+    // function updates priorities
+    // postValue: Posts a task to a main thread to set the given value.
+    // https://developer.android.com/reference/android/arch/lifecycle/MutableLiveData
     fun updatePlacePriority(fromPos: Int, toPos: Int) {
         val arrayOfPlaces = _places.value as ArrayList
         arrayOfPlaces.add(toPos, arrayOfPlaces.removeAt(fromPos))

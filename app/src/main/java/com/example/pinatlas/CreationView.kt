@@ -64,7 +64,7 @@ class CreationView : AppCompatActivity() {
         GPlace.Field.PHOTO_METADATAS
     )
 
-
+    // creates
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding : CreationViewBinding = DataBindingUtil.setContentView(this, R.layout.creation_view)
