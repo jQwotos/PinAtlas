@@ -156,7 +156,7 @@ class CreationView : AppCompatActivity() {
         override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
             val calendar = Calendar.getInstance()
             calendar.set(year, month, day)
-            this.datePicker.setDate(Timestamp(calendar.time))
+            this.datePicker.templateMethod(Timestamp(calendar.time))
         }
     }
 
