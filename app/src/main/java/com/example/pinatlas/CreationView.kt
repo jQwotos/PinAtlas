@@ -28,6 +28,7 @@ import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.databinding.CreationViewBinding
 import com.example.pinatlas.model.Place
+import com.example.pinatlas.utils.DateUtils
 import com.example.pinatlas.utils.MatrixifyUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
 import com.example.pinatlas.viewmodel.CreationViewModelFactory
@@ -163,6 +164,9 @@ class CreationView : AppCompatActivity() {
         override var button: Button = startDateButton
         override fun setDate(date: Timestamp) {
             viewModel.setStartDate(date)
+        }
+
+        override fun saveDateHook() {
             viewModel.saveTrip()
         }
     }
@@ -178,6 +182,17 @@ class CreationView : AppCompatActivity() {
     abstract class DatePicker {
         abstract var button: Button
         abstract fun setDate(date: Timestamp)
+        open fun saveDateHook() {}
+
+        fun setText(date: Timestamp) {
+            button.setText(DateUtils.formatTimestamp(date))
+        }
+
+        fun templateMethod(date: Timestamp) {
+            this.setDate(date)
+            this.setText(date)
+            this.saveDateHook()
+        }
     }
 
     // Switch createDatePicker to accept a button
