@@ -79,6 +79,7 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         }
     }
 
+    // Posts a task to a main thread to set the given value.
     fun updatePlacePriority(fromPos: Int, toPos: Int) {
         val arrayOfPlaces = _places.value as ArrayList
         arrayOfPlaces.add(toPos, arrayOfPlaces.removeAt(fromPos))
