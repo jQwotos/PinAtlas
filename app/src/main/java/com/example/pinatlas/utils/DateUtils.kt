@@ -1,5 +1,6 @@
 package com.example.pinatlas.utils
 
+import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.Trip
 import com.google.firebase.Timestamp
 import java.text.DateFormat
@@ -17,5 +18,11 @@ object DateUtils {
         val startDate = formatTimestamp(trip.startDate)
         val endDate = formatTimestamp(trip.endDate)
         return "$startDate - $endDate"
+    }
+
+    fun formatPlaceDate(place: Place) : String {
+        val startTime = formatTimestamp(place.startTime)
+        val endTime = formatTimestamp(place.endTime)
+        return startTime +" : "+ endTime
     }
 }
