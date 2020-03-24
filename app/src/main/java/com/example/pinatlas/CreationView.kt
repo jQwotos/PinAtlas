@@ -21,6 +21,7 @@ import android.util.Log
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,7 @@ import com.example.pinatlas.constants.TransportationMethods
 import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.databinding.CreationViewBinding
 import com.example.pinatlas.model.Place
+import com.example.pinatlas.utils.DateUtils
 import com.example.pinatlas.utils.MatrixifyUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
 import com.example.pinatlas.viewmodel.CreationViewModelFactory
@@ -156,10 +158,12 @@ class CreationView : AppCompatActivity() {
         override fun onDateSet(view: android.widget.DatePicker, year: Int, month: Int, day: Int) {
             val calendar = Calendar.getInstance()
             calendar.set(year, month, day)
-            this.datePicker.setDate(Timestamp(calendar.time))
+            this.datePicker.templateMethod(Timestamp(calendar.time))
         }
     }
-
+    /*
+    date sets the date to the button connected to the calendar and does the updating in trip (stored in Firebase)
+     */
     inner class StartDatePicker : DatePicker() {
         override var button: Button = startDateButton
         override fun setDate(date: Timestamp) {
@@ -179,6 +183,15 @@ class CreationView : AppCompatActivity() {
     abstract class DatePicker {
         abstract var button: Button
         abstract fun setDate(date: Timestamp)
+
+        fun setText(date: Timestamp) {
+            button.setText(DateUtils.formatTimestamp(date))
+        }
+
+        fun templateMethod(date: Timestamp) {
+            this.setDate(date)
+            this.setText(date)
+        }
     }
 
     // Switch createDatePicker to accept a button
