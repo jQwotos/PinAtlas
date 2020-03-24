@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.pinatlas.model.BusyData
 import com.example.pinatlas.repository.TripsRepository
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.Trip
+import com.example.pinatlas.utils.BusyTimesUtil
 import com.example.pinatlas.utils.DateUtils
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
@@ -63,25 +65,6 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
                 }
 
                 _places.postValue(trip.places)
-
-//                placesRepository.fetchPlaces(trip.places).addSnapshotListener { placesSnapshot, e ->
-//                    if (e != null) {
-//                        Log.e(TAG, "Couldn't fetch places for trip: ${e.message}")
-//                        return@addSnapshotListener
-//                    }
-//                    val unorderedPlaces = placesSnapshot!!.toObjects(Place::class.java)
-//                    val orderedPlaces = arrayListOf<Place>()
-//                    var lat = 0.0
-//                    var lgt = 0.0
-//                    for (id in trip.places) {
-//                        val place = unorderedPlaces.first { it.placeId == id }
-//                        orderedPlaces.add(place)
-//                        lat += place.coordinates!!.latitude / trip.places.size
-//                        lgt += place.coordinates!!.longitude / trip.places.size
-//                    }
-//                    latLng.postValue(GeoPoint(lat, lgt))
-//                    _places.postValue(orderedPlaces)
-//                }
             } else {
                 _places.postValue(listOf())
             }
@@ -132,8 +115,14 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     }
 
     fun addPlace(place: Place) {
-        _trip.value?.places?.add(place)
-        _trip.postValue(_trip.value)
+        BusyTimesUtil.fetchBusyTimesData(place.placeId) { result: BusyData? ->
+            if (result != null) {
+                place.busyData = result
+            }
+            _trip.value?.places?.add(place)
+            _trip.postValue(_trip.value)
+            saveTrip()
+        }
     }
 
     fun reorderPlaces(places: List<Place>) {
