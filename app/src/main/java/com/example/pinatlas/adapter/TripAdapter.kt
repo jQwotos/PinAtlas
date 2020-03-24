@@ -45,7 +45,7 @@ class TripAdapter (private val pastTrips: LiveData<List<Trip>>, context: Context
             title.text = trip.name
             date.text = DateUtils.formatTripDate(trip)
             if (trip.places.size > 0) {
-                PlaceThumbnailUtil.populateImageView(trip.places[0]!!, thumbnail)
+                PlaceThumbnailUtil.populateImageView(trip.places[0]!!.placeId, thumbnail)
             }
 
             itemView.setOnClickListener(object: View.OnClickListener {
