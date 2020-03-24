@@ -1,5 +1,6 @@
 package com.example.pinatlas
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.PlaceListAdapter
 import com.example.pinatlas.constants.Constants
+import com.example.pinatlas.constants.TransportationMethods
 import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.databinding.CreationViewBinding
 import com.example.pinatlas.model.Place
@@ -125,9 +127,8 @@ class CreationView : AppCompatActivity() {
                         coordinates = GeoPoint(gPlace.latLng!!.latitude,gPlace.latLng!!.longitude)
                     )
 
-                    viewModel.addPlace(place).addOnSuccessListener {
-                        viewModel.saveTrip()
-                    }
+                    viewModel.addPlace(place)
+                    viewModel.saveTrip()
                 }
             }
         })
@@ -202,6 +203,20 @@ class CreationView : AppCompatActivity() {
         viewModel.deleteTrip()
         finish()
     }
+
+//    fun buildTransportationPicker(view: View) {
+//        val options: Array<String> = TransportationMethods.values().map { it.type } as Array<String>
+//        val checked: BooleanArray = options.map { method -> viewModel.trip.value!!.transportationMethods.contains(method) } as BooleanArray
+//
+//        val builder = AlertDialog.Builder(context)
+//
+//        builder.setTitle(R.string.transpo_picker_msg)
+//        builder.setMultiChoiceItems(options, checked) { _, which, isChecked ->
+//            checked[which] = isChecked
+//            viewModel.toggleTransportationMethod(options[which])
+//            viewModel.saveTrip()
+//        }
+//    }
 
     fun changeToItineraryView(view: View? = null) {
         val intent = Intent(context, ItineraryView::class.java)
