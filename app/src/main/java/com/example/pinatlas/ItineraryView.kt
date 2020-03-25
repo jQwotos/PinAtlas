@@ -124,7 +124,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                     // Add the SymbolLayer icon im
                     // age to the map style
                     style.addImage(ICON_ID, BitmapFactory.decodeResource(
-                        this.getResources(), R.drawable.mapbox_compass_icon))
+                        this.getResources(), R.drawable.pink_pin))
                     // Adding a GeoJson source for the SymbolLayer icons.
                     style.addSource(
                         GeoJsonSource(
