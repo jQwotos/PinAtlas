@@ -121,7 +121,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                 mapboxMap.setStyle(Style.MAPBOX_STREETS){style ->
                     // Add the SymbolLayer icon image to the map style
                     style.addImage(ICON_ID, BitmapFactory.decodeResource(
-                        this.getResources(), R.drawable.mapbox_compass_icon))
+                        this.getResources(), R.drawable.baseline_place_black_18dp))
                     // Adding a GeoJson source for the SymbolLayer icons.
                     style.addSource(
                         GeoJsonSource(
