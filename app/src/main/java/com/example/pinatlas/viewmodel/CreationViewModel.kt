@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.pinatlas.model.BusyData
 import com.example.pinatlas.repository.TripsRepository
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.repository.PlacesRepository
+import com.example.pinatlas.utils.BusyTimesUtil
 import com.example.pinatlas.utils.DateUtils
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
@@ -55,24 +57,16 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.postValue(trip)
 
             if (trip != null && trip.places.size > 0) {
-                placesRepository.fetchPlaces(trip.places).addSnapshotListener { placesSnapshot, e ->
-                    if (e != null) {
-                        Log.e(TAG, "Couldn't fetch places for trip: ${e.message}")
-                        return@addSnapshotListener
-                    }
-                    val unorderedPlaces = placesSnapshot!!.toObjects(Place::class.java)
-                    val orderedPlaces = arrayListOf<Place>()
-                    var lat = 0.0
-                    var lgt = 0.0
-                    for (id in trip.places) {
-                        val place = unorderedPlaces.first { it.placeId == id }
-                        orderedPlaces.add(place)
-                        lat += place.coordinates!!.latitude / trip.places.size
-                        lgt += place.coordinates!!.longitude / trip.places.size
-                    }
+                var lat = 0.0
+                var lgt = 0.0
+
+                trip.places.forEach { place ->
+                    lat += place.coordinates!!.latitude / trip.places.size
+                    lgt += place.coordinates!!.longitude / trip.places.size
                     latLng.postValue(GeoPoint(lat, lgt))
-                    _places.postValue(orderedPlaces)
                 }
+
+                _places.postValue(trip.places)
             } else {
                 _places.postValue(listOf())
             }
@@ -83,7 +77,7 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     fun updatePlacePriority(fromPos: Int, toPos: Int) {
         val arrayOfPlaces = _places.value as ArrayList
         arrayOfPlaces.add(toPos, arrayOfPlaces.removeAt(fromPos))
-        _trip.value!!.places = arrayOfPlaces.map { p -> p.placeId } as ArrayList<String>
+        _trip.value!!.places = arrayOfPlaces
         _trip.postValue(_trip.value)
         _places.postValue(arrayOfPlaces)
     }
@@ -114,14 +108,18 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         return tripsRepository.deleteTrip(_trip.value)
     }
 
-    fun addPlace(place: Place): Task<Void> {
-        return placesRepository.savePlace(place).addOnSuccessListener {
-            _trip.value?.places?.add(place.placeId)
+    fun addPlace(place: Place) {
+        BusyTimesUtil.fetchBusyTimesData(place.placeId) { result: BusyData? ->
+            if (result != null) {
+                place.busyData = result
+            }
+            _trip.value?.places?.add(place)
             _trip.postValue(_trip.value)
+            saveTrip()
         }
     }
 
-    fun reorderPlaces(places: List<String>) {
+    fun reorderPlaces(places: List<Place>) {
         _trip.value?.places?.clear()
         _trip.value?.places?.addAll(places)
         _trip.postValue(_trip.value)

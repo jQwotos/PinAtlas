@@ -1,6 +1,7 @@
 package com.example.pinatlas.utils
 
 import android.util.Log
+import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.matrix.DistanceMatrixModel
 import com.example.pinatlas.model.matrix.Salesman
 import com.example.pinatlas.model.matrix.SalesmanGenome
@@ -15,7 +16,7 @@ object MatrixifyUtil {
     private val TAG = MatrixifyUtil::class.java.simpleName
 
     //Maps the algorithm's index to places
-    fun repositionPlaces(places: List<String>, optimizedIndex: List<Int>) : Task<List<String>> {
+    fun repositionPlaces(places: List<Place>, optimizedIndex: List<Int>) : Task<List<Place>> {
         return Tasks.forResult(optimizedIndex.map { index -> places.get(index) })
     }
 
@@ -40,13 +41,13 @@ object MatrixifyUtil {
 
 
     /* Optimize merges DistanceMatrixProvider fetchDistanceMatrix and pipes it into generateGenome */
-    fun optimizer(places: List<String>, responseHandler: (result: List<String>?) -> Unit?) {
+    fun optimizer(places: List<Place>, responseHandler: (result: List<Place>?) -> Unit?) {
         doAsync {
-            DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<String>){ result: DistanceMatrixModel? ->
+            DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<Place>){ result: DistanceMatrixModel? ->
                 if (result != null ) {
                     generateGenome(distanceMatrixModel = result).continueWithTask { genome: Task<SalesmanGenome> ->
                         repositionPlaces(places, genome.result!!.optimizedRoute)
-                    }.addOnSuccessListener { optimizedRoute: List<String> ->
+                    }.addOnSuccessListener { optimizedRoute: List<Place> ->
                         responseHandler(optimizedRoute)
                     }
                 } else {

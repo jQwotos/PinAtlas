@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="viewmodel" type="com.example.pinatlas.viewmodel.DetailsViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".DetailsView">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="50dp"
+                    android:text="@{viewmodel.place.name, default=Place}"
+                    android:textSize="30dp" />
+
+                <ImageView
+                    android:id="@+id/placeImage"
+                    android:src="@drawable/default_place"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop" />
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/actionButtons"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <com.example.pinatlas.ActionItemView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:imageSrc="@drawable/ic_phone_24px"-->
+<!--                        app:text="Call" />-->
+
+<!--                    <com.example.pinatlas.ActionItemView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:imageSrc="@drawable/mapbox_compass_icon"-->
+<!--                        app:text="Directions" />-->
+<!--                </LinearLayout>-->
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:divider="@color/colorPrimaryDark"
+                    android:showDividers="middle">
+
+                    <com.example.pinatlas.DetailsItemView
+                        app:imageSrc="@drawable/ic_star_24px"
+                        app:text="@{viewmodel.rating}" />
+
+                    <com.example.pinatlas.DetailsItemView
+                        app:imageSrc="@drawable/ic_room_24px"
+                        app:text="@{viewmodel.place.address}" />
+
+                    <com.example.pinatlas.DetailsItemView
+                        app:imageSrc="@drawable/ic_schedule_24px"
+                        app:text="@{viewmodel.place.openingHoursString()}" />
+
+                    <com.example.pinatlas.DetailsItemView
+                        app:imageSrc="@drawable/ic_phone_24px"
+                        app:text="@{viewmodel.place.phoneNumber}" />
+
+                </TableLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,5 +1,6 @@
 package com.example.pinatlas
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.PlaceListAdapter
 import com.example.pinatlas.constants.Constants
+import com.example.pinatlas.constants.TransportationMethods
 import com.example.pinatlas.constants.ViewModes
 import com.example.pinatlas.databinding.CreationViewBinding
 import com.example.pinatlas.model.Place
@@ -120,6 +122,7 @@ class CreationView : AppCompatActivity() {
                 if (gPlace.id != null) {
                     val place = Place(
                         placeId = gPlace.id!!,
+                        openingHours = gPlace.openingHours!!.periods.map { it.toString() } as ArrayList<String>,
                         name = gPlace.name!!,
                         address = gPlace.address!!,
                         phoneNumber = gPlace.phoneNumber,
@@ -127,9 +130,7 @@ class CreationView : AppCompatActivity() {
                         coordinates = GeoPoint(gPlace.latLng!!.latitude,gPlace.latLng!!.longitude)
                     )
 
-                    viewModel.addPlace(place).addOnSuccessListener {
-                        viewModel.saveTrip()
-                    }
+                    viewModel.addPlace(place)
                 }
             }
         })
@@ -216,6 +217,21 @@ class CreationView : AppCompatActivity() {
         finish()
     }
 
+//   DO NOT DELETE
+//    fun buildTransportationPicker(view: View) {
+//        val options: Array<String> = TransportationMethods.values().map { it.type } as Array<String>
+//        val checked: BooleanArray = options.map { method -> viewModel.trip.value!!.transportationMethods.contains(method) } as BooleanArray
+//
+//        val builder = AlertDialog.Builder(context)
+//
+//        builder.setTitle(R.string.transpo_picker_msg)
+//        builder.setMultiChoiceItems(options, checked) { _, which, isChecked ->
+//            checked[which] = isChecked
+//            viewModel.toggleTransportationMethod(options[which])
+//            viewModel.saveTrip()
+//        }
+//    }
+
     fun changeToItineraryView(view: View? = null) {
         val intent = Intent(context, ItineraryView::class.java)
         intent.putExtra(Constants.TRIP_ID.type, tripId)
@@ -226,7 +242,7 @@ class CreationView : AppCompatActivity() {
         if (viewModel.tripPlaces.value!!.size > 2) {
             loader.visibility = View.VISIBLE
             doAsync {
-                MatrixifyUtil.optimizer(viewModel.trip.value!!.places) { newOrderedPlaces ->
+                MatrixifyUtil.optimizer(viewModel.trip.value!!.places) { newOrderedPlaces: List<Place>? ->
                     if (newOrderedPlaces != null) {
                         viewModel.reorderPlaces(newOrderedPlaces)
                         viewModel.saveTrip()

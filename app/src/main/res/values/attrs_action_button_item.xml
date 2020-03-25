@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="ActionItemView">
+        <attr name="actionText" format="string" />
+        <attr name="actionImg" format="reference" />
+    </declare-styleable>
+</resources>

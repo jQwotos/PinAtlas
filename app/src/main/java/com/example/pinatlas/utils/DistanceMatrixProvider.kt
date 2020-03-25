@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.pinatlas.BuildConfig
 import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.TransportationMethods
+import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.matrix.DistanceMatrixModel
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.httpGet
@@ -18,12 +19,12 @@ object DistanceMatrixProvider {
 
     val DISTANCE_MATRIX_BASE_URL: String = "maps.googleapis.com"
 
-    fun createDestinationsString(destinations: ArrayList<String>) : String {
-        val appendedNames = destinations.map { destination -> "place_id:$destination" }
+    fun createDestinationsString(destinations: ArrayList<Place>) : String {
+        val appendedNames = destinations.map { destination -> "place_id:${destination.placeId}" }
         return appendedNames.joinToString (separator = "|")
     }
 
-    fun buildDistanceMatrixURI(destinations: ArrayList<String>, mode: String = TransportationMethods.DRIVING.type) : String {
+    fun buildDistanceMatrixURI(destinations: ArrayList<Place>, mode: String = TransportationMethods.DRIVING.type) : String {
         var destinationsString: String = createDestinationsString(destinations)
 
         return Uri.Builder()
@@ -52,7 +53,7 @@ object DistanceMatrixProvider {
      * @param mode mode of transportation
      * @param responseHandler procedure that is invoked when query is finished
      */
-    fun fetchDistanceMatrix(destinations: ArrayList<String>, mode: String = TransportationMethods.DRIVING.type, responseHandler: (result: DistanceMatrixModel?) -> Any?){
+    fun fetchDistanceMatrix(destinations: ArrayList<Place>, mode: String = TransportationMethods.DRIVING.type, responseHandler: (result: DistanceMatrixModel?) -> Any?){
         buildDistanceMatrixURI(destinations = destinations, mode = mode).httpGet().responseObject(DistanceMatrixDeserializer()) { _, _, result ->
             when (result) {
                 is Result.Failure -> {

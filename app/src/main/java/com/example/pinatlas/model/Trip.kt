@@ -13,7 +13,7 @@ class Trip {
     var startDate: Timestamp = Timestamp(Date())            // Start date of the trip
     var endDate: Timestamp = Timestamp(Date())
     var placeRanking: ArrayList<String> = arrayListOf()
-    var places: ArrayList<String> = ArrayList()          // Array of places (not sorted in any way)
+    var places: ArrayList<Place> = ArrayList()          // Array of places (not sorted in any way)
 
     var transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
 
@@ -30,7 +30,7 @@ class Trip {
         startDate: Timestamp = Timestamp(Date()),
         endDate: Timestamp = Timestamp(Date()),
         placeRanking: ArrayList<String> = arrayListOf(),
-        places: ArrayList<String> = arrayListOf(),
+        places: ArrayList<Place> = arrayListOf(),
         transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
     ) {
         this.userId = userId

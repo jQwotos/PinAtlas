@@ -27,6 +27,13 @@ class Place {
     var thumbnail: Bitmap? = null
     var starttime: Timestamp = Timestamp(Date())
     var traveltime: Double = 5400.0
+    var busyData: BusyData? = null
+
+    fun openingHoursString() : String {
+        var combined = ""
+        openingHours?.forEach { combined += it }
+        return combined
+    }
 
     // here because it needs to deserialize. If it doesn't find a constructor, it'll break
     constructor()
@@ -47,7 +54,8 @@ class Place {
         avgSpentTimes: ArrayList<Int>? = null,
         thumbnail: Bitmap? = null,
         starttime: Timestamp = Timestamp(Date()),
-        traveltime: Double = 5400.0
+        traveltime: Double = 5400.0,
+        busyData: BusyData? = null
     ) {
         this.placeId = placeId
         this.name = name
@@ -65,6 +73,7 @@ class Place {
         this.thumbnail = thumbnail
         this.starttime = starttime
         this.traveltime = traveltime
+        this.busyData = busyData
     }
 
     class Timings {
