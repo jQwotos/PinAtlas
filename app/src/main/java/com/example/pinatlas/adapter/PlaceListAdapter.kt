@@ -1,7 +1,9 @@
 package com.example.pinatlas.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +11,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pinatlas.DetailsView
 import com.example.pinatlas.ItemMoveCallback
 import com.example.pinatlas.R
+import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.ViewModes
+import com.example.pinatlas.model.Trip
 import com.example.pinatlas.utils.DateUtils
 import com.example.pinatlas.utils.PlaceThumbnailUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
@@ -34,6 +39,7 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
         val view = inflater.inflate(R.layout.item_creation_list_tile, viewGroup, false)
         return ViewHolder(view)
     }
+
 
     /* internal Android Logic
     value: returns actual object stored within LiveData Object
@@ -75,6 +81,13 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
         holder.deleteButton.setOnClickListener {
             viewModel.deletePlace(position)
             viewModel.saveTrip()
+        }
+
+        holder.thumbnail.setOnClickListener {
+            val intent = Intent(it.context, DetailsView::class.java)
+            intent.putExtra(Constants.TRIP_ID.type, viewModel.trip.value!!.tripId)
+            intent.putExtra(Constants.PLACE_ID.type, place.placeId)
+            it.context.startActivity(intent)
         }
     }
 

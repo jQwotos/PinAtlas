@@ -27,6 +27,12 @@ class Place {
     var startTime: Timestamp = Timestamp(Date())
     var endTime: Timestamp = Timestamp(Date())
 
+    fun openingHoursString() : String {
+        var combined = ""
+        openingHours?.forEach { combined += it }
+        return combined
+    }
+
     // here because it needs to deserialize. If it doesn't find a constructor, it'll break
     constructor()
 

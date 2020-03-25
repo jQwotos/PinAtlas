@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="DetailsItemView">
+        <attr name="text" format="string" />
+        <attr name="imageSrc" format="reference" />
+        <attr name="onClick" format="reference" />
+    </declare-styleable>
+</resources>

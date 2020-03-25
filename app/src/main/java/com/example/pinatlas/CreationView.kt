@@ -122,6 +122,7 @@ class CreationView : AppCompatActivity() {
                 if (gPlace.id != null) {
                     val place = Place(
                         placeId = gPlace.id!!,
+                        openingHours = gPlace.openingHours!!.periods.map { it.toString() } as ArrayList<String>,
                         name = gPlace.name!!,
                         address = gPlace.address!!,
                         phoneNumber = gPlace.phoneNumber,
@@ -130,7 +131,6 @@ class CreationView : AppCompatActivity() {
                     )
 
                     viewModel.addPlace(place)
-                    viewModel.saveTrip()
                 }
             }
         })

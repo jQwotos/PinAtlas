@@ -10,4 +10,7 @@
     <string name="start_date_btn">Start Date</string>
     <string name="end_date_btn">End Date</string>
     <string name="transpo_picker_msg">Transportation Methods:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

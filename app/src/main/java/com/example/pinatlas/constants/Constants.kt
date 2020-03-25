@@ -11,6 +11,7 @@ Instead, we use enum's as a "variables" (don't have to update code if we
 /* Owner: MV */
 enum class Constants (val type: String) {
     TRIP_ID("TRIP_ID"),
+    PLACE_ID("PLACE_ID"),
     REQUEST_DENIED("REQUEST_DENIED"),
     TRIPS_COLLECTION("trips"),
     PLACES_COLLECTION("places"),
