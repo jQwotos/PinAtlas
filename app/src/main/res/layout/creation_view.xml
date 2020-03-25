@@ -84,35 +84,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="250dp"
-            android:layout_height="235dp"
-            android:alpha=".30"
-            android:contentDescription="@string/logo_desc"
-            android:gravity="center_horizontal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@mipmap/pin_atlas_logo"
-            tools:layout_editor_absoluteX="80dp"
-            tools:layout_editor_absoluteY="827dp" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:gravity="center_horizontal"
-            android:text="@string/blank_creation_step"
-            android:textColor="#B5B5B5"
-
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
         <Button
             android:id="@+id/editStartDate"
             style="?android:attr/borderlessButtonStyle"
@@ -170,13 +141,13 @@
                 android:id="@+id/submitButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="-20dp"
+                android:layout_margin="-30dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/success"
                 android:backgroundTintMode="multiply"
                 android:includeFontPadding="true"
-                android:text="Submit"
                 android:onClick="changeToItineraryView"
+                android:text="Submit"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
@@ -186,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/danger"
+                android:backgroundTint="@color/hotPink"
                 android:backgroundTintMode="multiply"
                 android:text="Delete"
                 android:textAllCaps="false"
@@ -197,12 +168,14 @@
                 android:id="@+id/optimizeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="-4dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
                 android:onClick="optimize"
-                android:text="Optimize" />
+                android:text="Optimize"
+                android:textAllCaps="false"
+                android:textStyle=""
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

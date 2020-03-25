@@ -2,11 +2,8 @@ package com.example.pinatlas.model
 
 import android.graphics.Bitmap
 import android.location.Location
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.IgnoreExtraProperties;
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 @IgnoreExtraProperties
@@ -22,10 +19,10 @@ class Place {
     var permanentlyClosed: Boolean? = null         // True if location is permanently closed
     var photos: ArrayList<String>? = null          // URL of photos from google maps
     var coordinates: GeoPoint? = null              // Coordinates of location
-    var busyData: BusyData? = null
+    var busyTimes: ArrayList<Timings>? = null      // How busy a place is on a Day of the week
+    var waitTimes: ArrayList<Timings>? = null      // How long are wait times in minutes
+    var avgSpentTimes: ArrayList<Int>? = null      // Range of average time spent in minutes, between [0] to [1] minutes spent
     var thumbnail: Bitmap? = null
-    var startTime: Timestamp = Timestamp(Date())
-    var endTime: Timestamp = Timestamp(Date())
 
     // here because it needs to deserialize. If it doesn't find a constructor, it'll break
     constructor()
@@ -41,10 +38,10 @@ class Place {
         permanentlyClosed: Boolean? = null,
         photos: ArrayList<String>? = null,
         coordinates: GeoPoint? = null,
-        busyData: BusyData? = null,
-        thumbnail: Bitmap? = null,
-        startTime : Timestamp = Timestamp(Date()),
-        endTime : Timestamp = Timestamp(Date())
+        busyTimes: ArrayList<Timings>? = null,
+        waitTimes: ArrayList<Timings>? = null,
+        avgSpentTimes: ArrayList<Int>? = null,
+        thumbnail: Bitmap? = null
     ) {
         this.placeId = placeId
         this.name = name
@@ -56,9 +53,14 @@ class Place {
         this.permanentlyClosed = permanentlyClosed
         this.photos = photos
         this.coordinates = coordinates
-        this.busyData = busyData
+        this.busyTimes = busyTimes
+        this.waitTimes = waitTimes
+        this.avgSpentTimes = avgSpentTimes
         this.thumbnail = thumbnail
-        this.startTime = startTime
-        this.endTime = endTime
+    }
+
+    class Timings {
+        var name: String? = null
+        var data: ArrayList<Int>? = arrayListOf() // an array of the data starting from hour 0 to hour 24
     }
 }

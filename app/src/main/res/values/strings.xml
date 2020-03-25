@@ -9,5 +9,4 @@
     <string name="blank_creation_step">Add some items</string>
     <string name="start_date_btn">Start Date</string>
     <string name="end_date_btn">End Date</string>
-    <string name="transpo_picker_msg">Transportation Methods:</string>
 </resources>

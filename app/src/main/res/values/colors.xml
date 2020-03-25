@@ -9,4 +9,6 @@
     <color name="success">#70C563</color>
     <color name="danger">#EA6363</color>
     <color name="black">#000000</color>
+    <color name="lightGrey">#b3b3b3</color>
+    <color name="creationBG"> #fafafa</color>
 </resources>

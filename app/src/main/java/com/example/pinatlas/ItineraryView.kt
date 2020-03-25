@@ -119,7 +119,8 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                     })
                 }
                 mapboxMap.setStyle(Style.MAPBOX_STREETS){style ->
-                    // Add the SymbolLayer icon image to the map style
+                    // Add the SymbolLayer icon im
+                    // age to the map style
                     style.addImage(ICON_ID, BitmapFactory.decodeResource(
                         this.getResources(), R.drawable.mapbox_compass_icon))
                     // Adding a GeoJson source for the SymbolLayer icons.
@@ -267,6 +268,11 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         private val LAYER_ID = "LAYER_ID"
     }
 
+    fun changeToTravelBoard(view: View? = null) {
+        val intent = Intent(context, TravelDash::class.java)
+        intent.putExtra(Constants.TRIP_ID.type, tripId)
+        startActivity(intent)
+    }
 }
 
 

@@ -13,12 +13,12 @@ class Trip {
     var startDate: Timestamp = Timestamp(Date())            // Start date of the trip
     var endDate: Timestamp = Timestamp(Date())
     var placeRanking: ArrayList<String> = arrayListOf()
-    var places: ArrayList<Place> = ArrayList()          // Array of places (not sorted in any way)
+    var places: ArrayList<String> = ArrayList()          // Array of places (not sorted in any way)
 
-    var transportationMethods: ArrayList<String> = arrayListOf()
+    var transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
 
     override fun toString(): String {
-        return "User: $userId | Trip: $tripId | Name: $name | start_date: $startDate | end_date: ${endDate.toString()}"
+        return "User: $userId | Trip: $tripId | Name: $name | start_date: ${startDate.toString()} | end_date: ${endDate.toString()}"
     }
 
     constructor()
@@ -30,8 +30,8 @@ class Trip {
         startDate: Timestamp = Timestamp(Date()),
         endDate: Timestamp = Timestamp(Date()),
         placeRanking: ArrayList<String> = arrayListOf(),
-        places: ArrayList<Place> = arrayListOf(),
-        transportationMethods: ArrayList<String> = arrayListOf()
+        places: ArrayList<String> = arrayListOf(),
+        transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
     ) {
         this.userId = userId
         this.tripId = tripId
