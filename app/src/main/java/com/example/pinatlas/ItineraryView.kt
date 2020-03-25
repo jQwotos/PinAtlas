@@ -3,7 +3,6 @@ package com.example.pinatlas
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -38,12 +37,15 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.annotation.Fill
+import com.mapbox.mapboxsdk.style.expressions.Expression.*
 import com.mapbox.mapboxsdk.style.layers.LineLayer
 import com.mapbox.mapboxsdk.style.layers.Property
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory.*
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+
 
 class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListener{
     private val context: Context = this
@@ -119,7 +121,8 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                     })
                 }
                 mapboxMap.setStyle(Style.MAPBOX_STREETS){style ->
-                    // Add the SymbolLayer icon image to the map style
+                    // Add the SymbolLayer icon im
+                    // age to the map style
                     style.addImage(ICON_ID, BitmapFactory.decodeResource(
                         this.getResources(), R.drawable.mapbox_compass_icon))
                     // Adding a GeoJson source for the SymbolLayer icons.
@@ -152,13 +155,20 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                         )
                     )
 
-                    style.addLayer(
-                        LineLayer("linelayer", "line-source").withProperties(
-                            PropertyFactory.lineDasharray(arrayOf(0.21f, 2f)),
-                            PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
-                            PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
-                            PropertyFactory.lineWidth(5f),
-                            PropertyFactory.lineColor(Color.parseColor("#e55e5e"))))
+                    style.addLayer( LineLayer("linelayer", "line-source").withProperties(
+                        lineCap(Property.LINE_CAP_ROUND),
+                        lineJoin(Property.LINE_JOIN_ROUND),
+                        lineWidth(5f),
+                        lineGradient(interpolate(
+                        linear(), lineProgress(),
+                        stop(0f, rgb(6, 1, 255)), // blue
+                        stop(0.05f, rgb(59, 118, 227)), // royal blue
+                        stop(0.1f, rgb(7, 238, 251)), // cyan
+                        stop(0.25f, rgb(0, 255, 42)), // lime
+                        stop(0.47f, rgb(255, 252, 0)), // yellow
+                        stop(1f, rgb(255, 30, 0)) // red
+                        ))))
+
                     enableLocationComponent(style)
                 }
             }
@@ -267,6 +277,11 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
         private val LAYER_ID = "LAYER_ID"
     }
 
+    fun changeToTravelBoard(view: View? = null) {
+        val intent = Intent(context, TravelDash::class.java)
+        intent.putExtra(Constants.TRIP_ID.type, tripId)
+        startActivity(intent)
+    }
 }
 
 

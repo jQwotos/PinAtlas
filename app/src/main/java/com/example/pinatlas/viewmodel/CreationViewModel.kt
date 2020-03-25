@@ -9,6 +9,7 @@ import com.example.pinatlas.model.BusyData
 import com.example.pinatlas.repository.TripsRepository
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.Trip
+import com.example.pinatlas.repository.PlacesRepository
 import com.example.pinatlas.utils.BusyTimesUtil
 import com.example.pinatlas.utils.DateUtils
 import com.google.android.gms.tasks.Task
@@ -22,6 +23,7 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     val TAG = CreationViewModel::class.java.simpleName
 
     private val tripsRepository = TripsRepository()
+    private val placesRepository = PlacesRepository()
 
     private val _trip = MutableLiveData<Trip>()
     private val _places = MutableLiveData<List<Place>>()
@@ -100,15 +102,6 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             Log.e(TAG, "Failed to save trip")
         }
     }
-
-//    fun toggleTransportationMethod(method: String): Task<Void>? {
-//        if (_trip.value?.transportationMethods!!.contains(method)) {
-//            _trip.value?.transportationMethods?.remove(method)
-//        } else {
-//            _trip.value?.transportationMethods?.add(method)
-//        }
-//        _trip.postValue(_trip.value)
-//    }
 
     fun deleteTrip(): Task<Void>? {
         tripListener.remove()

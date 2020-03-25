@@ -17,7 +17,7 @@ object MatrixifyUtil {
 
     //Maps the algorithm's index to places
     fun repositionPlaces(places: List<Place>, optimizedIndex: List<Int>) : Task<List<Place>> {
-        return Tasks.forResult(optimizedIndex.map { index -> places[index] })
+        return Tasks.forResult(optimizedIndex.map { index -> places.get(index) })
     }
 
     fun generateGenome(distanceMatrixModel: DistanceMatrixModel): Task<SalesmanGenome> {
@@ -38,10 +38,12 @@ object MatrixifyUtil {
         return Tasks.forResult(geneticAlgorithm.optimize())
     }
 
+
+
     /* Optimize merges DistanceMatrixProvider fetchDistanceMatrix and pipes it into generateGenome */
-    fun optimize(places: List<Place>, responseHandler: (result: List<Place>?) -> Unit?) {
+    fun optimizer(places: List<Place>, responseHandler: (result: List<Place>?) -> Unit?) {
         doAsync {
-            DistanceMatrixProvider.fetchDistanceMatrix(destinations = places){ result: DistanceMatrixModel? ->
+            DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<Place>){ result: DistanceMatrixModel? ->
                 if (result != null ) {
                     generateGenome(distanceMatrixModel = result).continueWithTask { genome: Task<SalesmanGenome> ->
                         repositionPlaces(places, genome.result!!.optimizedRoute)

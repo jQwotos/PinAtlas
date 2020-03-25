@@ -5,6 +5,8 @@ import com.example.pinatlas.model.Trip
 import com.google.firebase.Timestamp
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.util.concurrent.TimeUnit
 
 /* Owner: JL  */
 object DateUtils {
@@ -20,9 +22,10 @@ object DateUtils {
         return "$startDate - $endDate"
     }
 
-    fun formatPlaceDate(place: Place) : String {
-        val startTime = formatTimestamp(place.startTime)
-        val endTime = formatTimestamp(place.endTime)
-        return startTime +" : "+ endTime
+    fun formatPlaceTime(place: Place) : String {
+        val sfd = SimpleDateFormat("HH:mm:ss")
+        val start = sfd.parse(place.starttime.toDate().time.plus(5600).toString())
+        val end = start.time.plus(3600).toString()
+        return "${start} - $end"
     }
 }

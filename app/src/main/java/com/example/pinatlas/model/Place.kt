@@ -5,7 +5,6 @@ import android.location.Location
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.IgnoreExtraProperties;
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -22,10 +21,13 @@ class Place {
     var permanentlyClosed: Boolean? = null         // True if location is permanently closed
     var photos: ArrayList<String>? = null          // URL of photos from google maps
     var coordinates: GeoPoint? = null              // Coordinates of location
-    var busyData: BusyData? = null
+    var busyTimes: ArrayList<Timings>? = null      // How busy a place is on a Day of the week
+    var waitTimes: ArrayList<Timings>? = null      // How long are wait times in minutes
+    var avgSpentTimes: ArrayList<Int>? = null      // Range of average time spent in minutes, between [0] to [1] minutes spent
     var thumbnail: Bitmap? = null
-    var startTime: Timestamp = Timestamp(Date())
-    var endTime: Timestamp = Timestamp(Date())
+    var starttime: Timestamp = Timestamp(Date())
+    var traveltime: Double = 5400.0
+    var busyData: BusyData? = null
 
     fun openingHoursString() : String {
         var combined = ""
@@ -47,10 +49,13 @@ class Place {
         permanentlyClosed: Boolean? = null,
         photos: ArrayList<String>? = null,
         coordinates: GeoPoint? = null,
-        busyData: BusyData? = null,
+        busyTimes: ArrayList<Timings>? = null,
+        waitTimes: ArrayList<Timings>? = null,
+        avgSpentTimes: ArrayList<Int>? = null,
         thumbnail: Bitmap? = null,
-        startTime : Timestamp = Timestamp(Date()),
-        endTime : Timestamp = Timestamp(Date())
+        starttime: Timestamp = Timestamp(Date()),
+        traveltime: Double = 5400.0,
+        busyData: BusyData? = null
     ) {
         this.placeId = placeId
         this.name = name
@@ -62,9 +67,17 @@ class Place {
         this.permanentlyClosed = permanentlyClosed
         this.photos = photos
         this.coordinates = coordinates
-        this.busyData = busyData
+        this.busyTimes = busyTimes
+        this.waitTimes = waitTimes
+        this.avgSpentTimes = avgSpentTimes
         this.thumbnail = thumbnail
-        this.startTime = startTime
-        this.endTime = endTime
+        this.starttime = starttime
+        this.traveltime = traveltime
+        this.busyData = busyData
+    }
+
+    class Timings {
+        var name: String? = null
+        var data: ArrayList<Int>? = arrayListOf() // an array of the data starting from hour 0 to hour 24
     }
 }

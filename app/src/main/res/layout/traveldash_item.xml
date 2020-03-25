@@ -28,16 +28,17 @@
             <TextView
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:padding="4dp"
+                android:layout_height="25dp"
                 android:gravity="center"
+                android:textColor="@color/black"
+                android:fontFamily="Roboto"
                 android:text="New York"></TextView>
             <TextView
                 android:id="@+id/dates"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:padding="4dp"
+                android:layout_height="25dp"
                 android:gravity="center"
+                android:fontFamily="Roboto"
                 android:text="Aug 13, 19 - Aug 18, 19"></TextView>
         </TableLayout>
 

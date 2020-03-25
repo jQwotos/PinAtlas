@@ -20,7 +20,6 @@ import com.example.pinatlas.model.Trip
 import com.example.pinatlas.utils.DateUtils
 import com.example.pinatlas.utils.PlaceThumbnailUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
-import kotlin.time.hours
 
 // Whenever we create an PlaceListAdapter, we specify the mode, the view model, context
 /* Owner: AZ */
@@ -61,8 +60,7 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
         if (mode == ViewModes.ITINERARY_MODE) {
             holder.deleteButton.visibility = View.GONE
             holder.priority.visibility = View.GONE
-            //TODO: FIXED AND POPULATED
-            holder.address.text = DateUtils.formatPlaceDate(place)
+            holder.address.text = place.starttime.toDate().toString()
 
 
             // this allows us to zoom in to the place when we click on the "card" in itinerary view
@@ -70,12 +68,6 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
                 viewModel.latLng.postValue(place.coordinates)
             }
         }
-
-        /* This is the individual card info
-
-
-         */
-
 
         // updates info in Firebase
         holder.deleteButton.setOnClickListener {
