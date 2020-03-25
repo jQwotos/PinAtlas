@@ -62,7 +62,17 @@
             app:cardElevation="3dp"
             android:layout_gravity="center|top" />
 
-<!--        <include-->
+        <Button
+            android:id="@+id/goToTravelBoardBtn"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="360dp"
+            android:background="@color/white"
+            android:text="Home"
+            android:onClick="changeToTravelBoard"/>
+
+        <!--        <include-->
 <!--            android:id="@+id/itineraryCard"-->
 <!--            layout="@layout/itinerary_tile" />-->
     </com.mapbox.mapboxsdk.maps.MapView>
