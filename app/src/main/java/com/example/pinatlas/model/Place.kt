@@ -2,8 +2,10 @@ package com.example.pinatlas.model
 
 import android.graphics.Bitmap
 import android.location.Location
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.IgnoreExtraProperties;
+import java.util.*
 import kotlin.collections.ArrayList
 
 @IgnoreExtraProperties
@@ -23,6 +25,8 @@ class Place {
     var waitTimes: ArrayList<Timings>? = null      // How long are wait times in minutes
     var avgSpentTimes: ArrayList<Int>? = null      // Range of average time spent in minutes, between [0] to [1] minutes spent
     var thumbnail: Bitmap? = null
+    var starttime: Timestamp = Timestamp(Date())
+    var traveltime: Double = 5400.0
 
     // here because it needs to deserialize. If it doesn't find a constructor, it'll break
     constructor()
@@ -41,7 +45,9 @@ class Place {
         busyTimes: ArrayList<Timings>? = null,
         waitTimes: ArrayList<Timings>? = null,
         avgSpentTimes: ArrayList<Int>? = null,
-        thumbnail: Bitmap? = null
+        thumbnail: Bitmap? = null,
+        starttime: Timestamp = Timestamp(Date()),
+        traveltime: Double = 5400.0
     ) {
         this.placeId = placeId
         this.name = name
@@ -57,6 +63,8 @@ class Place {
         this.waitTimes = waitTimes
         this.avgSpentTimes = avgSpentTimes
         this.thumbnail = thumbnail
+        this.starttime = starttime
+        this.traveltime = traveltime
     }
 
     class Timings {

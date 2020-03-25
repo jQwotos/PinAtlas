@@ -37,8 +37,10 @@ object MatrixifyUtil {
         return Tasks.forResult(geneticAlgorithm.optimize())
     }
 
+
+
     /* Optimize merges DistanceMatrixProvider fetchDistanceMatrix and pipes it into generateGenome */
-    fun optimize(places: List<String>, responseHandler: (result: List<String>?) -> Unit?) {
+    fun optimizer(places: List<String>, responseHandler: (result: List<String>?) -> Unit?) {
         doAsync {
             DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<String>){ result: DistanceMatrixModel? ->
                 if (result != null ) {

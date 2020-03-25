@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:width="200dp"
+                    android:width="220dp"
                     android:gravity="center"
                     android:padding="5dp"
                     android:paddingLeft="120dp"
@@ -76,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:width="200dp"
+                    android:width="220dp"
                     android:gravity="center"
                     android:padding="5dp"
                     android:paddingLeft="120dp"
@@ -86,7 +86,6 @@
                     android:textSize="10sp"
                     android:textStyle="bold"></TextView>
             </LinearLayout>
-
         </GridLayout>
 
     </androidx.cardview.widget.CardView>

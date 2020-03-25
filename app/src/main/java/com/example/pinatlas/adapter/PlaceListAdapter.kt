@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pinatlas.ItemMoveCallback
 import com.example.pinatlas.R
 import com.example.pinatlas.constants.ViewModes
+import com.example.pinatlas.utils.DateUtils
 import com.example.pinatlas.utils.PlaceThumbnailUtil
 import com.example.pinatlas.viewmodel.CreationViewModel
 
@@ -45,23 +46,22 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
         * We do this to prevent page duplication since the only difference (for now) between itinerary mode and creation mode
         * is that itinerary mode does not allow users to delete items (in our system)
         *  */
+        PlaceThumbnailUtil.populateImageView(place.placeId, holder.thumbnail)
+        holder.activity.text = place.name
+        holder.address.text = place.address
+        holder.priority.text = "#${position+1}"
+
         if (mode == ViewModes.ITINERARY_MODE) {
             holder.deleteButton.visibility = View.GONE
+            holder.priority.visibility = View.GONE
+            holder.address.text = place.starttime.toDate().toString()
+
 
             // this allows us to zoom in to the place when we click on the "card" in itinerary view
             holder.itemView.setOnClickListener {
                 viewModel.latLng.postValue(place.coordinates)
             }
         }
-
-        /* This is the individual card info
-
-
-         */
-        PlaceThumbnailUtil.populateImageView(place.placeId, holder.thumbnail)
-        holder.activity.text = place.name
-        holder.address.text = place.address
-        holder.priority.text = "#${position+1}"
 
         // updates info in Firebase
         holder.deleteButton.setOnClickListener {
