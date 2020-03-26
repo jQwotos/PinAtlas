@@ -52,14 +52,12 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
         * We do this to prevent page duplication since the only difference (for now) between itinerary mode and creation mode
         * is that itinerary mode does not allow users to delete items (in our system)
         *  */
-        PlaceThumbnailUtil.populateImageView(place.placeId, holder.thumbnail)
+        PlaceThumbnailUtil.populateImageView(place.placeId, holder.thumbnail, context)
         holder.activity.text = place.name
         holder.address.text = place.address
-        holder.priority.text = "#${position+1}"
 
         if (mode == ViewModes.ITINERARY_MODE) {
             holder.deleteButton.visibility = View.GONE
-            holder.priority.visibility = View.GONE
             holder.address.text = place.starttime.toDate().toString()
 
 
@@ -75,7 +73,7 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
             viewModel.saveTrip()
         }
 
-        holder.thumbnail.setOnClickListener {
+        holder.infoButton.setOnClickListener {
             val intent = Intent(it.context, DetailsView::class.java)
             intent.putExtra(Constants.TRIP_ID.type, viewModel.trip.value!!.tripId)
             intent.putExtra(Constants.PLACE_ID.type, place.placeId)
@@ -93,9 +91,9 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
         itemView) {
         val activity: TextView = itemView.findViewById(R.id.activityName) as TextView
         val address: TextView = itemView.findViewById(R.id.activityAddress) as TextView
-        val priority: TextView = itemView.findViewById(R.id.activityPriority) as TextView
         val deleteButton: ImageView = itemView.findViewById(R.id.deleteSymbol) as ImageView
         val thumbnail: ImageView = itemView.findViewById(R.id.thumbnail) as ImageView
+        val infoButton: ImageView = itemView.findViewById(R.id.infoSymbol)
         val card: CardView = itemView as CardView
     }
 

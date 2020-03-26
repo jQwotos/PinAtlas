@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.pinatlas.constants.TransportationMethods
 import com.example.pinatlas.model.BusyData
 import com.example.pinatlas.repository.TripsRepository
 import com.example.pinatlas.model.Place
@@ -46,6 +47,22 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
 
     val tripName: LiveData<String> = Transformations.map(_trip) {trip ->
         trip?.name
+    }
+
+    val isBiking: LiveData<Boolean> = Transformations.map(_trip) {trip ->
+        trip?.transportationMethods?.contains(TransportationMethods.BICYCLING.type) ?: false
+    }
+
+    val isDriving: LiveData<Boolean> = Transformations.map(_trip) {trip ->
+        trip?.transportationMethods?.contains(TransportationMethods.DRIVING.type) ?: false
+    }
+
+    val isWalking: LiveData<Boolean> = Transformations.map(_trip) {trip ->
+        trip?.transportationMethods?.contains(TransportationMethods.WALKING.type) ?: false
+    }
+
+    val isBussing: LiveData<Boolean> = Transformations.map(_trip) {trip ->
+        trip?.transportationMethods?.contains(TransportationMethods.TRANSIT.type) ?: false
     }
 
     val latLng: MutableLiveData<GeoPoint> = MutableLiveData<GeoPoint>()
@@ -117,6 +134,17 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
             _trip.postValue(_trip.value)
             saveTrip()
         }
+    }
+
+    fun toggleTransporationMethod(method: String) {
+        var methods = _trip.value?.transportationMethods ?: arrayListOf()
+        if (methods.contains(method)) {
+            methods.remove(method)
+        } else {
+            methods.add(method)
+        }
+        _trip.value?.transportationMethods = methods
+        _trip.postValue(_trip.value)
     }
 
     fun reorderPlaces(places: List<Place>) {

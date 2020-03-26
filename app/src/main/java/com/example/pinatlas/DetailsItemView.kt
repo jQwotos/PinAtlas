@@ -3,6 +3,7 @@ package com.example.pinatlas
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.TableRow
 import android.widget.TextView
@@ -11,14 +12,18 @@ import com.example.pinatlas.databinding.DetailsItemViewBinding
 class DetailsItemView(context: Context, attributeSet: AttributeSet): TableRow(context, attributeSet) {
 
     private var textView: TextView
+    private var tableRow: TableRow
+    private var imageView: ImageView
 
     init {
         DetailsItemViewBinding.inflate(LayoutInflater.from(context), this, true)
 
-        val imageView: ImageView = findViewById(R.id.detailsImage)
+        imageView = findViewById(R.id.detailsImage)
         textView = findViewById(R.id.detailsTextView)
+        tableRow = findViewById(R.id.detailsItemView)
 
         val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.DetailsItemView)
+        val text = attributes.getText(R.styleable.DetailsItemView_text)
 
         imageView.setImageDrawable(attributes.getDrawable(R.styleable.DetailsItemView_imageSrc))
         attributes.recycle()
@@ -30,6 +35,11 @@ class DetailsItemView(context: Context, attributeSet: AttributeSet): TableRow(co
     }
 
     fun setText(text: String?) {
-        textView.text = text
+        if (text == "" || text == null) {
+            tableRow.visibility = View.GONE
+        } else {
+            textView.text = text
+            tableRow.visibility = View.VISIBLE
+        }
     }
 }
