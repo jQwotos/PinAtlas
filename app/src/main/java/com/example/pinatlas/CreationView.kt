@@ -119,8 +119,7 @@ class CreationView : AppCompatActivity() {
             }
 
             override fun onPlaceSelected(gPlace: GPlace) {
-                val openingHours = gPlace.openingHours!!.periods.map { it.toString() } as ArrayList<String>
-                if (gPlace.id != null && openingHours !=null) {
+                if (gPlace.id != null && gPlace.openingHours !=null) {
                     val place = Place(
                         placeId = gPlace.id!!,
                         name = gPlace.name!!,

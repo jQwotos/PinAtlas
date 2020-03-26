@@ -49,13 +49,23 @@ object MatrixifyUtil {
 
     fun setPlaceTimes(places : List<Place>, distanceMatrixModel: DistanceMatrixModel, tripstart: Timestamp, tripend: Timestamp): List<Place> {
         var placesout : List<Place> = places
+
         var start : Calendar = Calendar.getInstance()
+        start.setTime(tripstart.toDate())
         start.set(Calendar.HOUR,9)
         start.set(Calendar.MINUTE,30)
         start.set(Calendar.SECOND,0)
         start.set(Calendar.MILLISECOND,0)
 
-        val end : Calendar = Calendar.getInstance()
+        var endday : Calendar = Calendar.getInstance()
+        endday.setTime(tripstart.toDate())
+        endday.set(Calendar.HOUR,22)
+        endday.set(Calendar.MINUTE,30)
+        endday.set(Calendar.SECOND,0)
+        endday.set(Calendar.MILLISECOND,0)
+
+        var end : Calendar = Calendar.getInstance()
+        end.setTime(tripend.toDate())
         end.set(Calendar.HOUR,22)
         end.set(Calendar.MINUTE,30)
         end.set(Calendar.SECOND,0)
@@ -69,8 +79,6 @@ object MatrixifyUtil {
                 val placeOneIndex : Int = distanceMatrixModel.origin_addresses!!.indexOf(place.address)
                 val placeTwoIndex : Int = distanceMatrixModel.destination_addresses!!.indexOf(placesout.get(placesout.indexOf(place)+1).address)
                 val duration : Long? = distanceMatrixModel.rows!!.get(placeOneIndex).elements.get(placeTwoIndex).duration!!.value
-
-                // TODO: DONT DELETE^ place.traveltime = duration
                 place.traveltime = duration
             }
         }
@@ -79,17 +87,21 @@ object MatrixifyUtil {
             //if(start)
             if(placesout.indexOf(place) == 0) {
                 start.set(Calendar.HOUR,start.get(Calendar.HOUR)+2)
-                val date: Date = start.time
-                place.starttime = Timestamp(date)
+                place.starttime = Timestamp(start.time)
             }
             else{
-                start.set(Calendar.MINUTE, start.get(Calendar.MINUTE) + Integer.parseInt(placesout.get(placesout.indexOf(place) - 1).traveltime.toString()))
-                if(start > end){ // Figure out comparisonL
+                if(start.compareTo(endday)>=0){ // Figure out comparisonL
                     start.set(Calendar.HOUR,11)
+                    start.set(Calendar.MINUTE,30)
+                    start.set(Calendar.SECOND,0)
                     start.set(Calendar.DATE,start.get(Calendar.DATE)+1)
+                    endday.set(Calendar.DATE,endday.get(Calendar.DATE)+1)
+                    place.starttime = Timestamp(start.time)
                 }
-                val date: Date = start.time
-                place.starttime = Timestamp(date)
+                else{
+                    start.set(Calendar.MINUTE, start.get(Calendar.MINUTE) + Integer.parseInt(placesout.get(placesout.indexOf(place) - 1).traveltime.toString()))
+                    place.starttime = Timestamp(start.time)
+                }
             }
         }
         return placesout
