@@ -52,7 +52,7 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
         * We do this to prevent page duplication since the only difference (for now) between itinerary mode and creation mode
         * is that itinerary mode does not allow users to delete items (in our system)
         *  */
-        PlaceThumbnailUtil.populateImageView(place.placeId, holder.thumbnail)
+        PlaceThumbnailUtil.populateImageView(place.placeId, holder.thumbnail, context)
         holder.activity.text = place.name
         holder.address.text = place.address
 

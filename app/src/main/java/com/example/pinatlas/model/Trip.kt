@@ -15,7 +15,7 @@ class Trip {
     var placeRanking: ArrayList<String> = arrayListOf()
     var places: ArrayList<Place> = ArrayList()          // Array of places (not sorted in any way)
 
-    var transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
+    var transportationMethods: ArrayList<String> = arrayListOf()
 
     override fun toString(): String {
         return "User: $userId | Trip: $tripId | Name: $name | start_date: ${startDate.toString()} | end_date: ${endDate.toString()}"
@@ -31,7 +31,7 @@ class Trip {
         endDate: Timestamp = Timestamp(Date()),
         placeRanking: ArrayList<String> = arrayListOf(),
         places: ArrayList<Place> = arrayListOf(),
-        transportationMethods: ArrayList<TransportationMethods> = arrayListOf()
+        transportationMethods: ArrayList<String> = arrayListOf()
     ) {
         this.userId = userId
         this.tripId = tripId

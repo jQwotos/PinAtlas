@@ -41,7 +41,7 @@ class DetailsView : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         /* Setup image */
         imageView = findViewById(R.id.placeImage)
-        PlaceThumbnailUtil.populateImageView(placeId, imageView)
+        PlaceThumbnailUtil.populateImageView(placeId, imageView, this)
 
         /* Setup Busy Times Spinner */
         busyTimesSpinner = findViewById(R.id.busyTimesSelector)
