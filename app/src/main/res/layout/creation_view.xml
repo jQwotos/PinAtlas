@@ -112,6 +112,48 @@
             app:layout_constraintStart_toEndOf="@+id/editStartDate"
             app:layout_constraintTop_toTopOf="@+id/editStartDate" />
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="43dp"
+            android:onClick="buildTransportationPicker"
+            app:layout_constraintLeft_toRightOf="@id/endDateButton"
+            app:layout_constraintTop_toTopOf="@id/endDateButton"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="8dp"
+            >
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_directions_bike_24px"
+                android:tint="@{viewmodel.isBiking() ? @color/hotPink : @color/colorPrimaryDark}"
+                />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_directions_bus_24px"
+                android:tint="@{viewmodel.isBussing() ? @color/hotPink : @color/colorPrimaryDark}"
+                />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_directions_car_24px"
+                android:tint="@{viewmodel.isDriving() ? @color/hotPink : @color/colorPrimaryDark}"
+                />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_directions_walk_24px"
+                android:tint="@{viewmodel.isWalking() ? @color/hotPink : @color/colorPrimaryDark}"
+                />
+        </LinearLayout>
+
         <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
             android:id="@+id/placeList"
             android:layout_width="match_parent"

@@ -219,20 +219,21 @@ class CreationView : AppCompatActivity() {
         finish()
     }
 
-//   DO NOT DELETE
-//    fun buildTransportationPicker(view: View) {
-//        val options: Array<String> = TransportationMethods.values().map { it.type } as Array<String>
-//        val checked: BooleanArray = options.map { method -> viewModel.trip.value!!.transportationMethods.contains(method) } as BooleanArray
-//
-//        val builder = AlertDialog.Builder(context)
-//
-//        builder.setTitle(R.string.transpo_picker_msg)
-//        builder.setMultiChoiceItems(options, checked) { _, which, isChecked ->
-//            checked[which] = isChecked
-//            viewModel.toggleTransportationMethod(options[which])
-//            viewModel.saveTrip()
-//        }
-//    }
+    fun buildTransportationPicker(view: View) {
+        val options: Array<String> = TransportationMethods.values().map { it.type }.toTypedArray()
+        val checked: BooleanArray = options.map { method -> viewModel.trip.value!!.transportationMethods.contains(method) }.toBooleanArray()
+
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle(R.string.transpo_picker_msg)
+        builder.setMultiChoiceItems(options, checked) { _, which, isChecked ->
+            checked[which] = isChecked
+            viewModel.toggleTransporationMethod(options[which])
+            viewModel.saveTrip()
+        }
+        var dialog = builder.create()
+        dialog.show()
+    }
 
     fun changeToItineraryView(view: View? = null) {
         val intent = Intent(context, ItineraryView::class.java)

@@ -12,14 +12,15 @@ import com.google.android.libraries.places.api.net.PlacesClient
 
 /* Owner: AZ */
 object PlaceThumbnailUtil{
-    private var  placesClient: PlacesClient
+    private lateinit var placesClient: PlacesClient
 
-    init {
-        Places.initialize(TravelDash.context, BuildConfig.PLACES_API_KEY)
-        this.placesClient = Places.createClient(TravelDash.context)
-    }
+    fun populateImageView(placeId: String, view: ImageView, context: Context) {
 
-    fun populateImageView(placeId: String, view: ImageView) {
+        if (!Places.isInitialized()) {
+            Places.initialize(context, BuildConfig.PLACES_API_KEY)
+            placesClient = Places.createClient(context)
+        }
+
         val placeRequest = FetchPlaceRequest.newInstance(placeId, listOf(Place.Field.PHOTO_METADATAS))
         placesClient.fetchPlace(placeRequest).addOnSuccessListener {
             if (it.place.photoMetadatas != null) {
