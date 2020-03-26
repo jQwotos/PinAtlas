@@ -23,10 +23,7 @@ class DetailsItemView(context: Context, attributeSet: AttributeSet): TableRow(co
         tableRow = findViewById(R.id.detailsItemView)
 
         val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.DetailsItemView)
-
-        if (attributes.getText(R.styleable.DetailsItemView_text) == "") {
-            tableRow.visibility = View.GONE
-        }
+        val text = attributes.getText(R.styleable.DetailsItemView_text)
 
         imageView.setImageDrawable(attributes.getDrawable(R.styleable.DetailsItemView_imageSrc))
         attributes.recycle()
@@ -38,6 +35,11 @@ class DetailsItemView(context: Context, attributeSet: AttributeSet): TableRow(co
     }
 
     fun setText(text: String?) {
-        textView.text = text
+        if (text == "" || text == null) {
+            tableRow.visibility = View.GONE
+        } else {
+            textView.text = text
+            tableRow.visibility = View.VISIBLE
+        }
     }
 }
