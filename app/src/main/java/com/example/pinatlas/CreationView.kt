@@ -245,7 +245,7 @@ class CreationView : AppCompatActivity() {
         if (viewModel.tripPlaces.value!!.size > 2) {
             loader.visibility = View.VISIBLE
             doAsync {
-                MatrixifyUtil.optimizer(viewModel.trip.value!!.places) { newOrderedPlaces: List<Place>? ->
+                MatrixifyUtil.optimizer(viewModel.trip.value!!.places, viewModel.trip.value!!.startDate, viewModel.trip.value!!.endDate) { newOrderedPlaces: List<Place>? ->
                     if (newOrderedPlaces != null) {
                         viewModel.reorderPlaces(newOrderedPlaces)
                         viewModel.saveTrip()
