@@ -31,7 +31,7 @@ class Place {
 
     fun openingHoursString() : String {
         var combined = ""
-        openingHours?.forEach { combined += it }
+        openingHours?.forEach { combined += "$it\n" }
         return combined
     }
 

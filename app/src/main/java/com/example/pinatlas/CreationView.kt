@@ -122,7 +122,7 @@ class CreationView : AppCompatActivity() {
                 if (gPlace.id != null) {
                     val place = Place(
                         placeId = gPlace.id!!,
-                        openingHours = gPlace.openingHours!!.periods.map { it.toString() } as ArrayList<String>,
+                        openingHours = gPlace.openingHours?.weekdayText as ArrayList<String>,
                         name = gPlace.name!!,
                         address = gPlace.address!!,
                         phoneNumber = gPlace.phoneNumber,
