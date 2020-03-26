@@ -33,19 +33,21 @@ class DetailsViewModel(tripId: String, placeId: String) : ViewModel() {
         get() = _place
 
     val rating: LiveData<String> = Transformations.map(_place) { place ->
-        if (place != null) "${place.rating} / 5" else null
+        if (place!!.rating != null) "${place.rating} / 5" else ""
     }
 
     val timeSpent: LiveData<String> = Transformations.map(_place) { place ->
-        if (place != null) "People spend between ${place.busyData!!.avgSpentTimes!![0]} min to ${place.busyData!!.avgSpentTimes!![1]} min here." else null
+        if (place.busyData!!.avgSpentTimes != null)
+            "People spend between ${place.busyData!!.avgSpentTimes!![0]} min to ${place.busyData!!.avgSpentTimes!![1]} min here."
+        else ""
     }
 
     val busyTimesEntries: LiveData<List<BarEntry>> = Transformations.map(_place) { place ->
-        if (place != null) {
+        if (place.busyData!!.avgSpentTimes != null) {
             place.busyData!!.busyTimes!!.get(busyDay).data!!.mapIndexed { index, level ->
                 BarEntry(index.toFloat(), level.toFloat())
             }
-        } else null
+        } else listOf()
     }
 
     val busyTimesBarData: LiveData<BarData> = Transformations.map(busyTimesEntries) { busyTimesEntries ->
@@ -53,7 +55,7 @@ class DetailsViewModel(tripId: String, placeId: String) : ViewModel() {
             var barDataSet = BarDataSet(busyTimesEntries, busyDay.toString())
             barDataSet.color = R.color.lightGrey
             BarData(barDataSet)
-        } else null
+        } else BarData(listOf())
     }
 
     fun callPlace(view: View) {

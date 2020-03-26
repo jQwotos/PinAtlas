@@ -26,7 +26,7 @@
                 android:layout_marginLeft="0dp"
                 android:baselineAlignBottom="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/mapbox_compass_icon"></ImageView>
+                android:src="@drawable/mapbox_compass_icon" />
 
             <ImageView
                 android:id="@+id/deleteSymbol"
@@ -35,23 +35,22 @@
                 android:layout_row="0"
                 android:layout_column="4"
                 android:layout_gravity="center"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_delete_24px"
                 android:tint="@color/navyBlue" />
 
-            <TextView
-                android:id="@+id/activityPriority"
-                android:layout_width="51dp"
-                android:layout_height="wrap_content"
-                android:layout_column="3"
+            <ImageView
+                android:id="@+id/infoSymbol"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_row="0"
+                android:layout_column="5"
                 android:layout_gravity="center"
-                android:fontFamily="@font/roboto_medium"
-                android:text="1"
-                android:textAlignment="center"
-                android:textColor="@color/navyBlue"
-                android:textSize="16dp"
-                android:textStyle="bold"></TextView>
+                android:layout_marginEnd="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/mapbox_info_icon_default"
+                android:tint="@color/navyBlue" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
