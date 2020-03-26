@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.pinatlas.databinding.ActionItemViewBinding
 import com.example.pinatlas.databinding.DetailsItemViewBinding
 
 class ActionItemView(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
@@ -15,7 +16,7 @@ class ActionItemView(context: Context, attributeSet: AttributeSet): LinearLayout
     private var imageView: ImageView
 
     init {
-//        ActionItemViewBinding.inflate(LayoutInflater.from(context), this, true)
+        ActionItemViewBinding.inflate(LayoutInflater.from(context), this, true)
 
         imageView = findViewById(R.id.actionBtnImage)
         textView = findViewById(R.id.actionBtnTxt)
