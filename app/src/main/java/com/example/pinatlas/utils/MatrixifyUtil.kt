@@ -1,13 +1,20 @@
 package com.example.pinatlas.utils
 
+import android.text.format.DateUtils
 import android.util.Log
+import android.widget.Button
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.matrix.DistanceMatrixModel
 import com.example.pinatlas.model.matrix.Salesman
 import com.example.pinatlas.model.matrix.SalesmanGenome
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.Timestamp
 import org.jetbrains.anko.doAsync
+import java.sql.Time
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /* Owner: SS  */
@@ -16,7 +23,7 @@ object MatrixifyUtil {
     private val TAG = MatrixifyUtil::class.java.simpleName
 
     //Maps the algorithm's index to places
-    fun repositionPlaces(places: List<Place>, optimizedIndex: List<Int>) : Task<List<Place>> {
+    fun repositionPlaces(places: List<Place>, optimizedIndex: List<Int>, distanceMatrixModel: DistanceMatrixModel) : Task<List<Place>> {
         return Tasks.forResult(optimizedIndex.map { index -> places.get(index) })
     }
 
@@ -40,15 +47,66 @@ object MatrixifyUtil {
 
 
 
+    fun setPlaceTimes(places : List<Place>, distanceMatrixModel: DistanceMatrixModel, tripstart: Timestamp, tripend: Timestamp): List<Place> {
+        var placesout : List<Place> = places
+        var start : Calendar = Calendar.getInstance()
+        start.set(Calendar.HOUR,9)
+        start.set(Calendar.MINUTE,30)
+        start.set(Calendar.SECOND,0)
+        start.set(Calendar.MILLISECOND,0)
+
+        val end : Calendar = Calendar.getInstance()
+        end.set(Calendar.HOUR,22)
+        end.set(Calendar.MINUTE,30)
+        end.set(Calendar.SECOND,0)
+        end.set(Calendar.MILLISECOND,0)
+
+
+        for(place in placesout){
+            if(placesout.indexOf(place) == placesout.size - 1) {
+                place.traveltime = 0
+            }else{
+                val placeOneIndex : Int = distanceMatrixModel.origin_addresses!!.indexOf(place.address)
+                val placeTwoIndex : Int = distanceMatrixModel.destination_addresses!!.indexOf(placesout.get(placesout.indexOf(place)+1).address)
+                val duration : Long? = distanceMatrixModel.rows!!.get(placeOneIndex).elements.get(placeTwoIndex).duration!!.value
+
+                // TODO: DONT DELETE^ place.traveltime = duration
+                place.traveltime = duration
+            }
+        }
+
+        for(place in placesout){
+            //if(start)
+            if(placesout.indexOf(place) == 0) {
+                start.set(Calendar.HOUR,start.get(Calendar.HOUR)+2)
+                val date: Date = start.time
+                place.starttime = Timestamp(date)
+            }
+            else{
+                start.set(Calendar.MINUTE, start.get(Calendar.MINUTE) + Integer.parseInt(placesout.get(placesout.indexOf(place) - 1).traveltime.toString()))
+                if(start > end){ // Figure out comparisonL
+                    start.set(Calendar.HOUR,11)
+                    start.set(Calendar.DATE,start.get(Calendar.DATE)+1)
+                }
+                val date: Date = start.time
+                place.starttime = Timestamp(date)
+            }
+        }
+        return placesout
+
+    }
+
+
+
     /* Optimize merges DistanceMatrixProvider fetchDistanceMatrix and pipes it into generateGenome */
-    fun optimizer(places: List<Place>, responseHandler: (result: List<Place>?) -> Unit?) {
+    fun optimizer(places: List<Place>, tripstart: Timestamp, tripend: Timestamp, responseHandler: (result: List<Place>?) -> Unit?) {
         doAsync {
             DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<Place>){ result: DistanceMatrixModel? ->
                 if (result != null ) {
                     generateGenome(distanceMatrixModel = result).continueWithTask { genome: Task<SalesmanGenome> ->
-                        repositionPlaces(places, genome.result!!.optimizedRoute)
+                        repositionPlaces(places, genome.result!!.optimizedRoute, result)
                     }.addOnSuccessListener { optimizedRoute: List<Place> ->
-                        responseHandler(optimizedRoute)
+                        responseHandler(setPlaceTimes(optimizedRoute,result, tripstart, tripend))
                     }
                 } else {
                     responseHandler(null)

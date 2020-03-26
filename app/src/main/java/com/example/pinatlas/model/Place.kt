@@ -26,7 +26,7 @@ class Place {
     var avgSpentTimes: ArrayList<Int>? = null      // Range of average time spent in minutes, between [0] to [1] minutes spent
     var thumbnail: Bitmap? = null
     var starttime: Timestamp = Timestamp(Date())
-    var traveltime: Double = 5400.0
+    var traveltime: Long? = null
     var busyData: BusyData? = null
 
     fun openingHoursString() : String {
@@ -54,7 +54,7 @@ class Place {
         avgSpentTimes: ArrayList<Int>? = null,
         thumbnail: Bitmap? = null,
         starttime: Timestamp = Timestamp(Date()),
-        traveltime: Double = 5400.0,
+        traveltime: Long? = null,
         busyData: BusyData? = null
     ) {
         this.placeId = placeId

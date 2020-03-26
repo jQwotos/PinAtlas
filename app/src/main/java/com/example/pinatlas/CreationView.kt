@@ -119,11 +119,12 @@ class CreationView : AppCompatActivity() {
             }
 
             override fun onPlaceSelected(gPlace: GPlace) {
-                if (gPlace.id != null) {
+                val openingHours = gPlace.openingHours!!.periods.map { it.toString() } as ArrayList<String>
+                if (gPlace.id != null && openingHours !=null) {
                     val place = Place(
                         placeId = gPlace.id!!,
-                        openingHours = gPlace.openingHours!!.periods.map { it.toString() } as ArrayList<String>,
                         name = gPlace.name!!,
+                        openingHours = gPlace.openingHours!!.periods.map { it.toString() } as ArrayList<String>,
                         address = gPlace.address!!,
                         phoneNumber = gPlace.phoneNumber,
                         rating = gPlace.rating,
@@ -242,7 +243,7 @@ class CreationView : AppCompatActivity() {
         if (viewModel.tripPlaces.value!!.size > 2) {
             loader.visibility = View.VISIBLE
             doAsync {
-                MatrixifyUtil.optimizer(viewModel.trip.value!!.places) { newOrderedPlaces: List<Place>? ->
+                MatrixifyUtil.optimizer(viewModel.trip.value!!.places, viewModel.trip.value!!.startDate, viewModel.trip.value!!.endDate) { newOrderedPlaces: List<Place>? ->
                     if (newOrderedPlaces != null) {
                         viewModel.reorderPlaces(newOrderedPlaces)
                         viewModel.saveTrip()

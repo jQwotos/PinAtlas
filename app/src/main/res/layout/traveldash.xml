@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="false">
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -56,12 +51,20 @@
         </com.mapbox.mapboxsdk.maps.MapView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/mapViewContainer"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
     <TextView
         android:id="@+id/PTtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/mapViewContainer"
         android:fontFamily="@font/roboto_medium"
         android:padding="10dp"
         android:paddingTop="10dp"
@@ -109,6 +112,6 @@
         app:msrv_gravity="end"
         app:msrv_interval="10"
         app:msrv_speed_ms_per_inch="100"></com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView>
-
-</RelativeLayout>
+    </LinearLayout>
 </ScrollView>
+</RelativeLayout>

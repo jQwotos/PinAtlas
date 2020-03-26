@@ -112,8 +112,11 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
 
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
-        mapboxMap.setStyle(Style.MAPBOX_STREETS) {
-            enableLocationComponent(it)
+//        mapboxMap.setStyle(Style.TRAFFIC_NIGHT) {
+//            enableLocationComponent(it)
+//        }
+        mapboxMap.setStyle(Style.Builder().fromUri("mapbox://styles/davidchopin/cjtz90km70tkk1fo6oxifkd67")) {
+                enableLocationComponent(it)
         }
     }
 
