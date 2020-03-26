@@ -36,24 +36,27 @@
                     android:layout_height="200dp"
                     android:scaleType="centerCrop" />
 
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/actionButtons"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content">-->
+                <LinearLayout
+                    android:id="@+id/actionButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-<!--                    <com.example.pinatlas.ActionItemView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:onClick="@{(view) -> viewmodel.callPlace(view)}"-->
-<!--                        app:imageSrc="@drawable/ic_phone_24px"-->
-<!--                        app:text="Call" />-->
+                    <com.example.pinatlas.ActionItemView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(view) -> viewmodel.callPlace(view)}"
+                        app:actionImg="@drawable/ic_phone_24px"
+                        app:actionText="Call" />
 
-<!--                    <com.example.pinatlas.ActionItemView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        app:imageSrc="@drawable/mapbox_compass_icon"-->
-<!--                        app:text="Directions" />-->
-<!--                </LinearLayout>-->
+                    <com.example.pinatlas.ActionItemView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        app:actionImg="@drawable/ic_commute_24px"
+                        android:onClick="@{(view) -> viewmodel.openNavigation(view)}"
+                        app:actionText="Directions" />
+                </LinearLayout>
 
                 <TableLayout
                     android:layout_width="match_parent"

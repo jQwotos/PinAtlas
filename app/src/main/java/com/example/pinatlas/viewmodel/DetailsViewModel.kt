@@ -6,10 +6,7 @@ import android.net.Uri
 import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.pinatlas.R
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.Trip
@@ -25,12 +22,37 @@ class DetailsViewModel(tripId: String, placeId: String) : ViewModel() {
 
     private val _place = MutableLiveData<Place>()
 
-    var busyDay = 0
+    private val _busyData = MediatorLiveData<BarData>()
+
+    var busyDay = MutableLiveData(0)
 
     var tripListener: ListenerRegistration
 
+    fun updateBusyData(place: Place?, day: Int?) {
+        if (place?.busyData?.busyTimes != null) {
+            var barEntries = place.busyData!!.busyTimes!!.get(day!!).data!!.mapIndexed { index, level ->
+                BarEntry(index.toFloat(), level.toFloat())
+            }
+            var barDataSet = BarDataSet(barEntries, day.toString())
+            barDataSet.color = R.color.quantum_grey
+            _busyData.postValue(BarData(barDataSet))
+        }
+    }
+
     val place: LiveData<Place>
         get() = _place
+
+    fun observeBusyData(owner: LifecycleOwner, observer: Observer<BarData>) {
+        _busyData.observe(owner, observer)
+
+        _busyData.addSource(_place) { place ->
+            updateBusyData(place, busyDay.value)
+        }
+
+        _busyData.addSource(busyDay) { day ->
+            updateBusyData(place.value, day)
+        }
+    }
 
     val rating: LiveData<String> = Transformations.map(_place) { place ->
         if (place!!.rating != null) "${place.rating} / 5" else ""
@@ -42,28 +64,23 @@ class DetailsViewModel(tripId: String, placeId: String) : ViewModel() {
         else ""
     }
 
-    val busyTimesEntries: LiveData<List<BarEntry>> = Transformations.map(_place) { place ->
-        if (place.busyData!!.avgSpentTimes != null) {
-            place.busyData!!.busyTimes!!.get(busyDay).data!!.mapIndexed { index, level ->
-                BarEntry(index.toFloat(), level.toFloat())
-            }
-        } else listOf()
-    }
-
-    val busyTimesBarData: LiveData<BarData> = Transformations.map(busyTimesEntries) { busyTimesEntries ->
-        if (busyTimesEntries != null) {
-            var barDataSet = BarDataSet(busyTimesEntries, busyDay.toString())
-            barDataSet.color = R.color.lightGrey
-            BarData(barDataSet)
-        } else BarData(listOf())
+    fun setBusyDay(day: Int) {
+        busyDay.postValue(day)
     }
 
     fun callPlace(view: View) {
-        var intent: Intent = Intent(Intent.ACTION_CALL, Uri.parse("tel: ${place.value!!.phoneNumber}"))
+        var intent = Intent(Intent.ACTION_CALL, Uri.parse("tel: ${place.value!!.phoneNumber}"))
 
         if (ActivityCompat.checkSelfPermission(view.context, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                 view.context.startActivity(intent)
         }
+    }
+
+    fun openNavigation(view: View) {
+        var intent = Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=${place.value!!.address}"))
+        intent.setPackage("com.google.android.apps.maps");
+
+        view.context.startActivity(intent)
     }
 
     init {
