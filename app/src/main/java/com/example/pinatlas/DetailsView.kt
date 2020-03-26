@@ -63,14 +63,19 @@ class DetailsView : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         busyTimesChart.legend.isEnabled = false
 
-        viewModel.busyTimesBarData.observe(this, Observer { data: BarData ->
+        viewModel.observeBusyData(this, Observer { data: BarData ->
+            if (data.entryCount == 0) {
+                busyTimesChart.visibility = View.GONE
+            } else {
+                busyTimesChart.visibility = View.VISIBLE
+            }
             busyTimesChart.data = data
             busyTimesChart.invalidate()
         })
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        viewModel.busyDay = position
+        viewModel.setBusyDay(position)
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}

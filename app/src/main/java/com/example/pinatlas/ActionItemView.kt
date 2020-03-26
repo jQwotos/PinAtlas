@@ -24,15 +24,7 @@ class ActionItemView(context: Context, attributeSet: AttributeSet): LinearLayout
         val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.ActionItemView)
 
         imageView.setImageDrawable(attributes.getDrawable(R.styleable.ActionItemView_actionImg))
+        textView.setText(attributes.getText(R.styleable.ActionItemView_actionText))
         attributes.recycle()
-    }
-
-    /* Data Binding, do not remove */
-    fun getActionText() : String {
-        return textView.text.toString()
-    }
-
-    fun setActionText(text: String?) {
-        textView.text = text
     }
 }
