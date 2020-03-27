@@ -62,7 +62,6 @@ class DetailsView : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         busyTimesChart.xAxis.setDrawGridLines(false)
 
         busyTimesChart.legend.isEnabled = false
-
         viewModel.observeBusyData(this, Observer { data: BarData ->
             if (data.entryCount == 0) {
                 busyTimesChart.visibility = View.GONE

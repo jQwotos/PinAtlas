@@ -21,7 +21,6 @@ import android.util.Log
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -228,10 +227,29 @@ class CreationView : AppCompatActivity() {
         builder.setTitle(R.string.transpo_picker_msg)
         builder.setMultiChoiceItems(options, checked) { _, which, isChecked ->
             checked[which] = isChecked
-            viewModel.toggleTransporationMethod(options[which])
-            viewModel.saveTrip()
         }
+
+        builder.setPositiveButton("Submit", null)
+
+        builder.setNegativeButton("Cancel", null)
+
         var dialog = builder.create()
+
+        dialog.setOnShowListener {
+            var submitButton: Button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            submitButton.setOnClickListener { _ ->
+                if (!checked.contains(true)) {
+                    Toast.makeText(context, "Please select at least one method.", Toast.LENGTH_LONG).show()
+                } else {
+                    viewModel.setTransportationMethods(
+                        checked.foldIndexed(arrayListOf()) { index: Int, acc: ArrayList<String>, b: Boolean ->
+                            if (b) acc.add(options[index])
+                            acc
+                        })
+                    viewModel.saveTrip()
+                    dialog.dismiss()
+                } } }
+
         dialog.show()
     }
 

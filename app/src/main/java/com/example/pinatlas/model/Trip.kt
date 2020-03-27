@@ -31,7 +31,7 @@ class Trip {
         endDate: Timestamp = Timestamp(Date()),
         placeRanking: ArrayList<String> = arrayListOf(),
         places: ArrayList<Place> = arrayListOf(),
-        transportationMethods: ArrayList<String> = arrayListOf()
+        transportationMethods: ArrayList<String> = arrayListOf(TransportationMethods.TRANSIT.type)
     ) {
         this.userId = userId
         this.tripId = tripId
