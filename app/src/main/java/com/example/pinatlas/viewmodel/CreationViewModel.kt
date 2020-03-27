@@ -24,7 +24,6 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     val TAG = CreationViewModel::class.java.simpleName
 
     private val tripsRepository = TripsRepository()
-    private val placesRepository = PlacesRepository()
 
     private val _trip = MutableLiveData<Trip>()
     private val _places = MutableLiveData<List<Place>>()
@@ -136,14 +135,8 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
         }
     }
 
-    fun toggleTransporationMethod(method: String) {
-        var methods = _trip.value?.transportationMethods ?: arrayListOf()
-        if (methods.contains(method)) {
-            methods.remove(method)
-        } else {
-            methods.add(method)
-        }
-        _trip.value?.transportationMethods = methods
+    fun setTransportationMethods(methods: List<String>) {
+        _trip.value?.transportationMethods = methods as ArrayList<String>
         _trip.postValue(_trip.value)
     }
 
