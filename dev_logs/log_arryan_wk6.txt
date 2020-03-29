@@ -1,0 +1,2 @@
+- 2 hr | add place thumbnails (pr #63)
+- 2 hr | fix bugs (pr #67)
