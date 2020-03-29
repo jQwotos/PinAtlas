@@ -58,7 +58,11 @@ class PlaceListAdapter (private val viewModel: CreationViewModel, private val mo
 
         if (mode == ViewModes.ITINERARY_MODE) {
             holder.deleteButton.visibility = View.GONE
-            holder.address.text = place.starttime.toDate().toString()
+            if(!place.canvisit){
+                holder.address.text = "Unable to visit this place!! Maybe Next time!!"
+            }else{
+                holder.address.text = place.starttime.toDate().toString()
+            }
 
 
             // this allows us to zoom in to the place when we click on the "card" in itinerary view

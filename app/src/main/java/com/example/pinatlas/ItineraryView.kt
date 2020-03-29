@@ -113,7 +113,7 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                         val lat = coordinates.latitude
                         val lng = coordinates.longitude
                         val zoom = when (isInit) {
-                            true -> 12.5
+                            true -> 20.0
                             else -> 11.0
                         }
                         this.mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(lat, lng), zoom))
@@ -135,10 +135,10 @@ class ItineraryView : AppCompatActivity() , OnMapReadyCallback, PermissionsListe
                     style.addLayer(
                         SymbolLayer(LAYER_ID, SOURCE_ID)
                             .withProperties(
-                                PropertyFactory.iconImage(ICON_ID),
-                                PropertyFactory.iconIgnorePlacement(true),
-                                PropertyFactory.iconSize(1f),
-                                PropertyFactory.iconAllowOverlap(true)
+                                iconImage(ICON_ID),
+                                iconIgnorePlacement(true),
+                                iconSize(1f),
+                                iconAllowOverlap(true)
                             )
                     )
 

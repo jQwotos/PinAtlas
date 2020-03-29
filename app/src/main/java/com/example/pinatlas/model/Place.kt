@@ -28,6 +28,7 @@ class Place {
     var starttime: Timestamp = Timestamp(Date())
     var traveltime: Long? = null
     var busyData: BusyData? = null
+    var canvisit: Boolean = true
 
     fun openingHoursString() : String {
         var combined = ""
@@ -55,7 +56,8 @@ class Place {
         thumbnail: Bitmap? = null,
         starttime: Timestamp = Timestamp(Date()),
         traveltime: Long? = null,
-        busyData: BusyData? = null
+        busyData: BusyData? = null,
+        canvisit: Boolean = true
     ) {
         this.placeId = placeId
         this.name = name
@@ -74,6 +76,7 @@ class Place {
         this.starttime = starttime
         this.traveltime = traveltime
         this.busyData = busyData
+        this.canvisit = canvisit
     }
 
     class Timings {

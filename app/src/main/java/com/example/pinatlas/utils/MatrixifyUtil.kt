@@ -52,21 +52,25 @@ object MatrixifyUtil {
 
         var start : Calendar = Calendar.getInstance()
         start.setTime(tripstart.toDate())
-        start.set(Calendar.HOUR,9)
+        start.set(Calendar.HOUR_OF_DAY,9)
         start.set(Calendar.MINUTE,30)
         start.set(Calendar.SECOND,0)
         start.set(Calendar.MILLISECOND,0)
+        Log.e("xox START",start.time.toString())
+
 
         var endday : Calendar = Calendar.getInstance()
         endday.setTime(tripstart.toDate())
-        endday.set(Calendar.HOUR,22)
+        endday.set(Calendar.HOUR_OF_DAY,22)
         endday.set(Calendar.MINUTE,30)
         endday.set(Calendar.SECOND,0)
         endday.set(Calendar.MILLISECOND,0)
+        Log.e("xox END",endday.time.toString())
+
 
         var end : Calendar = Calendar.getInstance()
         end.setTime(tripend.toDate())
-        end.set(Calendar.HOUR,22)
+        end.set(Calendar.HOUR_OF_DAY,10)
         end.set(Calendar.MINUTE,30)
         end.set(Calendar.SECOND,0)
         end.set(Calendar.MILLISECOND,0)
@@ -86,23 +90,32 @@ object MatrixifyUtil {
         for(place in placesout){
             //if(start)
             if(placesout.indexOf(place) == 0) {
-                start.set(Calendar.HOUR,start.get(Calendar.HOUR)+2)
+                start.set(Calendar.HOUR_OF_DAY,start.get(Calendar.HOUR_OF_DAY)+2)
                 place.starttime = Timestamp(start.time)
+                Log.e(placesout.indexOf(place).toString()+" xox==O ",place.starttime.toDate().toString())
             }
             else{
-                if(start.compareTo(endday)>=0){ // Figure out comparisonL
-                    start.set(Calendar.HOUR,11)
+                if(start.compareTo(endday) == 1){ // Figure out comparisonL
+                    start.set(Calendar.HOUR_OF_DAY,11)
                     start.set(Calendar.MINUTE,30)
                     start.set(Calendar.SECOND,0)
                     start.set(Calendar.DATE,start.get(Calendar.DATE)+1)
                     endday.set(Calendar.DATE,endday.get(Calendar.DATE)+1)
                     place.starttime = Timestamp(start.time)
+                    Log.e(placesout.indexOf(place).toString()+" xox ooo ",place.starttime.toDate().toString())
+
+                }
+                else if(start.compareTo(end) == 1){
+                    place.canvisit = false
                 }
                 else{
-                    start.set(Calendar.MINUTE, start.get(Calendar.MINUTE) + Integer.parseInt(placesout.get(placesout.indexOf(place) - 1).traveltime.toString()))
+                    start.set(Calendar.SECOND, start.get(Calendar.SECOND) + Integer.parseInt(placesout.get(placesout.indexOf(place) - 1).traveltime.toString())+7200)
                     place.starttime = Timestamp(start.time)
+                    Log.e(placesout.indexOf(place).toString()+" xox >>> ",place.starttime.toDate().toString())
+
                 }
             }
+
         }
         return placesout
 
