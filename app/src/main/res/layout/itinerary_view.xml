@@ -71,10 +71,6 @@
             android:background="@color/white"
             android:text="Home"
             android:onClick="changeToTravelBoard"/>
-
-        <!--        <include-->
-<!--            android:id="@+id/itineraryCard"-->
-<!--            layout="@layout/itinerary_tile" />-->
     </com.mapbox.mapboxsdk.maps.MapView>
 
     <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
