@@ -1,0 +1,4 @@
+- 2 hr | fix bugs with deleting and reordering places (pr #70)
+- 4 hr | load map on overview of all places,
+          clicking places on itenary moves camera,
+          itenerary thumbnails (pr #72)
