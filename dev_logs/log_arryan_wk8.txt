@@ -1,0 +1,2 @@
+- 2 hr | Refactor code so it is more consistent (pr #74)
+- 4 hr | Work on documentation and diagrams for D3
