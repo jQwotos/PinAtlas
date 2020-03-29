@@ -1,0 +1,2 @@
+- Improved UI by changing colours, font, specific layouts and improved UX by making it easier to navigate (3 hours)		
+- Fixed bug where user could not scroll in the travel dashboard (2 hours)
