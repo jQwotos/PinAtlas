@@ -1,2 +1,3 @@
 - 2 hr | Refactor code so it is more consistent (pr #74)
+- 1 hr | Refactor PlaceThumbnailUtil to be singleton (pr #76)
 - 4 hr | Work on documentation and diagrams for D3
