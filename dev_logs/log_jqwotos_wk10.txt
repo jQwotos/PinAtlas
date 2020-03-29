@@ -1,3 +1,4 @@
 - 1 hr  | Migrated Places directly into Trips
 - 1 hr  | Updated google busy times trigger to be API
 - .5 hr | Added busy times api to app
+- 5 hrs | Built DetailsView and subcomponents
