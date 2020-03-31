@@ -29,6 +29,7 @@ object BusyTimesUtil {
             when (result) {
                 is Result.Failure -> {
                     Log.w(TAG, "Error when fetching busy times: ${result.getException()}")
+                    responseHandler(null)
                 }
 
                 is Result.Success -> {
