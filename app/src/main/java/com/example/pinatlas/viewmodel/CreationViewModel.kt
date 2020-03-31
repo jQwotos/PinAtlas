@@ -125,11 +125,16 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     }
 
     fun addPlace(place: Place) {
+        _trip.value?.places?.add(place)
+        _trip.postValue(_trip.value)
+        saveTrip()
         BusyTimesUtil.fetchBusyTimesData(place.placeId) { result: BusyData? ->
             if (result != null) {
                 place.busyData = result
             }
-            _trip.value?.places?.add(place)
+
+            var index = _trip.value?.places?.indexOfLast { it.placeId == place.placeId }
+            _trip.value?.places?.set(index!!, place)
             _trip.postValue(_trip.value)
             saveTrip()
         }
