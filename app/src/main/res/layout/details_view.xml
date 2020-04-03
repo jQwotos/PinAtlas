@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:minHeight="50dp"
-                    android:text="@{viewmodel.place.name, default=Place}"
+                    android:text="@{viewmodel.place.Place.name, default=Place}"
                     android:textSize="30dp" />
 
                 <ImageView
@@ -71,15 +71,15 @@
 
                     <com.example.pinatlas.DetailsItemView
                         app:imageSrc="@drawable/ic_room_24px"
-                        app:text="@{viewmodel.place.address}" />
+                        app:text="@{viewmodel.place.Place.address}" />
 
                     <com.example.pinatlas.DetailsItemView
                         app:imageSrc="@drawable/ic_schedule_24px"
-                        app:text="@{viewmodel.place.openingHoursString()}" />
+                        app:text="@{viewmodel.place.Place.openingHoursString()}" />
 
                     <com.example.pinatlas.DetailsItemView
                         app:imageSrc="@drawable/ic_phone_24px"
-                        app:text="@{viewmodel.place.phoneNumber}" />
+                        app:text="@{viewmodel.place.Place.phoneNumber}" />
 
                     <com.example.pinatlas.DetailsItemView
                         app:imageSrc="@drawable/ic_timer_24px"

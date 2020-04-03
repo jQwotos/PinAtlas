@@ -45,6 +45,8 @@ class DetailsView : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         /* Setup Busy Times Spinner */
         busyTimesSpinner = findViewById(R.id.busyTimesSelector)
+        busyTimesSpinner.onItemSelectedListener = this
+
         var busyTimesSpinnerAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, daysOfWeek)
         busyTimesSpinner.adapter = busyTimesSpinnerAdapter
 
@@ -62,7 +64,8 @@ class DetailsView : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         busyTimesChart.xAxis.setDrawGridLines(false)
 
         busyTimesChart.legend.isEnabled = false
-        viewModel.observeBusyData(this, Observer { data: BarData ->
+
+        viewModel.busyData.observe(this, Observer { data: BarData ->
             if (data.entryCount == 0) {
                 busyTimesChart.visibility = View.GONE
             } else {
