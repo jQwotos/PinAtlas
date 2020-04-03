@@ -1,2 +1,4 @@
 - Improved UI by changing colours, font, specific layouts and improved UX by making it easier to navigate (3.5 hours)		
 - Fixed bug where user could not scroll in the travel dashboard (2 hours)
+- Fixed a bug where buttons was covering parts of the places in creation and iternary view (0.5 hour)
+- Edited and rewrote documentation for D4 (1.5 hours)
