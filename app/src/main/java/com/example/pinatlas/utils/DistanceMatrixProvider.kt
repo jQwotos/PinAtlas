@@ -7,11 +7,14 @@ import com.example.pinatlas.constants.Constants
 import com.example.pinatlas.constants.TransportationMethods
 import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.matrix.DistanceMatrixModel
+import com.example.pinatlas.model.matrix.Element
+import com.example.pinatlas.model.matrix.Row
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import com.google.gson.Gson
 import java.io.Reader
+import java.lang.Exception
 
 /* Owner: JL  */
 object DistanceMatrixProvider {
@@ -53,25 +56,36 @@ object DistanceMatrixProvider {
      * @param mode mode of transportation
      * @param responseHandler procedure that is invoked when query is finished
      */
-    fun fetchDistanceMatrix(destinations: ArrayList<Place>, mode: String = TransportationMethods.DRIVING.type, responseHandler: (result: DistanceMatrixModel?) -> Any?){
-        buildDistanceMatrixURI(destinations = destinations, mode = mode).httpGet().responseObject(DistanceMatrixDeserializer()) { _, _, result ->
-            when (result) {
-                is Result.Failure -> {
-                    Log.w(TAG, "Error when fetching distance matrix: " + result.getException())
-                    responseHandler(null)
-
-                }
-
-                is Result.Success -> {
-                    val (data, _) = result
-                    val distanceMatrixModel = data as DistanceMatrixModel
-
-                    if (distanceMatrixModel.status.equals(Constants.REQUEST_DENIED.type)) {
-                        Log.w(TAG, "Warning: Distance Matrix query failed, is your API key out of uses or enabled for distance matrix?")
+    fun optimizeMatrices(matrixes: List<DistanceMatrixModel>): DistanceMatrixModel? {
+        return matrixes[0].rows?.foldIndexed(DistanceMatrixModel(
+            status = matrixes[0].status,
+            origin_addresses = matrixes[0].origin_addresses,
+            destination_addresses = matrixes[0].destination_addresses
+        )) { rowIndex, acc, row ->
+            acc.rows?.add(Row(
+                elements = ArrayList(row.elements.mapIndexedNotNull { elemenIndex, _ ->
+                    var allElements = matrixes.mapNotNull {
+                        var element: Element? = it.rows?.get(rowIndex)?.elements?.get(elemenIndex)
+                        if (element?.duration?.value != null) element else null
                     }
-                    responseHandler(distanceMatrixModel)
-                }
+                    allElements.minBy { it.duration!!.value }
+                })
+            ))
+            acc
+        }
+    }
+
+    fun fetchAllDistanceMatrixes(destinations: ArrayList<Place>, modes: List<String>, responseHandler: (result: DistanceMatrixModel?) -> Any?) {
+        try {
+            var results = modes.map {mode ->
+                buildDistanceMatrixURI(destinations = destinations, mode = mode).httpGet().responseObject(DistanceMatrixDeserializer())
             }
+            var matrices = results.map { result ->
+                result.third.get()
+            }
+            responseHandler(optimizeMatrices(matrices))
+        } catch(e: Exception) {
+            responseHandler(null)
         }
     }
 

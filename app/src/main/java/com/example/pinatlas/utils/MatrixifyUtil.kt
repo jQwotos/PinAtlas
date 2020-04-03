@@ -124,9 +124,9 @@ object MatrixifyUtil {
 
 
     /* Optimize merges DistanceMatrixProvider fetchDistanceMatrix and pipes it into generateGenome */
-    fun optimizer(places: List<Place>, tripstart: Timestamp, tripend: Timestamp, responseHandler: (result: List<Place>?) -> Unit?) {
+    fun optimizer(places: List<Place>, modes: List<String>, tripstart: Timestamp, tripend: Timestamp, responseHandler: (result: List<Place>?) -> Unit?) {
         doAsync {
-            DistanceMatrixProvider.fetchDistanceMatrix(destinations = places as ArrayList<Place>){ result: DistanceMatrixModel? ->
+            DistanceMatrixProvider.fetchAllDistanceMatrixes(destinations = places as ArrayList<Place>, modes = modes){ result: DistanceMatrixModel? ->
                 if (result != null ) {
                     generateGenome(distanceMatrixModel = result).continueWithTask { genome: Task<SalesmanGenome> ->
                         repositionPlaces(places, genome.result!!.optimizedRoute, result)
