@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="com.example.pinatlas.utils.DateUtils" />
+        <import type="com.pinatlas.pinatlas.utils.DateUtils" />
         <import type="android.widget.Toast" />
-        <variable name="viewmodel" type="com.example.pinatlas.viewmodel.CreationViewModel" />
+        <variable name="viewmodel" type="com.pinatlas.pinatlas.viewmodel.CreationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
