@@ -3,6 +3,7 @@ package com.example.pinatlas
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pinatlas.adapter.TripAdapter
 import com.example.pinatlas.constants.Constants
+import com.example.pinatlas.model.Place
 import com.example.pinatlas.model.Trip
 import com.example.pinatlas.viewmodel.TripsViewModel
 import com.example.pinatlas.viewmodel.TripsViewModelFactory
@@ -22,6 +24,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
+import com.mapbox.geojson.Feature
+import com.mapbox.geojson.FeatureCollection
+import com.mapbox.geojson.GeoJson
+import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
@@ -31,6 +37,9 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
 
 class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener, TripAdapter.OnTripSelectedListener {
@@ -112,12 +121,57 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
 
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
-//        mapboxMap.setStyle(Style.TRAFFIC_NIGHT) {
-//            enableLocationComponent(it)
-//        }
-        mapboxMap.setStyle(Style.Builder().fromUri("mapbox://styles/davidchopin/cjtz90km70tkk1fo6oxifkd67")) {
-                enableLocationComponent(it)
+        mapboxMap.setStyle(Style.Builder()
+            .fromUri("mapbox://styles/davidchopin/cjtz90km70tkk1fo6oxifkd67")) { style ->
+            style.addImage(
+                Constants.UPCOMING_PLACES_ICON_ID.type,
+                BitmapFactory.decodeResource(resources, R.drawable.blue_pin))
+            style.addImage(
+                Constants.PREVIOUS_PLACES_ICON_ID.type,
+                BitmapFactory.decodeResource(resources, R.drawable.pink_pin))
+
+            viewModel.upcomingTrips.observe(this, Observer { trips ->
+                this.drawPlacesFromTrips(
+                    Constants.UPCOMING_PLACES_LAYER_ID.type,
+                    Constants.UPCOMING_PLACES_ICON_ID.type, style, trips)
+            })
+
+            viewModel.previousTrips.observe(this, Observer { trips ->
+                this.drawPlacesFromTrips(
+                    Constants.PREVIOUS_PLACES_LAYER_ID.type,
+                    Constants.PREVIOUS_PLACES_ICON_ID.type, style, trips)
+            })
+
+            enableLocationComponent(style)
         }
+    }
+
+    fun drawPlacesFromTrips(layerId: String, iconId: String, style: Style, trips: List<Trip>) {
+        val sourceId = "${layerId}_SOURCE"
+
+        style.removeSource(sourceId)
+        style.removeLayer(layerId)
+
+        val latLngs = arrayListOf<Feature>()
+        for (trip in trips) {
+            latLngs.addAll(trip.places.map { place ->
+                Feature.fromGeometry(Point.fromLngLat(
+                    place.coordinates!!.longitude,
+                    place.coordinates!!.latitude
+                ))
+            })
+        }
+
+        style.addSource(GeoJsonSource(sourceId, FeatureCollection.fromFeatures(latLngs)))
+        style.addLayer(
+            SymbolLayer(layerId, sourceId)
+                .withProperties(
+                    PropertyFactory.iconImage(iconId),
+                    PropertyFactory.iconIgnorePlacement(true),
+                    PropertyFactory.iconSize(0.5f),
+                    PropertyFactory.iconAllowOverlap(true)
+                )
+        )
     }
 
     @SuppressLint("MissingPermission")
