@@ -3,7 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="viewmodel" type="com.example.pinatlas.viewmodel.DetailsViewModel" />
+        <variable name="viewmodel" type="com.pinatlas.pinatlas.viewmodel.DetailsViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
