@@ -100,12 +100,12 @@ object MatrixifyUtil {
 
         for(place in placesout){
             //if(start)
-            if(placesout.indexOf(place) == 0) {
+            if((placesout.indexOf(place) == 0)) {
                 start.set(Calendar.HOUR_OF_DAY,start.get(Calendar.HOUR_OF_DAY)+2)
                 place.starttime = Timestamp(start.time)
-                Log.e(placesout.indexOf(place).toString()+" xox==O ",place.starttime.toDate().toString())
+                Log.e(place.name+placesout.indexOf(place).toString()+" xox==O ",place.starttime.toDate().toString())
             }
-            else{
+            else if(placesout.indexOf(place) != placesout.size-1){
                 if(start.compareTo(endday) == 1){ // Figure out comparisonL
                     start.set(Calendar.HOUR_OF_DAY,11)
                     start.set(Calendar.MINUTE,30)
@@ -113,16 +113,17 @@ object MatrixifyUtil {
                     start.set(Calendar.DATE,start.get(Calendar.DATE)+1)
                     endday.set(Calendar.DATE,endday.get(Calendar.DATE)+1)
                     place.starttime = Timestamp(start.time)
-                    Log.e(placesout.indexOf(place).toString()+" xox ooo ",place.starttime.toDate().toString())
-
+                    Log.e(place.name+placesout.indexOf(place).toString()+" xox ooo ",place.starttime.toDate().toString())
+                    place.canvisit = true
                 }
                 else if(start.compareTo(end) == 1){
                     place.canvisit = false
                 }
                 else{
+                    place.canvisit = true
                     start.set(Calendar.SECOND, start.get(Calendar.SECOND) + Integer.parseInt(placesout.get(placesout.indexOf(place) - 1).traveltime.toString())+7200)
                     place.starttime = Timestamp(start.time)
-                    Log.e(placesout.indexOf(place).toString()+" xox >>> ",place.starttime.toDate().toString())
+                    Log.e(place.name+placesout.indexOf(place).toString()+" xox >>> ",place.starttime.toDate().toString())
 
                 }
             }
