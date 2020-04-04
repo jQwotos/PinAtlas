@@ -9,6 +9,7 @@ import com.example.pinatlas.repository.TripsRepository
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.ListenerRegistration
 import java.util.*
 
 /* Owner: AZ */
@@ -16,13 +17,14 @@ class TripsViewModel(userId: String) : ViewModel() {
     val TAG = TripsViewModel::class.java.simpleName
 
     private val tripsRepository = TripsRepository()
+    var tripsListener: ListenerRegistration
 
     private val _trips = MutableLiveData<List<Trip>>()
     private val _previousTrips = MutableLiveData<List<Trip>>()
     private val _upcomingTrips = MutableLiveData<List<Trip>>()
 
     init {
-        tripsRepository.fetchTripsForUser(userId).addSnapshotListener { value, _ ->
+        tripsListener = tripsRepository.fetchTripsForUser(userId).addSnapshotListener { value, _ ->
             val trips = arrayListOf<Trip>()
             val previous = arrayListOf<Trip>()
             val upcoming = arrayListOf<Trip>()

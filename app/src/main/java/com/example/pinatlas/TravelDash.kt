@@ -119,8 +119,26 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
         upcomingRecyclerView.adapter = upcommingTripsAdapter
     }
 
-    override fun onMapReady(mapboxMap: MapboxMap) {
-        this.mapboxMap = mapboxMap
+    fun updateStyle(style: Style) {
+        var upcommingTrips = viewModel.upcomingTrips.value
+        var pastTrips = viewModel.previousTrips.value
+
+        if (upcommingTrips != null) {
+            this.drawPlacesFromTrips(
+                Constants.UPCOMING_PLACES_LAYER_ID.type,
+                Constants.UPCOMING_PLACES_ICON_ID.type, style, upcommingTrips
+            )
+        }
+
+        if (pastTrips != null) {
+            this.drawPlacesFromTrips(
+                Constants.PREVIOUS_PLACES_LAYER_ID.type,
+                Constants.PREVIOUS_PLACES_ICON_ID.type, style, pastTrips
+            )
+        }
+    }
+
+    fun setMapStyle(mapboxMap: MapboxMap) {
         mapboxMap.setStyle(Style.Builder()
             .fromUri("mapbox://styles/davidchopin/cjtz90km70tkk1fo6oxifkd67")) { style ->
             style.addImage(
@@ -129,21 +147,21 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
             style.addImage(
                 Constants.PREVIOUS_PLACES_ICON_ID.type,
                 BitmapFactory.decodeResource(resources, R.drawable.pink_pin))
-
-            viewModel.upcomingTrips.observe(this, Observer { trips ->
-                this.drawPlacesFromTrips(
-                    Constants.UPCOMING_PLACES_LAYER_ID.type,
-                    Constants.UPCOMING_PLACES_ICON_ID.type, style, trips)
-            })
-
-            viewModel.previousTrips.observe(this, Observer { trips ->
-                this.drawPlacesFromTrips(
-                    Constants.PREVIOUS_PLACES_LAYER_ID.type,
-                    Constants.PREVIOUS_PLACES_ICON_ID.type, style, trips)
-            })
-
+            updateStyle(style)
             enableLocationComponent(style)
         }
+    }
+
+    override fun onMapReady(mapboxMap: MapboxMap) {
+        this.mapboxMap = mapboxMap
+        viewModel.previousTrips.observe(this, Observer {
+            setMapStyle(this.mapboxMap)
+        })
+
+        viewModel.upcomingTrips.observe(this, Observer {
+            setMapStyle(this.mapboxMap)
+        })
+
     }
 
     fun drawPlacesFromTrips(layerId: String, iconId: String, style: Style, trips: List<Trip>) {
@@ -258,6 +276,7 @@ class TravelDash : AppCompatActivity() , OnMapReadyCallback, PermissionsListener
 
     override fun onStop() {
         super.onStop()
+        viewModel.tripsListener.remove()
         mapView.onStop()
     }
 

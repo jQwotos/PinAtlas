@@ -27,8 +27,10 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
 
     private val _trip = MutableLiveData<Trip>()
     private val _places = MutableLiveData<List<Place>>()
+    private val tripId = tripId
+    private val userId = userId
 
-    var tripListener: ListenerRegistration
+    lateinit var tripListener: ListenerRegistration
 
     val tripPlaces : LiveData<List<Place>>
         get() = _places
@@ -67,6 +69,10 @@ class CreationViewModel(tripId: String, userId: String) : ViewModel() {
     val latLng: MutableLiveData<GeoPoint> = MutableLiveData<GeoPoint>()
 
     init {
+        registerListener()
+    }
+
+    fun registerListener() {
         tripListener =  tripsRepository.fetchTrip(tripId).addSnapshotListener { tripSnapshot, _ ->
             val trip = Trip.fromFirestore(tripSnapshot!!)
             trip?.userId = userId

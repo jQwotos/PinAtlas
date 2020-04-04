@@ -80,10 +80,21 @@ object MatrixifyUtil {
             if(placesout.indexOf(place) == placesout.size - 1) {
                 place.traveltime = 0
             }else{
-                val placeOneIndex : Int = distanceMatrixModel.origin_addresses!!.indexOf(place.address)
-                val placeTwoIndex : Int = distanceMatrixModel.destination_addresses!!.indexOf(placesout.get(placesout.indexOf(place)+1).address)
-                val duration : Long? = distanceMatrixModel.rows!!.get(placeOneIndex).elements.get(placeTwoIndex).duration!!.value
-                place.traveltime = duration
+                val placeOneIndex : Int? = distanceMatrixModel.origin_addresses?.indexOf(place.address)
+                val placeTwoIndex : Int? = distanceMatrixModel.destination_addresses?.indexOf(
+                    placesout[placesout.indexOf(place)+1].address)
+                var duration: Long?
+
+                if ((placeOneIndex != null && placeTwoIndex != null && placeOneIndex >= 0 && placeTwoIndex >= 0)) {
+                    duration = distanceMatrixModel.rows?.get(index = placeOneIndex)?.elements?.get(
+                        placeTwoIndex
+                    )?.duration?.value
+                } else {
+                    duration = 2
+                }
+                if (duration != null) {
+                    place.traveltime = duration
+                }
             }
         }
 

@@ -38,7 +38,6 @@ class DetailsView : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
 
-
         /* Setup image */
         imageView = findViewById(R.id.placeImage)
         PlaceThumbnailUtil.populateImageView(placeId, imageView, this)

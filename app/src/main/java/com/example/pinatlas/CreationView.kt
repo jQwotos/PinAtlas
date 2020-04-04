@@ -284,4 +284,9 @@ class CreationView : AppCompatActivity() {
         super.onStop()
         viewModel.tripListener.remove()
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        viewModel.registerListener()
+    }
 }
