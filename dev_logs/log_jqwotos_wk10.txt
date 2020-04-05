@@ -2,3 +2,4 @@
 - 1 hr  | Updated google busy times trigger to be API
 - .5 hr | Added busy times api to app
 - 5 hrs | Built DetailsView and subcomponents
+- 2 hrs | Fixed few bugs with map and null safety
