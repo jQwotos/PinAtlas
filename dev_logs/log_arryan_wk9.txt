@@ -1,0 +1,2 @@
+- 2 hr | Investigate location services for regenerating itenary when the user skips places
+- 2 hr | Add pins on travel dash for previous and upcoming trips
